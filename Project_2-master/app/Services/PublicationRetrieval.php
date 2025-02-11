@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Http;
 
 class PublicationRetrieval
 {
-
     public function getAuthor($scholarId){
         $start = 0;
         $diffPage = 100;
@@ -56,16 +55,16 @@ class PublicationRetrieval
         $author = [
             'scholar_Name' => $name,
             'citations' => [
-                'total' => $citations[0] ?? 'N/A',
-                'last_5_years' => $citations[1] ?? 'N/A',
+                'total' => $citations[1] ?? 'N/A',
+                'last_5_years' => $citations[2] ?? 'N/A',
                 ],
             'h_index' => [
-                'total' => $h_index[0] ?? 'N/A',
-                'last_5_years' => $h_index[1] ?? 'N/A',
+                'total' => $h_index[1] ?? 'N/A',
+                'last_5_years' => $h_index[2] ?? 'N/A',
                 ],
             'i10_index' => [
-                'total' => $i10_index[0] ?? 'N/A',
-                'last_5_years' => $i10_index[1] ?? 'N/A'],
+                'total' => $i10_index[1] ?? 'N/A',
+                'last_5_years' => $i10_index[2] ?? 'N/A'],
             'publications' => array_map(fn($publication)=>[
                 'title'=> $publication['title'],
                 'citations'=> $publication['citations'],
@@ -134,7 +133,13 @@ class PublicationRetrieval
             $sourceTitle = $pages["Source"];
             $issue = $pages["Issue"];
             $volume = $pages["Volume"];
-        }else{
+        }else if(array_key_exists("Journal",$pages)){
+            $paperType = "journal";
+            $sourceTitle = $pages["Journal"];
+            $issue = $pages["Issue"];
+            $volume = $pages["Volume"];
+        }
+        else{
             $paperType = "conference";
             $sourceTitle = $pages["Conference"];
         }
