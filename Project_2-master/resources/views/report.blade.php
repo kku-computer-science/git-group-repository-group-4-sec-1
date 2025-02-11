@@ -102,13 +102,16 @@ var year = <?php echo $year; ?>;
 var paper_tci = <?php echo $paper_tci; ?>;
 var paper_scopus = <?php echo $paper_scopus; ?>;
 var paper_wos = <?php echo $paper_wos; ?>;
+var paper_google_s = [12, 18, 22, 28, 33];  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
 
 var paper_tci_cit = <?php echo $paper_tci_cit; ?>;
 var paper_scopus_cit = <?php echo $paper_scopus_cit; ?>;
 var paper_wos_cit = <?php echo $paper_wos_cit; ?>;
+var paper_google_s_cit = [20, 10, 4, 7, 16];  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
 
 year.unshift("source");
 paper_tci.unshift("tci");
+paper_google_s.unshift("google scholar");
 
 //console.log(paper_scopus_cit);
 paper_scopus.unshift("scopus");
@@ -118,7 +121,8 @@ let pro = year;
 let dat = [
     paper_scopus,
     paper_tci,
-    paper_wos
+    paper_wos,
+    paper_google_s
 ];
 let res = dat.map((innerArray) => {
     let obj = {};
@@ -146,12 +150,13 @@ paper_scopus_cit.unshift("scopus");
 //console.log(paper_scopus_cit);
 paper_tci_cit.unshift("tci");
 paper_wos_cit.unshift("wos");
-
+paper_google_s_cit.unshift("google scholar");
 
 let dat2 = [
     paper_scopus_cit,
     paper_tci_cit,
-    paper_wos_cit
+    paper_wos_cit,
+    paper_google_s_cit
 ];
 
 let res2 = dat2.map((innerArray) => {
@@ -200,7 +205,7 @@ var year = <?php echo $year; ?>;
 var paper_tci = <?php echo $paper_tci; ?>;
 var paper_scopus = <?php echo $paper_scopus; ?>;
 var paper_wos = <?php echo $paper_wos; ?>;
-
+var paper_google_s = [12, 18, 22, 28, 33];  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
 
 var areaChartData = {
 
@@ -239,6 +244,17 @@ var areaChartData = {
             pointHighlightStroke: '#FCC29A',
             data: paper_wos
         },
+        {
+                label: 'GOOGLE SCHOLAR',
+                backgroundColor: '#c18ce6',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: '#c18ce6',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: '#c18ce6',
+                data: paper_google_s
+            },
     ]
 }
 
@@ -315,6 +331,7 @@ var areaChartData = {
             pointHighlightStroke: '#FCC29A',
             data: paper_wos
         },
+        
     ]
 }
 
@@ -347,6 +364,7 @@ var year = <?php echo $year; ?>;
 var paper_tci = <?php echo $paper_tci_cit; ?>;
 var paper_scopus = <?php echo $paper_scopus_cit; ?>;
 var paper_wos = <?php echo $paper_wos_cit; ?>;
+var paper_google_s_cit = [20, 10, 4, 7, 16];  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
 var areaChartData = {
 
     labels: year,
@@ -384,6 +402,17 @@ var areaChartData = {
             pointHighlightStroke: '#FCC29A',
             data: paper_wos
         },
+        {
+                label: 'GOOGLE SCHOLAR',
+                backgroundColor: '#c18ce6',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: '#c18ce6',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: '#c18ce6',
+                data: paper_google_s_cit
+            },
     ]
 }
 
