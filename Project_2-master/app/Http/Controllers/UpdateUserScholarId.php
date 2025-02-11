@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 use App\Services\UserScopusService;
 use Illuminate\Http\Request;
 
-class UpdateUserScopusScholarId extends Controller
+class UpdateUserScholarId extends Controller
 {
     // ไม่มีการใช้ $signature และ $description เพราะมันเป็นการใช้งานใน Command ไม่ใช่ Controller
     public function handle()

@@ -43,7 +43,7 @@ class UserScopusService
             }
 
             // อัปเดตค่า scholar_id
-            $userScopus->scopus_ID = $scholarId;  // ใช้ 'scopus_ID' แทน 'scholar_id' ตามที่ระบุใน Model
+            $userScopus->scholar_id = $scholarId;  // ใช้ 'scopus_ID' แทน 'scholar_id' ตามที่ระบุใน Model
             $userScopus->save();
 
             Log::info("อัปเดต scholar_id สำหรับ user_id: {$user->id} (fname: {$fname}) เป็น {$scholarId}");

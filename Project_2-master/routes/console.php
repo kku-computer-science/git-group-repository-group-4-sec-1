@@ -17,12 +17,16 @@ use App\Http\Controllers\UpdatePaperController;
 
 
 
-Artisan::command('update:paper-data', function () {//เปลี่ยนเป็น update:paper-data
+Artisan::command('update:paper-data', function () {
     app(App\Http\Controllers\UpdatePaperController::class)->updatePaperData();
 });
 
-Artisan::command('update:user_scopus', function () {//เปลี่ยนเป็น update:paper-data
-    app(App\Http\Controllers\UpdateUserScopusScholarId::class)->handle();
+Artisan::command('update:user_scopus', function () {
+    app(App\Http\Controllers\UpdateUserScholarId::class)->handle();
+});
+
+Artisan::command('update:citation', function () {
+    app(App\Http\Controllers\UserCitation::class)->getScholarData();
 });
 
 Artisan::command('inspire', function () {

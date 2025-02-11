@@ -7,11 +7,9 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\Http;
-use PhpParser\JsonDecoder;
 
 class PublicationRetrieval
 {
-
     public function getAuthor($scholarId){
         $start = 0;
         $diffPage = 100;
@@ -57,16 +55,16 @@ class PublicationRetrieval
         $author = [
             'scholar_Name' => $name,
             'citations' => [
-                'total' => $citations[0] ?? 'N/A',
-                'last_5_years' => $citations[1] ?? 'N/A',
+                'total' => $citations[1] ?? 'N/A',
+                'last_5_years' => $citations[2] ?? 'N/A',
                 ],
             'h_index' => [
-                'total' => $h_index[0] ?? 'N/A',
-                'last_5_years' => $h_index[1] ?? 'N/A',
+                'total' => $h_index[1] ?? 'N/A',
+                'last_5_years' => $h_index[2] ?? 'N/A',
                 ],
             'i10_index' => [
-                'total' => $i10_index[0] ?? 'N/A',
-                'last_5_years' => $i10_index[1] ?? 'N/A'],
+                'total' => $i10_index[1] ?? 'N/A',
+                'last_5_years' => $i10_index[2] ?? 'N/A'],
             'publications' => array_map(fn($publication)=>[
                 'title'=> $publication['title'],
                 'citations'=> $publication['citations'],
@@ -131,13 +129,19 @@ class PublicationRetrieval
         $volume = null;
         $issue = null;
         if (array_key_exists("Source",$pages)){
-            $paperType = "journal";
-            $sourceTitle = $pages["Source"];
-            $issue = $pages["Issue"];
-            $volume = $pages["Volume"];
-        }else{
+            $paperType = "journal" ?? null;
+            $sourceTitle = $pages["Source"] ?? null;
+            $issue = $pages["Issue"] ?? null;
+            $volume = $pages["Volume"] ?? null;
+        }else if(array_key_exists("Journal",$pages)){
+            $paperType = "journal" ?? null;
+            $sourceTitle = $pages["Journal"] ?? null;
+            $issue = $pages["Issue"] ?? null;
+            $volume = $pages["Volume"] ?? null;
+        }
+        else{
             $paperType = "conference";
-            $sourceTitle = $pages["Conference"];
+            $sourceTitle = $pages["Conference"] ?? null;
         }
 
         $paper =  [
@@ -236,7 +240,9 @@ class PublicationRetrieval
 
         try{
             $crawler = $browser->request('GET', $url);
-            return $browser->request('GET', $url);
+            $statusCode = $browser->getResponse()->getStatusCode();
+            if ($statusCode != 200) return null;
+            return $crawler;
         }catch(\Exception $err){
             echo $proxy ," fall to fecth\n";
             return null;
@@ -262,9 +268,11 @@ class PublicationRetrieval
             if (sizeof($proxies)>=$buffer && $buffer > 0) break;
         }
 
-        $data = Storage::disk('local')->get('data.txt');
-        $oldproxies = explode(", ",$data);
-        $proxies = array_merge($oldproxies,$proxies);
+        if (Storage::disk('local')->exists('data.txt')){
+            $data = Storage::disk('local')->get('data.txt');
+            $oldproxies = explode(", ",$data);
+            $proxies = array_merge($oldproxies,$proxies);
+        }
         Storage::disk('local')->put('data.txt', implode(', ', $proxies));
 
         if(sizeof($proxies)==0) $proxies[] = "";
