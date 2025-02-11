@@ -10,7 +10,7 @@ class PublicationRetrievalTest extends TestCase
     public function test_get_author_returns_valid_data()
     {
         $service = new PublicationRetrieval();
-        $scholarId = "cYJ4r_BHQR8C"; // ใช้ค่า scholarId จริง
+        $scholarId = "cYJ4r_BHQR8C";
 
         $result = $service->getAuthor($scholarId);
 
@@ -24,7 +24,7 @@ class PublicationRetrievalTest extends TestCase
     {
         $service = new PublicationRetrieval();
         $paperName = "Science and technology for water purification in the coming decades";
-        $scholarUrl = "https://www.nature.com/articles/nature06599";
+        $scholarUrl = "https://scholar.google.com/citations?view_op=view_citation&hl=en&user=7muexxwAAAAJ&citation_for_view=7muexxwAAAAJ:u5HHmVD_uO8C";
 
         $result = $service->getPaper($paperName, $scholarUrl);
 
@@ -33,4 +33,16 @@ class PublicationRetrievalTest extends TestCase
         $this->assertArrayHasKey('doi', $result);
         $this->assertArrayHasKey('sourceTitle', $result);
     }
+
+    
+
+    
+
+    
+    
+    
+
+
+
+
 }
