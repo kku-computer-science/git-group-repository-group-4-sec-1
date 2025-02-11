@@ -12,3 +12,7 @@ Read port: 59379
 console.error: ({})
 console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
 console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.

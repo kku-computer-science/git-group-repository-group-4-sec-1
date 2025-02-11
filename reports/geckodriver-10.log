@@ -11,3 +11,7 @@ Read port: 59994
 [ERROR glean_core::database] Failed to record metric 'client_id' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
 console.error: ({})
 console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
