@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'api/*'  // <-- อนุญาตให้ API ข้าม CSRF
     ];
+    
 }
