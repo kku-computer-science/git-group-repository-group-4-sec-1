@@ -37,7 +37,7 @@ class ScopuscallController extends Controller
 
         $url = Http::get('https://api.elsevier.com/content/search/scopus?', [
             'query' => "AUTHOR-NAME(" . "$lname" . "," . "$fname" . ")",
-            'apikey' => '6ab3c2a01c29f0e36b00c8fa1d013f83',
+            'apikey' => '2ed1ec328209b7128642a68e0a839445',
         ])->json();
 
 
@@ -146,7 +146,6 @@ class ScopuscallController extends Controller
 
                     $source = Source_data::findOrFail(1);
                     $paper->source()->sync($source);
-
                     $all_au = $all['abstracts-retrieval-response']['authors']['author'];
                     // if (array_key_exists('author', $all['message']['items'][0])) {
                     //     //$all_au = $all['message']['items'][0]['author'];

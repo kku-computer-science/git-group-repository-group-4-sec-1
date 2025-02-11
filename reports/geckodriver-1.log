@@ -1,14 +1,16 @@
-1739315827043	geckodriver	INFO	Listening on 127.0.0.1:54884
-1739315830101	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "54885" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\WINDOW~1\\AppData\\Local\\Temp\\rust_mozprofilepXBlnO"
+1739316676769	geckodriver	INFO	Listening on 127.0.0.1:56793
+1739316679808	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "56794" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\WINDOW~1\\AppData\\Local\\Temp\\rust_mozprofilefwdQTn"
 console.warn: services.settings: Ignoring preference override of remote settings server
 console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
 Dynamically enable window occlusion 0
-1739315830922	Marionette	INFO	Marionette enabled
-1739315831104	Marionette	INFO	Listening on port 54920
-WebDriver BiDi listening on ws://127.0.0.1:54885
-Read port: 54920
-1739315831253	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+1739316680267	Marionette	INFO	Marionette enabled
+1739316680428	Marionette	INFO	Listening on port 56839
+WebDriver BiDi listening on ws://127.0.0.1:56794
+Read port: 56839
+1739316680568	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[ERROR glean_core::database] Failed to record metric 'mps.last_sent_build' into glean_internal_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
 console.error: ({})
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
 Exiting due to channel error.
 Exiting due to channel error.
 Exiting due to channel error.

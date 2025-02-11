@@ -1,0 +1,16 @@
+1739316774620	geckodriver	INFO	Listening on 127.0.0.1:57273
+1739316777683	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "57274" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\WINDOW~1\\AppData\\Local\\Temp\\rust_mozprofilexeYl5X"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+Dynamically enable window occlusion 0
+1739316778357	Marionette	INFO	Marionette enabled
+1739316778939	Marionette	INFO	Listening on port 57335
+WebDriver BiDi listening on ws://127.0.0.1:57274
+Read port: 57335
+1739316779088	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[ERROR glean_core::database] Failed to record metric 'client_id' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'dirtybit' into glean_internal_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'client_id' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'build_date' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+1739316782703	Marionette	INFO	Stopped listening on port 57335
+Dynamically enable window occlusion 1
