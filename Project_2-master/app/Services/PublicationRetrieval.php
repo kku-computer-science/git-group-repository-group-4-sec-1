@@ -262,9 +262,11 @@ class PublicationRetrieval
             if (sizeof($proxies)>=$buffer && $buffer > 0) break;
         }
 
-        $data = Storage::disk('local')->get('data.txt');
-        $oldproxies = explode(", ",$data);
-        $proxies = array_merge($oldproxies,$proxies);
+        if (Storage::disk('local')->exists('data.txt')){
+            $data = Storage::disk('local')->get('data.txt');
+            $oldproxies = explode(", ",$data);
+            $proxies = array_merge($oldproxies,$proxies);
+        }
         Storage::disk('local')->put('data.txt', implode(', ', $proxies));
 
         if(sizeof($proxies)==0) $proxies[] = "";
