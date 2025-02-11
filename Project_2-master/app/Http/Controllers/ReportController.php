@@ -14,7 +14,7 @@ class ReportController extends Controller
     {
         //$papers = Paper::all()->orderBy, 'DESC');
         $papers = [];
-        $year = range(Carbon::now()->year - 7, Carbon::now()->year);
+        $year = range(Carbon::now()->year - 4, Carbon::now()->year);
         $y = $year;
         //$papers =Paper::orderBy('paper_yearpub', 'desc')->where('paper_yearpub', '=', 1)->get();
         $years = range(Carbon::now()->year, Carbon::now()->year - 4);
