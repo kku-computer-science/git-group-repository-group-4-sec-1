@@ -174,22 +174,24 @@ class PublicationRetrieval
             return null;
         }
 
-        $dataPaper = $dataPaper[0];
-        $paper = [
-            'title' => $dataPaper['title'] ?? null,
+        $dataPaper = $dataPaper[0] ?? [];
 
-            'authorships'=>array_map(fn($author)=>[
-                $author["author"]["display_name"]
-            ],$dataPaper["authorships"]) ,
+    $paper = [
+        'title' => $dataPaper['title'] ?? null,
 
-            'keywords' => array_map(fn($key)=>[
-                $key["display_name"]
-            ],$dataPaper['keywords']) ?? [],
+        'authorships' => isset($dataPaper['authorships']) ? array_map(fn($author) => [
+            'name' => $author["author"]["display_name"] ?? 'Unknown'
+        ], $dataPaper["authorships"]) : [],
 
-            'publicationYear' => $dataPaper['publication_year'] ?? null,
-            'doi' => $dataPaper['doi'] ?? null,
-            'paperSubType' => $dataPaper["type_crossref"]
-        ];
+        'keywords' => isset($dataPaper['keywords']) ? array_map(fn($key) => [
+            'keyword' => $key["display_name"] ?? 'N/A'
+        ], $dataPaper['keywords']) : [],
+
+        'publicationYear' => $dataPaper['publication_year'] ?? null,
+        'doi' => $dataPaper['doi'] ?? null,
+        'paperSubType' => $dataPaper["type_crossref"] ?? null
+    ];
+
         return $paper;
 
     }
