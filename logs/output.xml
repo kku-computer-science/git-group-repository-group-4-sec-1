@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0.1 (Python 3.12.1 on win32)" generated="2025-02-12T05:13:57.491037" rpa="false" schemaversion="5">
+<suite id="s1" name="Test Graph Dashboard" source="c:\Project_Soften\git-group-repository-group-4-sec-1\test\code_tests\testUI_robot\tests\test_graph_dashboard.robot">
+<test id="s1-t1" name="Check Dashboard Chart Display" line="7">
+<kw name="Open Browser To Dashboard" owner="keywords">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:13:57.666334" level="INFO">Opening browser 'firefox' to base url 'http://127.0.0.1:8000/'.</msg>
+<msg time="2025-02-12T05:14:03.832290" level="INFO">Cannot capture screenshot because no browser is open.</msg>
+<msg time="2025-02-12T05:14:03.832290" level="FAIL">SessionNotCreatedException: Message: Failed to set preferences: unknown error
+</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="FAIL" start="2025-02-12T05:13:57.666334" elapsed="6.171934">SessionNotCreatedException: Message: Failed to set preferences: unknown error
+</status>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="NOT RUN" start="2025-02-12T05:14:03.838268" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T05:13:57.666334" elapsed="6.171934">SessionNotCreatedException: Message: Failed to set preferences: unknown error
+</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${CHART_CONTAINER}</arg>
+<arg>timeout=20s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T05:14:03.838268" elapsed="0.000000"/>
+</kw>
+<kw name="Element Should Be Visible" owner="SeleniumLibrary">
+<arg>${CHART_CONTAINER}</arg>
+<doc>Verifies that the element identified by ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T05:14:03.839540" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2025-02-12T05:14:03.839540" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T05:13:57.665317" elapsed="6.174728">SessionNotCreatedException: Message: Failed to set preferences: unknown error
+</status>
+</test>
+<status status="FAIL" start="2025-02-12T05:13:57.492027" elapsed="6.348018"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Test Graph Dashboard">Test Graph Dashboard</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

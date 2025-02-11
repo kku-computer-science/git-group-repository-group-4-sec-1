@@ -17,6 +17,8 @@ class HomeController extends Controller
     public function index()
     {
         //$papers = Paper::all()->orderBy, 'DESC');
+        // $papers = Paper::latest()->get(); // เทียบเท่า orderBy('created_at', 'DESC')
+
         $papers = [];
         $year = range(Carbon::now()->year - 4, Carbon::now()->year);
         //$papers =Paper::orderBy('paper_yearpub', 'desc')->where('paper_yearpub', '=', 1)->get();
@@ -122,6 +124,7 @@ class HomeController extends Controller
         $paper_tci = [];
         $paper_scopus = [];
         $paper_wos = [];
+        $paper_google_s = [];
 
         foreach ($year as $key => $value) {
             $paper_scopus[] = Paper::whereHas('source', function ($query) {
@@ -143,6 +146,14 @@ class HomeController extends Controller
                 return $query->where('source_data_id', '=', 2);
             })->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
                 ->where(DB::raw('(paper_yearpub)'), $value)->count();
+        }
+
+
+        foreach ($year as $key => $value) {
+            $paper_google_s[] = Paper::where('publication', 'scholar') 
+        ->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
+        ->where('paper_yearpub', $value) 
+        ->count();
         }
         //return $paper_tci;
         //---------------------------------//
@@ -170,6 +181,7 @@ class HomeController extends Controller
         $paper_tci_numall = $num['paper_tci'];
         $paper_scopus_numall = $num['paper_scopus'];
         $paper_wos_numall = $num['paper_wos'];
+        $paper_google_s_numall = $num['paper_google_s'];
         //return $paper_scopus_numall;
         
 
@@ -183,9 +195,11 @@ class HomeController extends Controller
             ->with('paper_tci', json_encode($paper_tci, JSON_NUMERIC_CHECK))
             ->with('paper_scopus', json_encode($paper_scopus, JSON_NUMERIC_CHECK))
             ->with('paper_wos', json_encode($paper_wos, JSON_NUMERIC_CHECK))
+            ->with('paper_google_s', json_encode($paper_google_s, JSON_NUMERIC_CHECK))
             ->with('paper_tci_numall', json_encode($paper_tci_numall, JSON_NUMERIC_CHECK))
             ->with('paper_scopus_numall', json_encode($paper_scopus_numall, JSON_NUMERIC_CHECK))
-            ->with('paper_wos_numall', json_encode($paper_wos_numall, JSON_NUMERIC_CHECK));
+            ->with('paper_wos_numall', json_encode($paper_wos_numall, JSON_NUMERIC_CHECK))
+            ->with('paper_google_s_numall', json_encode($paper_google_s_numall, JSON_NUMERIC_CHECK));
 
 
 
@@ -215,7 +229,13 @@ class HomeController extends Controller
             return $query->where('source_data_id', '=', 2);
         })->whereIn('paper_type', ['Conference Proceeding', 'Journal'])->count();
 
-        return compact('paper_scopus','paper_tci','paper_wos');
+        // ดึงข้อมูลของ paper_google_s ที่ publication เป็น scholar
+    $paper_google_s = Paper::where('publication', 'scholar')
+    ->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
+    ->count();
+
+// คืนค่าทั้ง 4 ตัวแปร
+return compact('paper_scopus', 'paper_tci', 'paper_wos', 'paper_google_s');
     }
     public function bibtex($id)
     {

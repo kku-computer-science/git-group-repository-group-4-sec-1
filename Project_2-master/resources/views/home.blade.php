@@ -106,6 +106,11 @@
 
                 </div>
             </div>
+            <div class="col">
+                <div class="count" id='google_s'>
+                    
+                </div>
+            </div>
         </div>
     </div>
 
@@ -179,8 +184,8 @@
 
 <script>
     $(document).ready(function() {
-        $(".moreBox").slice(0, 1).show();
-        if ($(".blogBox:hidden").length != 0) {
+        $(".moreBox").slice(0, 1).show();     
+        if ($(".blogBox:hidden").length != 0) { 
             $("#loadMore").show();
         }
         $("#loadMore").on('click', function(e) {
@@ -197,6 +202,7 @@
     var paper_tci = <?php echo $paper_tci; ?>;
     var paper_scopus = <?php echo $paper_scopus; ?>;
     var paper_wos = <?php echo $paper_wos; ?>;
+    var paper_google_s = <?php echo $paper_google_s; ?>;  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
     var areaChartData = {
 
         labels: year,
@@ -233,6 +239,18 @@
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: '#FCC29A',
                 data: paper_wos
+            },
+
+            {
+                label: 'GOOGLE SCHOLAR',
+                backgroundColor: '#c18ce6',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: '#c18ce6',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: '#c18ce6',
+                data: paper_google_s
             },
         ]
     }
@@ -292,16 +310,20 @@
     })
 </script>
 <script>
+    // แสดงผลตัวเลขสรุป
+    //ดึงค่าจำนวนบทความทั้งหมดจาก PHP แต่ละแหล่งที่มา
     var paper_tci = <?php echo $paper_tci_numall; ?>;
     var paper_scopus = <?php echo $paper_scopus_numall; ?>;
     var paper_wos = <?php echo $paper_wos_numall; ?>;
+    var paper_google_s = <?php echo $paper_google_s_numall?>; 
     //console.log(paper_scopus)
     let sumtci = paper_tci;
     let sumsco = paper_scopus;
     let sumwos = paper_wos;
+    let sumgoogle = paper_google_s;
     (function($) {
         
-        let sum = paper_wos + paper_tci + paper_scopus;
+        let sum = paper_wos + paper_tci + paper_scopus + paper_google_s;
         //console.log(sum);
         //$("#scopus").append('data-to="100"');
         document.getElementById("all").innerHTML += `
@@ -320,6 +342,10 @@
                 <i class="count-icon fa fa-book fa-2x"></i>
                 <h2 class="timer count-title count-number" data-to="${sumtci}" data-speed="1500"></h2>
                 <p class="count-text ">TCI</p>`
+        document.getElementById("google_s").innerHTML += `
+                <i class="count-icon fa fa-book fa-2x"></i>
+                <h2 class="timer count-title count-number" data-to="${sumgoogle}" data-speed="1500"></h2>
+                <p class="count-text ">GOOGLE SCHOLAR</p>`
         //document.getElementById("scopus").appendChild('data-to="100"');
         $.fn.countTo = function(options) {
             options = options || {};
@@ -355,7 +381,7 @@
 
                 // initialize the element with the starting value
                 render(value);
-
+                
                 function updateTimer() {
                     value += increment;
                     loopCount++;
@@ -423,11 +449,11 @@
     $(document).on('click', '.open_modal', function() {
         //var url = "domain.com/yoururl";
         var tour_id = $(this).val();
-        $.get('/bib/' + tour_id, function(data) {
+        $.get('/bib/' + tour_id, function(data) { 
             //success data
             console.log(data);
-            $( ".bibtex-biblio" ).remove();
-            document.getElementById("name").innerHTML += `${data}`
+            $( ".bibtex-biblio" ).remove(); 
+            document.getElementById("name").innerHTML += `${data}` 
             // $('#tour_id').val(data.id);
             // $('#name').val(data);
             // $('#details').val(data.details);
