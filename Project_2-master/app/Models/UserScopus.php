@@ -25,7 +25,7 @@ class UserScopus extends Model
         'h_index_5years_ago',
         'i10_index_5years_ago'
     ];
-
+    public $timestamps = false; // ปิดการใช้งาน timestamps
     public function user()
     {
         return $this->belongsTo(User::class);
