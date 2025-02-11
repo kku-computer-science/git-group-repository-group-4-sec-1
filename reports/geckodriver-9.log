@@ -9,3 +9,4 @@ WebDriver BiDi listening on ws://127.0.0.1:59853
 Read port: 59890
 1739317392249	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
 console.error: ({})
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
