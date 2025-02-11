@@ -37,7 +37,7 @@ class ScrapeGoogleScholar extends Command
         $author->getAuthor("cYJ4r_BHQR8C");
         //$data = $author->getPaperScholar("https://scholar.google.com/citations?view_op=view_citation&hl=en&user=qG-oP7oAAAAJ&citation_for_view=qG-oP7oAAAAJ:d1gkVwhDpl0C");
         //$data = $author->getPaperOpenAlxe("Science and technology for water purification in the coming decades");
-        $data = $author->getPaper("Science and technology for water purification in the coming decades","https://scholar.google.com/citations?view_op=view_citation&hl=en&user=7muexxwAAAAJ&citation_for_view=7muexxwAAAAJ:u5HHmVD_uO8C");
+        //$data = $author->getPaper("Science and technology for water purification in the coming decades","https://scholar.google.com/citations?view_op=view_citation&hl=en&user=7muexxwAAAAJ&citation_for_view=7muexxwAAAAJ:u5HHmVD_uO8C");
 
         return 0;
 

@@ -7,7 +7,6 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\Http;
-use PhpParser\JsonDecoder;
 
 class PublicationRetrieval
 {
@@ -236,7 +235,9 @@ class PublicationRetrieval
 
         try{
             $crawler = $browser->request('GET', $url);
-            return $browser->request('GET', $url);
+            $statusCode = $browser->getResponse()->getStatusCode();
+            if ($statusCode != 200) return null;
+            return $crawler;
         }catch(\Exception $err){
             echo $proxy ," fall to fecth\n";
             return null;
