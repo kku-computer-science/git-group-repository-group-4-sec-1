@@ -202,7 +202,7 @@
     var paper_tci = <?php echo $paper_tci; ?>;
     var paper_scopus = <?php echo $paper_scopus; ?>;
     var paper_wos = <?php echo $paper_wos; ?>;
-    var paper_google_s = [12, 18, 22, 28, 33];  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
+    var paper_google_s = <?php echo $paper_google_s; ?>;  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
     var areaChartData = {
 
         labels: year,
@@ -315,7 +315,7 @@
     var paper_tci = <?php echo $paper_tci_numall; ?>;
     var paper_scopus = <?php echo $paper_scopus_numall; ?>;
     var paper_wos = <?php echo $paper_wos_numall; ?>;
-    var paper_google_s = 0;  //ยังไม่ดึงข้อมูลมา
+    var paper_google_s = <?php echo $paper_google_s_numall?>; 
     //console.log(paper_scopus)
     let sumtci = paper_tci;
     let sumsco = paper_scopus;
