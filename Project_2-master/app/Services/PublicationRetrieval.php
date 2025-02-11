@@ -133,7 +133,13 @@ class PublicationRetrieval
             $sourceTitle = $pages["Source"];
             $issue = $pages["Issue"];
             $volume = $pages["Volume"];
-        }else{
+        }else if(array_key_exists("Journal",$pages)){
+            $paperType = "journal";
+            $sourceTitle = $pages["Journal"];
+            $issue = $pages["Issue"];
+            $volume = $pages["Volume"];
+        }
+        else{
             $paperType = "conference";
             $sourceTitle = $pages["Conference"];
         }
