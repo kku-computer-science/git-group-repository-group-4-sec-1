@@ -202,7 +202,7 @@
     var paper_tci = <?php echo $paper_tci; ?>;
     var paper_scopus = <?php echo $paper_scopus; ?>;
     var paper_wos = <?php echo $paper_wos; ?>;
-    var paper_google_s = <?php echo $paper_google_s; ?>;  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
+    var paper_google_s = <?php echo $paper_google_s; ?>;
     var areaChartData = {
 
         labels: year,

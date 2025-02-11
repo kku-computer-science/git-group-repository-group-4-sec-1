@@ -107,4 +107,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Fund::class);
     }
+    public function scopusData()
+    {
+    return $this->hasOne(UserScopus::class);
+    }
+    
 }

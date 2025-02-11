@@ -112,10 +112,10 @@
                             Citations
                           </div>
                           <div class="col">
-                            123
+                            {{ $stats->citation ?? 0 }}
                           </div>
                           <div class="col">
-                            111
+                            {{ $stats->citation_5years_ago ?? 0 }}
                           </div>
                         </div>
                         <div class="row status_h-index">
@@ -123,10 +123,10 @@
                               h-index
                             </div>
                             <div class="col">
-                              2
+                                {{ $stats->h_index ?? 0 }}
                             </div>
                             <div class="col">
-                              3
+                                {{ $stats->h_index_5years_ago ?? 0 }}
                             </div>
                           </div>
                           <div class="row status_i10-index">
@@ -134,10 +134,10 @@
                               i10-index
                             </div>
                             <div class="col">
-                              7
+                                {{ $stats->i10_index ?? 0 }}
                             </div>
                             <div class="col">
-                              5
+                                {{ $stats->i10_index_5years_ago ?? 0 }}
                             </div>
                           </div>
                       </div>
@@ -644,7 +644,7 @@
     var paper_tci = <?php echo $paper_tci; ?>;
     var paper_scopus = <?php echo $paper_scopus; ?>;
     var paper_wos = <?php echo $paper_wos; ?>;
-    var paper_google_s = [5, 2, 3, 4, 1];  //ยังไม่ดึงข้อมูล ลองใช้ตัวเลข mock up
+    var paper_google_s = [0, 0, 0, 0, 0]; 
     var areaChartData = {
 
         labels: year,
@@ -777,7 +777,7 @@
     var paper_wos_s = <?php echo $paper_wos_s; ?>;
     var paper_book_s = <?php echo $paper_book_s; ?>;
     var paper_patent_s = <?php echo $paper_patent_s; ?>;
-    var paper_google_s = 0;  //ยังไม่ดึงข้อมูลมา
+    var paper_google_ss = <?php echo $paper_google_ss; ?>;
     //console.log(paper_book_s);
     let sumtci = 0;
     let sumsco = 0;
@@ -802,9 +802,9 @@
             sumpatent += paper_patent_s[i];
         }
         for (let i = 0; i < paper_google_s.length; i++) {
-            sumgoogle += paper_google_s[i];
+            sumgoogle += paper_google_ss[i];
         }
-        let sum = sumsco + sumtci + sumwos + sumbook + sumpatent + paper_google_s;
+        let sum = sumsco + sumtci + sumwos + sumbook + sumpatent + sumgoogle;
 
         //$("#scopus").append('data-to="100"');
         document.getElementById("all").innerHTML += `   
