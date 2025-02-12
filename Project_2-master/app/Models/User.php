@@ -114,7 +114,7 @@ class User extends Authenticatable
     }
     public function scopusData()
     {
-    return $this->hasOne(UserScopus::class);
+        return $this->hasOne(UserScopus::class, 'user_ID', 'id');
     }
     
 }
