@@ -35,13 +35,32 @@
         display: table;
         color: #4ad1e5;
     }
+
+    .status{
+        margin-right: 2rem;
+        border-bottom: 2px solid #9c9c9c;
+        border-radius: 4px;
+        padding-bottom: .5rem;
+        font-family: "Segoe UI", sans-serif;
+        color: #4b4b4b;
+        font-size: .9em;
+    }
+    .status_citation,.status_h-index,.status_i10-index{
+        font-family: "Segoe UI", sans-serif;
+        color: #4b4b4b;
+        font-size: .9em;
+    }
+    .status_all{
+        margin-right: 6rem;
+    }
+
 </style>
 
 @section('content')
 
 <div class="container cardprofile mt-5">
-    <div class="card">
-        <div class="row g-0">
+    <div class="card " style="height: 30rem;">
+        <div class="row g-0 d-flex align-items-center">
             <div class="col-md-2">
                 <img class="card-image" src="{{$res->picture}}" alt="">
             </div>
@@ -74,12 +93,57 @@
 
                 </div>
             </div>
-
+  
             <div class="col-md-4">
                 <h6 class="title-pub">{{ trans('message.publications2') }}</h6>
                 <div class="col-xs-12 text-center bt">
+                    <div class="container text-center c-status">
+                        <div class="d-flex status justify-content-end">
+                          <div class="status_all fw-bolder">
+                            All
+                          </div>
+                          <div class="fw-bolder" id="since">
+                            Since {{ date('Y') - 5 }}
+                          </div>
+                        </div>
+                        
+                        <div class="row status_citation pt-2">
+                          <div id="citation" class="col fw-bolder pb-1">
+                            Citations
+                          </div>
+                          <div class="col">
+                            {{ $stats->citation ?? 0 }}
+                          </div>
+                          <div class="col">
+                            {{ $stats->citation_5years_ago ?? 0 }}
+                          </div>
+                        </div>
+                        <div class="row status_h-index">
+                            <div id="h-index" class="col fw-bolder pb-1">
+                              h-index
+                            </div>
+                            <div class="col">
+                                {{ $stats->h_index ?? 0 }}
+                            </div>
+                            <div class="col">
+                                {{ $stats->h_index_5years_ago ?? 0 }}
+                            </div>
+                          </div>
+                          <div class="row status_i10-index">
+                            <div id="i10-index" class="col fw-bolder">
+                              i10-index
+                            </div>
+                            <div class="col">
+                                {{ $stats->i10_index ?? 0 }}
+                            </div>
+                            <div class="col">
+                                {{ $stats->i10_index_5years_ago ?? 0 }}
+                            </div>
+                          </div>
+                      </div>
+
                     <div class="clearfix"></div>
-                    <div class="row text-center">
+                    <div class="row text-center me-2">
                         <div class="col">
                             <div class="count" id='all'>
                             </div>
@@ -96,7 +160,12 @@
                             <div class="count" id='tci_sum'>
                             </div>
                         </div>
-
+                        {{-- google scholar --}}
+                        <div class="col">
+                            <div class="count" id='google_sum'>
+                    
+                            </div>
+                        </div>
                     </div>
                     <br>
                     <div class="chart">
@@ -141,6 +210,9 @@
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="tci-tab" data-bs-toggle="tab" data-bs-target="#tci" type="button" role="tab" aria-controls="tci" aria-selected="false">TCI</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="google_s-tab" data-bs-toggle="tab" data-bs-target="#google_s" type="button" role="tab" aria-controls="google_s" aria-selected="false">Google Scholar</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="book-tab" data-bs-toggle="tab" data-bs-target="#book" type="button" role="tab" aria-controls="book" aria-selected="false">หนังสือ</button>
@@ -367,8 +439,59 @@
                 </tbody>
             </table>
         </div>
-        <div class="tab-pane fade" id="book" role="tabpanel" aria-labelledby="book-tab">
+
+        <div class="tab-pane fade" id="google_s" role="tabpanel" aria-labelledby="google_s-tab">
             <table id="example5" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Year</th>
+                        <th style="width:90%;">Paper Name</th>
+                        <th>Author</th>
+                        <th>Document Type</th>
+                        <th style="width:100%;">Page</th>
+                        <th>Journals/Transactions</th>
+                        <th>Ciations</th>
+                        <th>Doi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{-- ใส่ตัวแปรใหม่เป็น paper ของ google scholar --}}
+                     @foreach ($papers_tci as $n => $paper)
+                    <tr>
+                        <td> {{$n+1}}</td>
+                        <td>{{ $paper->paper_yearpub }}</td>
+                        <!-- <td style="width:90%;">{{$paper->paper_name}}</td> -->
+                        <td style="width:90%;">{!! html_entity_decode(preg_replace('<inf>', 'sub', $paper->paper_name)) !!}</td>
+                        <td>
+                            @foreach ($paper->author as $author)
+                            <span>
+                                <a>{{$author -> author_fname}} {{$author -> author_lname}}</a>
+                            </span>
+                            @endforeach
+                            @foreach ($paper->teacher as $author)
+                            <span>
+                                <a href="{{ route('detail',Crypt::encrypt($author->id))}}">
+                                    <teacher>{{$author -> fname_en}} {{$author -> lname_en}}</teacher></a>
+                            </span>
+                            @endforeach
+                        </td>
+                        <td>{{$paper->paper_type}}</td>
+                        <td style="width:100%;">{{$paper->paper_page}}</td>
+                        <td>{{$paper->paper_sourcetitle}}</td>
+                        <td>{{$paper->paper_citation}}</td>
+                        <td>{{$paper->paper_doi}}</td>
+
+
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane fade" id="book" role="tabpanel" aria-labelledby="book-tab">
+            <table id="example6" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th scope="col">Number</th>
@@ -410,7 +533,7 @@
         </div>
 
         <div class="tab-pane fade" id="patent" role="tabpanel" aria-labelledby="patent-tab">
-            <table id="example6" class="table table-striped" style="width:100%">
+            <table id="example7" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
                         <th scope="col">Number</th>
@@ -485,6 +608,9 @@
         var table6 = $('#example6').DataTable({
             responsive: true,
         });
+        var table6 = $('#example7').DataTable({
+            responsive: true,
+        });
 
 
         $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(event) {
@@ -501,6 +627,9 @@
             if (tabID === '#book') {
                 table5.columns.adjust().draw()
             }
+            if (tabID === '#google_s') {
+                table6.columns.adjust().draw()
+            }
             if (tabID === '#patent') {
                 table6.columns.adjust().draw()
             }
@@ -515,6 +644,7 @@
     var paper_tci = <?php echo $paper_tci; ?>;
     var paper_scopus = <?php echo $paper_scopus; ?>;
     var paper_wos = <?php echo $paper_wos; ?>;
+    var paper_google_s = [0, 0, 0, 0, 0]; 
     var areaChartData = {
 
         labels: year,
@@ -551,6 +681,17 @@
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: '#FCC29A',
                 data: paper_wos
+            },
+            {
+                label: 'GOOGLE SCHOLAR',
+                backgroundColor: '#c18ce6',
+                borderColor: 'rgba(210, 214, 222, 1)',
+                pointRadius: false,
+                pointColor: '#c18ce6',
+                pointStrokeColor: '#c1c7d1',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: '#c18ce6',
+                data: paper_google_s
             },
         ]
     }
@@ -589,13 +730,13 @@
 </script>
 
 <script type="text/javascript">
+    // publications status
     function myDisplayer(some) {
 
-        document.getElementById("citation").innerHTML = "Citation count : " + some['h-index'];
+        //document.getElementById("citation").innerHTML = "Citations";
         document.getElementById("doc_count").innerHTML = "Document count : " + some['coredata']['citation-count'];
         document.getElementById("cite_count").innerHTML = "Cited By count : " + some['coredata']['cited-by-count'];
-        document.getElementById("h-index").innerHTML = "H-index : " + some['h-index'];
-
+        //document.getElementById("h-index").innerHTML = "H-index : " + some['h-index'];
     }
     async function myFunction() {
         var res = <?php echo $res; ?>;
@@ -636,12 +777,14 @@
     var paper_wos_s = <?php echo $paper_wos_s; ?>;
     var paper_book_s = <?php echo $paper_book_s; ?>;
     var paper_patent_s = <?php echo $paper_patent_s; ?>;
+    var paper_google_ss = <?php echo $paper_google_ss; ?>;
     //console.log(paper_book_s);
     let sumtci = 0;
     let sumsco = 0;
     let sumwos = 0;
     let sumbook = 0;
     let sumpatent = 0;
+    let sumgoogle = 0;
     (function($) {
         for (let i = 0; i < paper_scopus_s.length; i++) {
             sumsco += paper_scopus_s[i];
@@ -658,7 +801,10 @@
         for (let i = 0; i < paper_patent_s.length; i++) {
             sumpatent += paper_patent_s[i];
         }
-        let sum = sumsco + sumtci + sumwos + sumbook + sumpatent;
+        for (let i = 0; i < paper_google_s.length; i++) {
+            sumgoogle += paper_google_ss[i];
+        }
+        let sum = sumsco + sumtci + sumwos + sumbook + sumpatent + sumgoogle;
 
         //$("#scopus").append('data-to="100"');
         document.getElementById("all").innerHTML += `   
@@ -676,6 +822,10 @@
         document.getElementById("tci_sum").innerHTML += `  
                 <h2 class="timer count-title count-number" data-to="${sumtci}" data-speed="1500"></h2>
                 <p class="count-text ">TCI</p>`
+
+        document.getElementById("google_sum").innerHTML += `  
+                <h2 class="timer count-title count-number" data-to="${sumgoogle}" data-speed="1500"></h2>
+                <p class="count-text ">GOOGLE SCHOLAR</p>`
 
 
         //document.getElementById("scopus").appendChild('data-to="100"');
