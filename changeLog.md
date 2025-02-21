@@ -14,14 +14,13 @@
 - เพิ่มController UserCitation.php เพื่อเพิ่มแลพอัปเดทข้อมูลของUser และ Paper
 - เพิ่มController UpdateUserScholarId.php เพื่อเพิ่มScholarId ในตารางuser_scopus
 - เพิ่มController  UpdatePaperController.php เพื่ออัปเดทงานวิจัยของScopus
-
-### Update
-
-### New
-
-    
+- เพิ่ม UI ของ Publication status ได้แก่ Citation, h-index, i10-index
 ### Update
 - แก้ไขRoutes/console เพื่อเพิ่มคำสั่งในการเรียกใช้Controller ได้แก้(update:paper-data,update:user_scopus,update:citation) 
     การเรียกใช้ Ex. php artisan update:paper-data
 - แก้ไขModel User เพิ่มความสัมพันธ์ของModel User และ UserScopus
+- ปรับ UI ในหน้า home เพื่อแสดงสถิติงานตีพิมพ์ของ google scholar 
+- ปรับ UI ในหน้า researcher profile เพื่อแสดงสถิติงานตีพิมพ์และงานวิจัยของ google scholar
+- ปรับ UI ในหน้า report ให้สามารถแสดงสถิติงานวิจัย,จำนวนงานวิจัยและสถิติงานวิจัยที่ถูกอ้างอิง,จำนวนงานวิจัยที่ถูกอ้างอิงย้อนหลัง 5 ปีของ google scholar
+
 ### Bug fix
