@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0.1 (Python 3.12.1 on win32)" generated="2025-02-12T06:41:36.317321" rpa="false" schemaversion="5">
+<suite id="s1" name="Test Dashboard" source="c:\Project_Soften\git-group-repository-group-4-sec-1\test\code_tests\testUI_robot\tests\test_dashboard.robot">
+<test id="s1-t1" name="ทดสอบการเปิดหน้า Dashboard" line="5">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:41:36.499109" level="INFO">Opening browser 'firefox' to base url 'http://127.0.0.1:8000/'.</msg>
+<arg>http://127.0.0.1:8000/</arg>
+<arg>firefox</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-02-12T06:41:36.499109" elapsed="35.595134"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-02-12T06:42:12.100603" elapsed="0.282551"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-02-12T06:42:17.385477" level="INFO">Slept 5 seconds.</msg>
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-02-12T06:42:12.384155" elapsed="5.001322"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:42:17.586851" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="reports/screenshots/debug_dashboard.png"&gt;&lt;img src="reports/screenshots/debug_dashboard.png" width="800px"&gt;&lt;/a&gt;</msg>
+<arg>reports/screenshots/debug_dashboard.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2025-02-12T06:42:17.385907" elapsed="0.200944"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-12T06:42:17.587852" elapsed="0.015999"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:42:17.749185" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-3.png"&gt;&lt;img src="selenium-screenshot-3.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T06:42:17.749185" level="FAIL">Element with locator 'xpath=//canvas[@id='barchart1']' not found.</msg>
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="FAIL" start="2025-02-12T06:42:17.605068" elapsed="0.148117">Element with locator 'xpath=//canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:17.754406" elapsed="0.000000"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<arg>reports/screenshots/dashboard_loaded.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:17.754406" elapsed="0.000999"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:17.755405" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:41:36.497881" elapsed="41.257524">Element with locator 'xpath=//canvas[@id='barchart1']' not found.</status>
+</test>
+<test id="s1-t2" name="ทดสอบการแสดงผลของกราฟ Dashboard" line="16">
+<kw name="Open Browser To Dashboard" owner="resource">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:42:17.757426" level="INFO">Opening browser 'firefox' to base url 'http://127.0.0.1:8000/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-02-12T06:42:17.757426" elapsed="35.496503"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-02-12T06:42:53.254436" elapsed="0.591939"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-12T06:42:53.846375" elapsed="0.023999"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:42:54.214038" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-4.png"&gt;&lt;img src="selenium-screenshot-4.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T06:42:54.214038" level="FAIL">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</msg>
+<arg>${GRAPH}</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="FAIL" start="2025-02-12T06:42:53.870374" elapsed="0.345665">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${GRAPH}</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.216039" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:42:17.757426" elapsed="36.459652">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.218036" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.219534" elapsed="0.000000"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.219534" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.220850" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.222031" elapsed="0.000000"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<arg>reports/screenshots/dashboard_graph.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.222031" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2025-02-12T06:42:54.222031" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:42:17.756404" elapsed="36.466706">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</test>
+<test id="s1-t3" name="ทดสอบข้อมูลในกราฟ Dashboard" line="26">
+<kw name="Open Browser To Dashboard" owner="resource">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:42:54.230859" level="INFO">Opening browser 'firefox' to base url 'http://127.0.0.1:8000/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-02-12T06:42:54.230859" elapsed="11.492711"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-02-12T06:43:05.723570" elapsed="0.269416"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-12T06:43:05.993988" elapsed="0.029510"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:43:06.320702" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-5.png"&gt;&lt;img src="selenium-screenshot-5.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T06:43:06.320702" level="FAIL">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</msg>
+<arg>${GRAPH}</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="FAIL" start="2025-02-12T06:43:06.023498" elapsed="0.298204">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${GRAPH}</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.321702" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:42:54.229333" elapsed="12.092369">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.321702" elapsed="0.001001"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.322703" elapsed="0.000000"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.322703" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.322703" elapsed="0.000000"/>
+</kw>
+<kw name="Execute Javascript" owner="SeleniumLibrary">
+<var>${year_text}</var>
+<arg>return document.getElementById('year-label').innerText</arg>
+<doc>Executes the given JavaScript code with possible arguments.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.322703" elapsed="0.000000"/>
+</kw>
+<kw name="Should Contain" owner="BuiltIn">
+<arg>${year_text}</arg>
+<arg>2025</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.323702" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:06.323702" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:42:54.227559" elapsed="12.096143">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</test>
+<test id="s1-t4" name="ทดสอบข้อมูลของกราฟในตาราง" line="36">
+<kw name="Open Browser To Dashboard" owner="resource">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:43:06.325702" level="INFO">Opening browser 'firefox' to base url 'http://127.0.0.1:8000/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-02-12T06:43:06.325702" elapsed="10.028501"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-02-12T06:43:16.354203" elapsed="0.294180"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-12T06:43:16.648383" elapsed="0.026522"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:43:17.029899" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-6.png"&gt;&lt;img src="selenium-screenshot-6.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T06:43:17.029899" level="FAIL">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</msg>
+<arg>${GRAPH}</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="FAIL" start="2025-02-12T06:43:16.675905" elapsed="0.354995">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${GRAPH}</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.030900" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:43:06.325702" elapsed="10.705198">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.031898" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.032898" elapsed="0.000000"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.032898" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.032898" elapsed="0.000000"/>
+</kw>
+<kw name="Table Should Contain" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='data-table']</arg>
+<arg>SCOPUS</arg>
+<doc>Verifies table contains text ``expected``.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.032898" elapsed="0.000000"/>
+</kw>
+<kw name="Table Should Contain" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='data-table']</arg>
+<arg>TCI</arg>
+<doc>Verifies table contains text ``expected``.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.033898" elapsed="0.000000"/>
+</kw>
+<kw name="Table Should Contain" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='data-table']</arg>
+<arg>WOS</arg>
+<doc>Verifies table contains text ``expected``.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.033898" elapsed="0.000000"/>
+</kw>
+<kw name="Table Should Contain" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='data-table']</arg>
+<arg>GOOGLE SCHOLAR</arg>
+<doc>Verifies table contains text ``expected``.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.034899" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:17.034899" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:43:06.324702" elapsed="10.711203">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</test>
+<test id="s1-t5" name="ทดสอบโฮเวอร์และ Tooltip ของกราฟ" line="48">
+<kw name="Open Browser To Dashboard" owner="resource">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:43:17.038905" level="INFO">Opening browser 'firefox' to base url 'http://127.0.0.1:8000/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-02-12T06:43:17.037906" elapsed="8.829339"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-02-12T06:43:25.868580" elapsed="0.313791"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-12T06:43:26.182371" elapsed="0.018998"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<msg time="2025-02-12T06:43:26.664080" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-7.png"&gt;&lt;img src="selenium-screenshot-7.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T06:43:26.665067" level="FAIL">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</msg>
+<arg>${GRAPH}</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="FAIL" start="2025-02-12T06:43:26.201369" elapsed="0.464698">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${GRAPH}</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.666067" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:43:17.037906" elapsed="9.628161">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.667065" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Report the total number of articles</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.667065" elapsed="0.000000"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.667065" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<arg>timeout=30s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.667065" elapsed="0.000000"/>
+</kw>
+<kw name="Mouse Over" owner="SeleniumLibrary">
+<arg>xpath=//canvas[@id='barchart1']</arg>
+<doc>Simulates hovering the mouse over the element ``locator``.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.668065" elapsed="0.000000"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[@class='tooltip']</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.668065" elapsed="0.000000"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary">
+<arg>reports/screenshots/tooltip_graph.png</arg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.668065" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="NOT RUN" start="2025-02-12T06:43:26.668065" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-02-12T06:43:17.036906" elapsed="9.632159">Element with locator 'xpath=//div[contains(@class, 'chartjs-size-monitor')]/canvas[@id='barchart1']' not found.</status>
+</test>
+<status status="FAIL" start="2025-02-12T06:41:36.319312" elapsed="110.349753"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="5" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="5" skip="0" id="s1" name="Test Dashboard">Test Dashboard</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

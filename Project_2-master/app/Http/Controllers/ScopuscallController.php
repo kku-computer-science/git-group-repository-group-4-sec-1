@@ -146,7 +146,6 @@ class ScopuscallController extends Controller
 
                     $source = Source_data::findOrFail(1);
                     $paper->source()->sync($source);
-
                     $all_au = $all['abstracts-retrieval-response']['authors']['author'];
                     // if (array_key_exists('author', $all['message']['items'][0])) {
                     //     //$all_au = $all['message']['items'][0]['author'];

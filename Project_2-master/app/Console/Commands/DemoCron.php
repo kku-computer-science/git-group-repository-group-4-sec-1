@@ -46,26 +46,24 @@ class DemoCron extends Command
      */
     public function handle()
     {
-        Log::info("Cron is working fine!");
+        #Log::info("Cron is working fine!");
+
 
         #Write your database logic we bellow:
         //$data = User::role(['teacher', 'student'])->get();
-        //$data = User::find(16);
-        $data = User::where('id', 16)->get();
+        $data = User::find(16);
         //$data = User::role('teacher')->get();
         foreach ($data as $name) {
-            $fname = substr($name->fname_en, 0, 1);
-            $lname = $name->lname_en;
-            $id    = $name->id;
-            /**
-            *$fname = substr($name['fname_en'], 0, 1);
-            *$lname = $name['lname_en'];
-            *$id    = $name['id'];
-            */
+
+            $fname = substr($name['fname_en'], 0, 1);
+            $lname = $name['lname_en'];
+            $id    = $name['id'];
+
             $url = Http::get('https://api.elsevier.com/content/search/scopus?', [
                 'query' => "AUTHOR-NAME(" . "$lname" . "," . "$fname" . ")",
-                'apikey' => '2ed1ec328209b7128642a68e0a839445', #หลังจากการตรวจสอบ API Key ของเดิมยังใช้งานได้
+                'apikey' => '6ab3c2a01c29f0e36b00c8fa1d013f83',
             ])->json();
+
 
             //$check=$url["search-results"]["entry"];
             $content = $url["search-results"]["entry"];
