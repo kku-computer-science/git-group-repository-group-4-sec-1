@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens; // ✅ ย้ายมาวางตรงนี้
+use App\Models\UserScopus;
 
 class User extends Authenticatable
 {
-    use  HasFactory, Notifiable, HasRoles; // ✅ แก้ให้ถูกต้อง
+    use HasApiTokens, HasFactory, Notifiable, HasRoles; // ✅ แก้ให้ถูกต้อง
 
     /**
      * The attributes that are mass assignable.
