@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UpdateUserScopusController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+
+Route::apiResource('scopus', 'App\Http\Controllers\ScopuscallController');

@@ -107,7 +107,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);*/
             /*$key = $this->throttleKey($request);
                 $rateLimiter = $this->limiter();
-                
+
                 $limit = [3 => 1, 5 => 5];
                 $attempts = $rateLimiter->attempts($key);  // return how attapts already yet
                 if (array_key_exists($attempts, $limit)) {
@@ -179,7 +179,7 @@ class LoginController extends Controller
                     //$user->givePermissionTo('addResearchProject','editResearchProject','deleteResearchProject');
                     //return redirect()->route('teacher.dashboard');
                     return redirect()->route('dashboard');
-                } 
+                }
             } else {
                 //fail
                 $this->incrementLoginAttempts($request);
