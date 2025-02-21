@@ -30,13 +30,13 @@ class User extends Authenticatable
         'position_en',
         'position_th',
         'title_name_th',
-        'title_name_en',     
+        'title_name_en',
         'role',
         'picture',
         'status',
         'program_id',
         'username'
-        
+
     ];
 
     /**
@@ -47,8 +47,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        
-        
+
+
     ];
 
     /**
@@ -82,13 +82,13 @@ class User extends Authenticatable
     public function paper()
     {
         return $this->belongsToMany(Paper::class,'user_papers')->withPivot('author_type');
-        
+
     }
 
     public function academicworks()
     {
         return $this->belongsToMany(Academicwork::class,'user_of_academicworks')->withPivot('author_type');
-        
+
     }
 
     public function program() {
@@ -112,4 +112,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Fund::class);
     }
+    public function scopusData()
+    {
+    return $this->hasOne(UserScopus::class);
+    }
+
 }

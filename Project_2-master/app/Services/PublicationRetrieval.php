@@ -129,19 +129,19 @@ class PublicationRetrieval
         $volume = null;
         $issue = null;
         if (array_key_exists("Source",$pages)){
-            $paperType = "journal";
-            $sourceTitle = $pages["Source"];
-            $issue = $pages["Issue"];
-            $volume = $pages["Volume"];
+            $paperType = "journal" ?? null;
+            $sourceTitle = $pages["Source"] ?? null;
+            $issue = $pages["Issue"] ?? null;
+            $volume = $pages["Volume"] ?? null;
         }else if(array_key_exists("Journal",$pages)){
-            $paperType = "journal";
-            $sourceTitle = $pages["Journal"];
-            $issue = $pages["Issue"];
-            $volume = $pages["Volume"];
+            $paperType = "journal" ?? null;
+            $sourceTitle = $pages["Journal"] ?? null;
+            $issue = $pages["Issue"] ?? null;
+            $volume = $pages["Volume"] ?? null;
         }
         else{
             $paperType = "conference";
-            $sourceTitle = $pages["Conference"];
+            $sourceTitle = $pages["Conference"] ?? null;
         }
 
         $paper =  [
