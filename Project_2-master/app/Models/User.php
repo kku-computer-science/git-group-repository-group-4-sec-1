@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens; // ✅ ย้ายมาวางตรงน
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles; // ✅ แก้ให้ถูกต้อง
+    use  HasFactory, Notifiable, HasRoles; // ✅ แก้ให้ถูกต้อง
 
     /**
      * The attributes that are mass assignable.
@@ -31,6 +31,7 @@ class User extends Authenticatable
         'position_en',
         'position_th',
         'title_name_th',
+        'title_name_en',
         'title_name_en',
         'role',
         'picture',
