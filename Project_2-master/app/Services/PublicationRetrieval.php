@@ -138,7 +138,7 @@ class PublicationRetrieval
             $sourceTitle = $pages["Journal"] ?? null;
             $issue = $pages["Issue"] ?? null;
             $volume = $pages["Volume"] ?? null;
->>>>>>> bd02ba802978deca007ac0a96651501f50b56dde
+
         }
         else{
             $paperType = "conference";
