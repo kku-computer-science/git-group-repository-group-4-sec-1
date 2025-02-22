@@ -29,6 +29,10 @@ Artisan::command('update:citation', function () {
     app(App\Http\Controllers\UserCitation::class)->getScholarData();
 });
 
+Artisan::command('update:user_paper', function () {
+    app(App\Http\Controllers\UpDateUserPaperController::class)->updateUserPaper();
+});
+
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
