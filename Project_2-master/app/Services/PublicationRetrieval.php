@@ -158,7 +158,7 @@ class PublicationRetrieval
         return $paper;
     }
 
-    public function getPaperOpenAlxe($searchTitle){
+    public static function getDataOpenAlex($searchTitle){//return all of raw paper data from api in openAlex
         $apiUrl = 'https://api.openalex.org/works';
 
         $response = Http::get($apiUrl, [
@@ -174,7 +174,10 @@ class PublicationRetrieval
             return null;
         }
 
-        $dataPaper = $dataPaper[0];
+        return $dataPaper[0];
+    }
+    public function getPaperOpenAlxe($searchTitle){
+        $dataPaper = self::getDataOpenAlex($searchTitle);
         $paper = [
             'title' => $dataPaper['title'] ?? null,
 
