@@ -1,0 +1,24 @@
+1739317376904	geckodriver	INFO	Listening on 127.0.0.1:59745
+1739317379953	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--remote-debugging-port" "59746" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\WINDOW~1\\AppData\\Local\\Temp\\rust_mozprofileJyfaXV"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+Dynamically enable window occlusion 0
+1739317380538	Marionette	INFO	Marionette enabled
+1739317380812	Marionette	INFO	Listening on port 59780
+WebDriver BiDi listening on ws://127.0.0.1:59746
+Read port: 59780
+1739317380963	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[ERROR glean_core::database] Failed to record metric 'os' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'app_build' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'app_display_version' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'build_date' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'app_channel' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+[ERROR glean_core::database] Failed to record metric 'os_version' into glean_client_info: Error { kind: Rkv(IoError(Os { code: 5, kind: PermissionDenied, message: "Access is denied." })) }
+console.error: ({})
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
+console.warn: WindowsJumpLists: "Failed to fetch favicon for " "http://127.0.0.1:8000/" ({})
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
