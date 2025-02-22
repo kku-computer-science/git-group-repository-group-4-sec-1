@@ -34,10 +34,11 @@ class ScrapeGoogleScholar extends Command
     public function handle()
     {
         $scholarId = $this->argument('scholar_id');
-        $paper = new GetDataReportPrint();
-        //$data = $paper->queryPaperFromAuthor();
-        $data = $paper->queryAuthorInfo();
-        echo $data;
+        //$data = GetDataReportPrint::getAuthorData(2);
+        //$data = GetDataReportPrint::getPaperData(8);
+        //$data = GetDataReportPrint::getBookData(8);
+        $data = GetDataReportPrint::getOtherWorkData(8);
+        echo json_encode($data);
         return 0;
 
 
