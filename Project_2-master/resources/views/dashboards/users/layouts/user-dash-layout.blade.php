@@ -9,45 +9,45 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard</title>
-    <base href="{{ \URL::to('/') }}">
+    <base href="{{ \URL::to("/") }}">
     <link href="img/Newlogo.png" rel="shortcut icon" type="image/x-icon" />
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('plugins/ijaboCropTool/ijaboCropTool.min.css') }}">
+    <link rel="stylesheet" href="{{ asset("plugins/ijaboCropTool/ijaboCropTool.min.css") }}">
     <!-- Theme style -->
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <!-- plugins:css -->
-    <link rel="stylesheet" href="{{asset('vendors/feather/feather.css')}}">
-    <link rel="stylesheet" href="{{asset('vendors/mdi/css/materialdesignicons.min.css')}}">
-    <link rel="stylesheet" href="{{asset('vendors/ti-icons/css/themify-icons.css')}}">
-    <link rel="stylesheet" href="{{asset('vendors/typicons/typicons.css')}}">
-    <link rel="stylesheet" href="{{asset('vendors/simple-line-icons/css/simple-line-icons.css')}}">
-    <link rel="stylesheet" href="{{asset('vendors/css/vendor.bundle.base.css')}}">
+    <link rel="stylesheet" href="{{ asset("vendors/feather/feather.css") }}">
+    <link rel="stylesheet" href="{{ asset("vendors/mdi/css/materialdesignicons.min.css") }}">
+    <link rel="stylesheet" href="{{ asset("vendors/ti-icons/css/themify-icons.css") }}">
+    <link rel="stylesheet" href="{{ asset("vendors/typicons/typicons.css") }}">
+    <link rel="stylesheet" href="{{ asset("vendors/simple-line-icons/css/simple-line-icons.css") }}">
+    <link rel="stylesheet" href="{{ asset("vendors/css/vendor.bundle.base.css") }}">
     <!-- endinject -->
     <!-- Plugin css for this page -->
-    <!-- <link rel="stylesheet" href="{{asset('vendors/datatables.net-bs4/dataTables.bootstrap4.css')}}"> -->
-    <link rel="stylesheet" href="{{asset('js/select.dataTables.min.css')}}">
+    <!-- <link rel="stylesheet" href="{{ asset("vendors/datatables.net-bs4/dataTables.bootstrap4.css") }}"> -->
+    <link rel="stylesheet" href="{{ asset("js/select.dataTables.min.css") }}">
     <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="{{asset('css/styleadmin.css')}}">
+    <link rel="stylesheet" href="{{ asset("css/styleadmin.css") }}">
 
     <!-- endinject -->
     <!-- <link rel="shortcut icon" href="images/favicon.png" /> -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"> </script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
-        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
 <body>
     <div class=" container-scroller sidebar-dark">
-        <!-- navbar ข้างบน 
+        <!-- navbar ข้างบน
     -->
         <nav class=" navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
@@ -118,9 +118,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <a class="dropdown-item"><i
                                     class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a> -->
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); 
-                        document.getElementById ('logout-form').submit();"> {{ __('Logout') }} <i class="mdi mdi-logout"></i></a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <a class="nav-link" href="{{ route("logout") }}"
+                            onclick="event.preventDefault(); 
+                        document.getElementById ('logout-form').submit();">
+                            {{ __("Logout") }} <i class="mdi mdi-logout"></i></a>
+                        <form id="logout-form" action="{{ route("logout") }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     </li>
@@ -141,136 +143,147 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link {{ (request()->is('dashboard*')) ? 'active' : '' }}"
-                            href="{{ route('dashboard')}}">
+                        <a class="nav-link {{ request()->is("dashboard*") ? "active" : "" }}"
+                            href="{{ route("dashboard") }}">
                             <i class="menu-icon mdi mdi-grid-large"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-category">Profile</li>
                     <li class="nav-item">
-                        <a class="nav-link {{ (request()->is('admin/profile*')) ? 'active' : '' }}"
-                            href="{{ route('profile')}}">
+                        <a class="nav-link {{ request()->is("admin/profile*") ? "active" : "" }}"
+                            href="{{ route("profile") }}">
                             <i class="menu-icon mdi mdi-account-circle-outline"></i>
                             <span class="menu-title">User Profile</span>
 
                         </a>
                     </li>
                     <!-- <li class="nav-item">
-                        <a class="nav-link {{ (request()->is('admin/settings*')) ? 'active' : '' }}"
-                            href="{{ route('settings')}}">
+                        <a class="nav-link {{ request()->is("admin/settings*") ? "active" : "" }}"
+                            href="{{ route("settings") }}">
                             <i class="menu-icon mdi mdi mdi-settings-outline"></i>
                             <span class="menu-title">Settings</span>
 
                         </a>
                     </li> -->
                     <li class="nav-item nav-category">Option</li>
-                    @can('funds-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('funds.index')}}">
-                            <i class="menu-icon mdi mdi-file-document-box-outline"></i>
-                            <span class="menu-title">Manage Fund</span>
+                    @can("funds-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("funds.index") }}">
+                                <i class="menu-icon mdi mdi-file-document-box-outline"></i>
+                                <span class="menu-title">Manage Fund</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('projects-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('researchProjects.index')}}">
-                            <i class="menu-icon mdi mdi-book-outline"></i>
-                            <span class="menu-title">Research Project</span>
+                    @can("projects-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("researchProjects.index") }}">
+                                <i class="menu-icon mdi mdi-book-outline"></i>
+                                <span class="menu-title">Research Project</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('groups-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('researchGroups.index')}}">
-                            <i class="menu-icon mdi mdi-view-dashboard-outline"></i>
-                            <span class="menu-title">Research Group</span>
+                    @can("groups-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("researchGroups.index") }}">
+                                <i class="menu-icon mdi mdi-view-dashboard-outline"></i>
+                                <span class="menu-title">Research Group</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('papers-list')
-                    <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#ManagePublications" aria-expanded="false" aria-controls="ManagePublications">
-                            <i class="menu-icon mdi mdi-book-open-page-variant"></i>
-                            <span class="menu-title">Manage Publications</span>
-                            <i class="menu-arrow"></i>
-                        </a>
-                        <div class="collapse" id="ManagePublications">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('papers.index')}}">Published research</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/books">Book</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="/patents">ผลงานวิชาการอื่นๆ</a></li>
-                            </ul>
-                        </div>
-                    </li>
+                    @can("papers-list")
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="collapse" href="#ManagePublications"
+                                aria-expanded="false" aria-controls="ManagePublications">
+                                <i class="menu-icon mdi mdi-book-open-page-variant"></i>
+                                <span class="menu-title">Manage Publications</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="collapse" id="ManagePublications">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item"> <a class="nav-link"
+                                            href="{{ route("papers.index") }}">Published research</a></li>
+                                    <li class="nav-item"> <a class="nav-link" href="/books">Book</a></li>
+                                    <li class="nav-item"> <a class="nav-link" href="/patents">ผลงานวิชาการอื่นๆ</a></li>
+                                </ul>
+                            </div>
+                        </li>
                     @endcan
-                    @can('export')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('exportfile')}}" >
-                            <i class="menu-icon mdi mdi-file-export"></i>
-                            <span class="menu-title">Export</span>
-                        </a>
-                    </li>
+                    @can("export")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("exportfile") }}">
+                                <i class="menu-icon mdi mdi-file-export"></i>
+                                <span class="menu-title">Export</span>
+                            </a>
+                        </li>
                     @endcan
-                    @can('user-list')
-                    <li class="nav-item nav-category">Admin</li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('users.index')}}">
-                            <i class="menu-icon mdi mdi-account-multiple-outline"></i>
-                            <span class="menu-title">Users</span>
+                    @can("user-list")
+                        <li class="nav-item nav-category">Admin</li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("users.index") }}">
+                                <i class="menu-icon mdi mdi-account-multiple-outline"></i>
+                                <span class="menu-title">Users</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('role-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('roles.index')}}">
-                            <i class="menu-icon mdi mdi-chart-gantt"></i>
-                            <span class="menu-title">Roles</span>
+                    @can("role-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("roles.index") }}">
+                                <i class="menu-icon mdi mdi-chart-gantt"></i>
+                                <span class="menu-title">Roles</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('permission-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('permissions.index')}}">
-                            <i class="menu-icon mdi mdi-checkbox-marked-circle-outline"></i>
-                            <span class="menu-title">Permission</span>
+                    @can("permission-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("permissions.index") }}">
+                                <i class="menu-icon mdi mdi-checkbox-marked-circle-outline"></i>
+                                <span class="menu-title">Permission</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('departments-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('departments.index')}}">
-                            <i class="menu-icon mdi mdi-animation-outline"></i>
-                            <span class="menu-title">Departments</span>
+                    @can("departments-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("departments.index") }}">
+                                <i class="menu-icon mdi mdi-animation-outline"></i>
+                                <span class="menu-title">Departments</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
 
-                    @can('programs-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('programs.index')}}">
-                            <i class="menu-icon mdi mdi-format-list-bulleted"></i>
-                            <span class="menu-title">Manage Programs</span>
+                    @can("programs-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("programs.index") }}">
+                                <i class="menu-icon mdi mdi-format-list-bulleted"></i>
+                                <span class="menu-title">Manage Programs</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
                     @endcan
-                    @can('expertises-list')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('experts.index')}}">
-                            <i class="menu-icon mdi mdi-buffer"></i>
-                            <span class="menu-title">Manage Expertise</span>
+                    @can("expertises-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("experts.index") }}">
+                                <i class="menu-icon mdi mdi-buffer"></i>
+                                <span class="menu-title">Manage Expertise</span>
 
-                        </a>
-                    </li>
+                            </a>
+                        </li>
+                    @endcan
+                    @can("expertises-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("experts.index") }}">
+                                <i class="menu-icon mdi mdi-briefcase-download"></i>
+                                <span class="menu-title">Publications Report</span>
+
+                            </a>
+                        </li>
                     @endcan
                 </ul>
             </nav>
@@ -278,7 +291,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- Content Wrapper. Contains page content -->
             <div class="main-panel">
                 <div class="content-wrapper">
-                    @yield('content')
+                    @yield("content")
                 </div>
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
@@ -289,29 +302,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
     </div>
     <!-- plugins:js -->
-    <script src="{{asset('vendors/js/vendor.bundle.base.js')}}"></script>
+    <script src="{{ asset("vendors/js/vendor.bundle.base.js") }}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
-    <script src="{{asset('vendors/chart.js/Chart.min.js')}}"></script>
-    <script src="{{asset('vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
-    <script src="{{asset('vendors/progressbar.js/progressbar.min.js')}}"></script>
+    <script src="{{ asset("vendors/chart.js/Chart.min.js") }}"></script>
+    <script src="{{ asset("vendors/bootstrap-datepicker/bootstrap-datepicker.min.js") }}"></script>
+    <script src="{{ asset("vendors/progressbar.js/progressbar.min.js") }}"></script>
 
     <!-- End plugin js for this page -->
     <!-- inject:js -->
-    <script src="{{asset('js/off-canvas.js')}}"></script>
-    <script src="{{asset('js/hoverable-collapse.js')}}"></script>
-    <script src="{{asset('js/template.js')}}"></script>
-    <script src="{{asset('js/settings.js')}}"></script>
-    <script src="{{asset('js/todolist.js')}}"></script>
+    <script src="{{ asset("js/off-canvas.js") }}"></script>
+    <script src="{{ asset("js/hoverable-collapse.js") }}"></script>
+    <script src="{{ asset("js/template.js") }}"></script>
+    <script src="{{ asset("js/settings.js") }}"></script>
+    <script src="{{ asset("js/todolist.js") }}"></script>
     <!-- endinject -->
     <!-- Custom js for this page-->
-    <script src="{{asset('js/dashboard.js')}}"></script>
-    <script src="{{asset('js/Chart.roundedBarCharts.js')}}"></script>
+    <script src="{{ asset("js/dashboard.js") }}"></script>
+    <script src="{{ asset("js/Chart.roundedBarCharts.js") }}"></script>
     <!-- End custom js for this page-->
 
     <!-- Bootstrap 4 -->
     <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('plugins/ijaboCropTool/ijaboCropTool.min.js') }}"></script>
+    <script src="{{ asset("plugins/ijaboCropTool/ijaboCropTool.min.js") }}"></script>
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
 
@@ -322,7 +335,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 
-    @yield('javascript')
+    @yield("javascript")
 
 
 </body>
