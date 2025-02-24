@@ -158,6 +158,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        {{-- <a class="nav-link {{ request()->is("admin/profile*") ? "active" : "" }}" --}}
+                            {{-- href="{{ route("profile") }}"> --}}
+                            <a class="nav-link" href="{{ route("exportreport.export") }}">
+                                <i class="menu-icon mdi mdi-file-document"></i>
+                                <span class="menu-title">Export Report</span>
+
+                        </a>
+                    </li>
                     <!-- <li class="nav-item">
                         <a class="nav-link {{ request()->is("admin/settings*") ? "active" : "" }}"
                             href="{{ route("settings") }}">
@@ -235,9 +245,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                         </li>
                     @endcan
-                     @can("papers-list")
+                     @can("export-report")
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route("experts.index") }}">
+                            <a class="nav-link" href="{{ route("exportreport.export") }}">
                                 <i class="menu-icon mdi mdi-briefcase-download"></i>
                                 <span class="menu-title">Export Report</span>
 

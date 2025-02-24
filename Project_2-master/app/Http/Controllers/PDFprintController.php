@@ -27,14 +27,14 @@ class PDFprintController extends Controller
     public function index()
     {
         //เปลี่ยนไปใส่หน้าที่เป็นของเมนูใหม่ Publication Report ที่มีปุ่มให้กดแสดง/โหลด pdf
-        return view('pdf_select');  
+        return view('exportreport.export');  
     }
 
     // ฟังก์ชันสำหรับสร้าง PDF
     public function generatePDF(Request $request)
     {
         //****ให้เปลี่ยนเป็นดึงไอดีจาก user ที่ login เข้ามา*****
-        $userId = DB::table('users')->where('email', 'chitsutha@kku.ac.th')->value('id'); 
+        $userId = Auth::id();
         if (!$userId) {
             return redirect()->route('pdfprint.index')->with('error', 'User not authenticated.');
         }
@@ -77,6 +77,7 @@ class PDFprintController extends Controller
             'otherWorks' => $otherWorks,
             'from' => now()->format('F j, Y') // วันที่สร้างเอกสาร
         ];
+
 
         // สร้าง PDF จาก view
         $pdf = PDF::loadView('pdf_template', $data);

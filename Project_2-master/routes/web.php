@@ -73,7 +73,7 @@ Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
 
 
 Route::get('/generate-pdf', [PDFprintController::class, 'generatePDF'])->name('generate_pdf');
-// Route::get('/publication-report', [App\Http\Controllers\PDFprintController::class, 'index'])->name('publication.index');
+Route::get('/export-report', [App\Http\Controllers\PDFprintController::class, 'index'])->name('exportreport.export');
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::get('/researchers',[ResearcherController::class,'index'])->name('researchers');
