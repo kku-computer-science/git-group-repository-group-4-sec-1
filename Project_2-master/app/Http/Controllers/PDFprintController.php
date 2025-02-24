@@ -16,24 +16,17 @@ use PhpOffice\PhpWord\Writer\PDF as WriterPDF;
 
 class PDFprintController extends Controller
 {
-    // function __construct()
-    // {
-    //     $this->middleware('permission:groups-list|groups-create|groups-edit|groups-delete', ['only' => ['index', 'show']]);
-    //     $this->middleware('permission:groups-create', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:groups-edit', ['only' => ['edit', 'update']]);
-    //     $this->middleware('permission:groups-delete', ['only' => ['destroy']]);
-    // }
 
     public function index()
     {
-        //เปลี่ยนไปใส่หน้าที่เป็นของเมนูใหม่ Publication Report ที่มีปุ่มให้กดแสดง/โหลด pdf
+       
         return view('exportreport.export');  
     }
 
     // ฟังก์ชันสำหรับสร้าง PDF
     public function generatePDF(Request $request)
     {
-        //****ให้เปลี่ยนเป็นดึงไอดีจาก user ที่ login เข้ามา*****
+        
         $userId = Auth::id();
         if (!$userId) {
             return redirect()->route('pdfprint.index')->with('error', 'User not authenticated.');
