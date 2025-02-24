@@ -34,6 +34,7 @@ use App\Http\Controllers\PatentController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PDFprintController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
@@ -71,6 +72,8 @@ Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
 });
 
 
+Route::get('/generate-pdf', [PDFprintController::class, 'generatePDF'])->name('generate_pdf');
+// Route::get('/publication-report', [App\Http\Controllers\PDFprintController::class, 'index'])->name('publication.index');
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::get('/researchers',[ResearcherController::class,'index'])->name('researchers');
