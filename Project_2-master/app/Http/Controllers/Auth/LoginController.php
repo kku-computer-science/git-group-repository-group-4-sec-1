@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function apiLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('TestToken')->plainTextToken;
+
+            return response()->json([
+                'message' => 'Login successful',
+                'token' => $token,
+                'user' => $user
+            ], 200);
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -86,7 +107,7 @@ class LoginController extends Controller
             return $this->sendLockoutResponse($request);*/
             /*$key = $this->throttleKey($request);
                 $rateLimiter = $this->limiter();
-                
+
                 $limit = [3 => 1, 5 => 5];
                 $attempts = $rateLimiter->attempts($key);  // return how attapts already yet
                 if (array_key_exists($attempts, $limit)) {
@@ -158,7 +179,7 @@ class LoginController extends Controller
                     //$user->givePermissionTo('addResearchProject','editResearchProject','deleteResearchProject');
                     //return redirect()->route('teacher.dashboard');
                     return redirect()->route('dashboard');
-                } 
+                }
             } else {
                 //fail
                 $this->incrementLoginAttempts($request);

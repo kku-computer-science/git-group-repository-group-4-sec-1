@@ -194,14 +194,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                     @endcan
-                    @can("papers-list")
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="collapse" href="#ManagePublications"
-                                aria-expanded="false" aria-controls="ManagePublications">
-                                <i class="menu-icon mdi mdi-book-open-page-variant"></i>
-                                <span class="menu-title">Manage Publications</span>
-                                <i class="menu-arrow"></i>
-                            </a>
+                    @can('papers-list')
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#ManagePublications" aria-expanded="false" aria-controls="ManagePublications">
+                            <i class="menu-icon mdi mdi-book-open-page-variant"></i>
+                            <span class="menu-title">Manage Publications</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="ManagePublications">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('papers.index')}}">Published research</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/books">Book</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/patents">ผลงานวิชาการอื่นๆ</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endcan
+                    {{-- @can('export')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('exportfile')}}" >
+                            <i class="menu-icon mdi mdi-file-export"></i>
+                            <span class="menu-title">Export</span>
+                        </a>
+                    </li>
+                    @endcan --}}
+                    @can('user-list')
+                    <li class="nav-item nav-category">Admin</li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('users.index')}}">
+                            <i class="menu-icon mdi mdi-account-multiple-outline"></i>
+                            <span class="menu-title">Users</span>
 
                             <div class="collapse" id="ManagePublications">
                                 <ul class="nav flex-column sub-menu">

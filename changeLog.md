@@ -1,23 +1,39 @@
 # Change logs
 
-
+## Sprint 2
 ### New
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Create UserScopus.php
+- เพิ่ม class GetDataReport เพื่อ query ข้อมูลออกไปปริน
+- ใน class GetDataReport เพิ่ม function ส่งออกข้อมูลไปเพื่อไปปริ้น โดยมี fucntion ส่งออกดั้งนี้ getAuthorData, getPaperData, getOtherWorkData,getBookData
+- เพิ่ม document ของวิธีใช้ class GetDataReport
+- เพิ่ม pdf template เพื่อจัด format นำไปใช้กับฟังก์ชันสร้าง pdf
+- ฟังก์ชันสร้าง pdf และสามารถดาวน์โหลดได้
 ### Update
-    add function scopusData in User.php
-=======
--
-### Update
-- ปรับ UI ในหน้า home เพื่อแสดงสถิติงานตีพิมพ์ของ google scholar 
->>>>>>> d38dc6c8ce8e25a2242ff6787b77d6a53f5ce608
-=======
+- ปรับ function getPaperOpenAlxe ใน class PublicationRetrieval โดยแยกส่วนหีวออกมาสร้าง functionใหม่่ คือ getDataOpenAlex
+### Bug fix
+- แก้ปัญหา getPaperOpenAlxe หาข้อมูลไม่เจอ
+
+
+## Sprint 1
+### New
+ - เพิ่ม class PublicationRetrieval เพื่อจัดการดึงข้อมูลงานวิจัย
+ - ใน class PublicationRetrieval เพิ่มฟังก์ชันดึงข้อมูล ของ author จาก google scholar
+ - ใน class PublicationRetrieval เพิ่มฟังก์ชันดึงข้อมูล ของ paper จาก google scholar และ openAlxe
+ - ใน class PublicationRetrieval เพิ่มฟังก์ชันจัดการ proxy ของ web scraping
+ - เพิ่ม python script เพื่อค้นหาข้อมูล author จาก google scholar
+- เพิ่มตาราง user_scopus เพื่อเก็บข้อมูล user_ID, scopus_ID, citation, h_index, i10_index, citation_5years_ago, h_index_5years_ago, i10_index_5years_ago, scholar_id
+- เพิ่มModel UserScopus เพื่อเป็นตัวแปรในการเก็บข้อมูลของตารางuser_scopus
+- เพิ่มServices PaperUpdateService เพิ่มข้อมูลCitation และเพิ่มความสัมพันธ์ของผู้วิจัยกับpaperในตารางuser_paper
+- เพิ่มServices UserScopusService เพื่อเพิ่มข้อมูล scopus_ID, scholar_id ในตาราง user_scopus
+- เพิ่มController UserCitation.php เพื่อเพิ่มแลพอัปเดทข้อมูลของUser และ Paper
+- เพิ่มController UpdateUserScholarId.php เพื่อเพิ่มScholarId ในตารางuser_scopus
+- เพิ่มController  UpdatePaperController.php เพื่ออัปเดทงานวิจัยของScopus
 - เพิ่ม UI ของ Publication status ได้แก่ Citation, h-index, i10-index
 ### Update
+- แก้ไขRoutes/console เพื่อเพิ่มคำสั่งในการเรียกใช้Controller ได้แก้(update:paper-data,update:user_scopus,update:citation) 
+    การเรียกใช้ Ex. php artisan update:paper-data
+- แก้ไขModel User เพิ่มความสัมพันธ์ของModel User และ UserScopus
 - ปรับ UI ในหน้า home เพื่อแสดงสถิติงานตีพิมพ์ของ google scholar 
 - ปรับ UI ในหน้า researcher profile เพื่อแสดงสถิติงานตีพิมพ์และงานวิจัยของ google scholar
 - ปรับ UI ในหน้า report ให้สามารถแสดงสถิติงานวิจัย,จำนวนงานวิจัยและสถิติงานวิจัยที่ถูกอ้างอิง,จำนวนงานวิจัยที่ถูกอ้างอิงย้อนหลัง 5 ปีของ google scholar
->>>>>>> 881310f4003dab860b631acc633a72ab11fa8c46
+
 ### Bug fix
--

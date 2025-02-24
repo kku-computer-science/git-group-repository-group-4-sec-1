@@ -23,8 +23,10 @@ class UserScopus extends Model
         'i10_index',
         'citation_5years_ago',
         'h_index_5years_ago',
-        'i10_index_5years_ago'
+        'i10_index_5years_ago',
+        'scholar_id'
     ];
+    public $timestamps = false; // ปิดการใช้งาน timestamps
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Program;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -46,7 +47,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        
+
         $roles = Role::pluck('name','name')->all();
         //$roles = Role::all();
         //$deps = Department::pluck('department_name_EN','department_name_EN')->all();
@@ -56,7 +57,7 @@ class UserController extends Controller
         // return response()->json($subcat);
     }
 
-    
+
     public function getCategory(Request $request)
     {
         $cat = $request->cat_id;
@@ -85,12 +86,12 @@ class UserController extends Controller
             // 'position' => 'required',
             'sub_cat' => 'required',
         ]);
-    
+
         //$input = $request->all();
         //$input['password'] = Hash::make($input['password']);
-    
+
         //$user = User::create($input);
-        $user = User::create([  
+        $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'fname_en' => $request->fname_en,
@@ -99,7 +100,7 @@ class UserController extends Controller
             'lname_th' => $request->lname_th,
             // 'position' =>  $request->position,
         ]);
-        
+
         $user->assignRole($request->roles);
 
         //dd($request->deps->id);
@@ -138,10 +139,10 @@ class UserController extends Controller
         $user = User::find($id);
         $departments = Department::all();
         $id = $user->program->department_id;
-        $programs = Program::whereHas('department', function($q) use ($id){    
+        $programs = Program::whereHas('department', function($q) use ($id){
             $q->where('id', '=', $id);
         })->get();
-        
+
         $roles = Role::pluck('name', 'name')->all();
         $deps = Department::pluck('department_name_EN','department_name_EN')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
@@ -167,22 +168,22 @@ class UserController extends Controller
             'password' => 'confirmed',
             'roles' => 'required'
         ]);
-    
+
         $input = $request->all();
-        
-        if(!empty($input['password'])) { 
+
+        if(!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
         } else {
-            $input = Arr::except($input, array('password'));    
+            $input = Arr::except($input, array('password'));
         }
-    
+
         $user = User::find($id);
         $user->update($input);
 
         DB::table('model_has_roles')
             ->where('model_id', $id)
             ->delete();
-    
+
         $user->assignRole($request->input('roles'));
         $pro_id = $request->sub_cat;
         $program = Program::find($pro_id);
@@ -200,7 +201,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        
+
         User::find($id)->delete();
         return redirect()->route('users.index')
             ->with('success', 'User deleted successfully.');
@@ -215,13 +216,13 @@ class UserController extends Controller
         //return 'aaaaaa';
         $file = $request->file('admin_image');
        $new_name = 'UIMG_'.date('Ymd').uniqid().'.jpg';
-        
+
         //dd(public_path());
         //Upload new image
         $upload = $file->move(public_path($path), $new_name);
         //$filename = time() . '.' . $file->getClientOriginalExtension();
         //$upload = $file->move('user/images', $filename);
-     
+
         if( !$upload ){
             return response()->json(['status'=>0,'msg'=>'Something went wrong, upload new picture failed.']);
         }else{
@@ -229,8 +230,8 @@ class UserController extends Controller
             $oldPicture = User::find(Auth::user()->id)->getAttributes()['picture'];
 
             if( $oldPicture != '' ){
-                if( \File::exists(public_path($path.$oldPicture))){
-                    \File::delete(public_path($path.$oldPicture));
+                if( File::exists(public_path($path.$oldPicture))){
+                    File::delete(public_path($path.$oldPicture));
                 }
             }
 

@@ -27,6 +27,7 @@ class ReportController extends Controller
         $paper_tci = [];
         $paper_scopus = [];
         $paper_wos = [];
+        $paper_google_s = [];
 
         foreach ($year as $key => $value) {
             $paper_scopus[] = Paper::whereHas('source', function ($query) {
@@ -49,6 +50,13 @@ class ReportController extends Controller
             })->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
                 ->where(DB::raw('(paper_yearpub)'), $value)->count();
         }
+
+        foreach ($year as $key => $value) {
+            $paper_google_s[] = Paper::where('publication', 'scholar') 
+        ->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
+        ->where('paper_yearpub', $value) 
+        ->count();
+        }
         //return $paper_tci;
 
         // $paper_wos_cit= Paper::whereHas('source', function ($query) {
@@ -57,6 +65,7 @@ class ReportController extends Controller
         $paper_scopus_cit = [];
         $paper_tci_cit = [];
         $paper_wos_cit = [];
+        $paper_google_s_cit = [];
         foreach ($year as $key => $value) {
             $paper_scopus_cit[] = Paper::whereHas('source', function ($query) {
                 return $query->where('source_data_id', '=', 1);
@@ -78,6 +87,13 @@ class ReportController extends Controller
                 ->where('paper_yearpub', '=', $value)
                 ->sum('paper_citation');
         }
+
+        foreach ($year as $key => $value) {
+            $paper_google_s_cit[] = Paper::where('publication', 'scholar') 
+            ->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
+            ->where('paper_yearpub', '=', $value) 
+            ->sum('paper_citation');
+            }
         //อาจารย์กี่คนที่ตีพิมพ์ในปีนั้น คิดเป็นกี่คน และกี่เรื่อว หาค่าเฉลี่ย
         // $user_scopus = [];
         // foreach ($year as $key => $value) {
@@ -103,8 +119,10 @@ class ReportController extends Controller
             ->with('paper_tci', json_encode($paper_tci, JSON_NUMERIC_CHECK))
             ->with('paper_scopus', json_encode($paper_scopus, JSON_NUMERIC_CHECK))
             ->with('paper_wos', json_encode($paper_wos, JSON_NUMERIC_CHECK))
+            ->with('paper_google_s', json_encode($paper_google_s, JSON_NUMERIC_CHECK))
             ->with('paper_scopus_cit', json_encode($paper_scopus_cit, JSON_NUMERIC_CHECK))
             ->with('paper_wos_cit', json_encode($paper_wos_cit, JSON_NUMERIC_CHECK))
-            ->with('paper_tci_cit', json_encode($paper_tci_cit, JSON_NUMERIC_CHECK));
+            ->with('paper_tci_cit', json_encode($paper_tci_cit, JSON_NUMERIC_CHECK))
+            ->with('paper_google_s_cit', json_encode($paper_google_s_cit, JSON_NUMERIC_CHECK));
     }
 }
