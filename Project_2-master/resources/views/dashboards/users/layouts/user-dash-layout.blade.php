@@ -208,14 +208,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                     </li>
                     @endcan
-                    @can('export')
+                    {{-- @can('publication-report')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('publication.index')}}">
+                            <i class="menu-icon mdi mdi-view-dashboard-outline"></i>
+                            <span class="menu-title">Publication report</span>
+
+                        </a>
+                    </li>
+                    @endcan --}}
+                    {{-- @can('export')
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('exportfile')}}" >
                             <i class="menu-icon mdi mdi-file-export"></i>
                             <span class="menu-title">Export</span>
                         </a>
                     </li>
-                    @endcan
+                    @endcan --}}
                     @can('user-list')
                     <li class="nav-item nav-category">Admin</li>
                     <li class="nav-item">

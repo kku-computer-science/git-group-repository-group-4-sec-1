@@ -6,7 +6,7 @@ use App\Exports\UsersExport;
 use App\Models\Paper;
 use App\Models\User;
 use Carbon\Carbon;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,6 @@ use PhpOffice\PhpWord\TemplateProcessor;
 class PDFController extends Controller
 {
     
-
     public function index()
     {
         $user = User::findOrFail(1);
@@ -26,84 +25,84 @@ class PDFController extends Controller
         ];
 
 
-        return view('myPDF', compact('$user'));
+        return view('myPDF', compact('$user'));  // แก้ไข compact('$user') เป็น compact('user')
     }
-    public function generateInvoiceExcel(Request $request)
-    {
+    // public function generateInvoiceExcel(Request $request)
+    // {
 
-        $from = Carbon::now()->year - 5;
-        $to = Carbon::now()->year;
-        $user = User::find($request->id);
-        //$user->paper
-        // $p = $user->paper()->whereIn('paper_type', ['Conference Paper', 'Journal'])->whereBetween('paper_yearpub', [$from, $to])->with(['author' => function ($query) {
-        //     $query->select('author_name');
-        // }])->get()->toArray();
-        //$p= $user->paper->toArray();
-        $p = $user->paper()->whereIn('paper_type', ['Conference Paper', 'Journal'])->whereBetween('paper_yearpub', [$from, $to])->with([
-            'teacher' => function ($query) {
-                $query->select(DB::raw("CONCAT(concat(left(fname_en,1),'.'),' ',lname_en) as full_name"))->addSelect('user_papers.author_type');
-            },
-            'author' => function ($query) {
-                $query->select(DB::raw("CONCAT(concat(left(author_fname,1),'.'),' ',author_lname) as full_name"))->addSelect('author_of_papers.author_type');
-            }
-        ])->get()->toArray();
+    //     $from = Carbon::now()->year - 5;
+    //     $to = Carbon::now()->year;
+    //     $user = User::find($request->id);
+    //     //$user->paper
+    //     // $p = $user->paper()->whereIn('paper_type', ['Conference Paper', 'Journal'])->whereBetween('paper_yearpub', [$from, $to])->with(['author' => function ($query) {
+    //     //     $query->select('author_name');
+    //     // }])->get()->toArray();
+    //     //$p= $user->paper->toArray();
+    //     $p = $user->paper()->whereIn('paper_type', ['Conference Paper', 'Journal'])->whereBetween('paper_yearpub', [$from, $to])->with([
+    //         'teacher' => function ($query) {
+    //             $query->select(DB::raw("CONCAT(concat(left(fname_en,1),'.'),' ',lname_en) as full_name"))->addSelect('user_papers.author_type');
+    //         },
+    //         'author' => function ($query) {
+    //             $query->select(DB::raw("CONCAT(concat(left(author_fname,1),'.'),' ',author_lname) as full_name"))->addSelect('author_of_papers.author_type');
+    //         }
+    //     ])->get()->toArray();
 
-        // $tags = array_map(function ($tag) {
-        //     $a = collect($tag['author']);
-        //     $ex = collect($tag['paper_page']);
-        //     $b = $a->implode('author_name', ', ');
-        //     $c = explode("-", $tag['paper_page']);
+    //     // $tags = array_map(function ($tag) {
+    //     //     $a = collect($tag['author']);
+    //     //     $ex = collect($tag['paper_page']);
+    //     //     $b = $a->implode('author_name', ', ');
+    //     //     $c = explode("-", $tag['paper_page']);
 
-        //     $first = @$c[0];
-        //     $last = @$c[1];
+    //     //     $first = @$c[0];
+    //     //     $last = @$c[1];
 
-        //     return array(
-        //         'author' => $b,
-        //         'paper_name' => $tag['paper_name'],
-        //         'paper_yearpub' => $tag['paper_yearpub'],
-        //         'paper_sourcetitle' => $tag['paper_sourcetitle'],
-        //         'paper_volume' => $tag['paper_volume'],
-        //         'paper_issue' => $tag['paper_issue'],
-        //         'paper_page_start' => $first,
-        //         'paper_page_end' => $last,
-        //         'paper_citation' => $tag['paper_citation'],
-        //         'paper_doi' => $tag['paper_doi'],
-        //     );
-        // }, $p);
-        $p = array_map(function ($tag) {
-            $t = collect($tag['teacher']);
-            $a = collect($tag['author']);
-            $aut = $t->concat($a);
-            $aut = $aut->sortBy(['author_type', 'asc']);
-            //$ids = collect(['First author', 'Co-author', 'Corresponding author']);
-            $sorted = $aut->implode('full_name', ', ');
-            //return $sorted;
-            $c = explode("-", $tag['paper_page']);
+    //     //     return array(
+    //     //         'author' => $b,
+    //     //         'paper_name' => $tag['paper_name'],
+    //     //         'paper_yearpub' => $tag['paper_yearpub'],
+    //     //         'paper_sourcetitle' => $tag['paper_sourcetitle'],
+    //     //         'paper_volume' => $tag['paper_volume'],
+    //     //         'paper_issue' => $tag['paper_issue'],
+    //     //         'paper_page_start' => $first,
+    //     //         'paper_page_end' => $last,
+    //     //         'paper_citation' => $tag['paper_citation'],
+    //     //         'paper_doi' => $tag['paper_doi'],
+    //     //     );
+    //     // }, $p);
+    //     $p = array_map(function ($tag) {
+    //         $t = collect($tag['teacher']);
+    //         $a = collect($tag['author']);
+    //         $aut = $t->concat($a);
+    //         $aut = $aut->sortBy(['author_type', 'asc']);
+    //         //$ids = collect(['First author', 'Co-author', 'Corresponding author']);
+    //         $sorted = $aut->implode('full_name', ', ');
+    //         //return $sorted;
+    //         $c = explode("-", $tag['paper_page']);
 
-            $first = @$c[0];
-            $last = @$c[1];
-            return array(
-                //'id' => $tag['id'],
-                'author' => $sorted,
-                'paper_name' => $tag['paper_name'],
-                'paper_yearpub' => $tag['paper_yearpub'],
-                'paper_sourcetitle' => $tag['paper_sourcetitle'],
-                'paper_volume' => $tag['paper_volume'],
-                'paper_issue' => $tag['paper_issue'],
-                'paper_page_start' => $first,
-                'paper_page_end' => $last,
-                'paper_citation' => $tag['paper_citation'],
-                'paper_doi' => $tag['paper_doi'],
-                'paper_subtype' => $tag['paper_subtype'], 
-            );
-        }, $p);
-        $tags = (object) $p;
-        //return $tags;
-        ob_end_clean(); // this
-        ob_start(); // and this
-        $fileName = $user->fname_en;
-        return Excel::download(new UsersExport($tags), $fileName . '.csv');
-    }
+    //         $first = @$c[0];
+    //         $last = @$c[1];
+    //         return array(
+    //             //'id' => $tag['id'],
+    //             'author' => $sorted,
+    //             'paper_name' => $tag['paper_name'],
+    //             'paper_yearpub' => $tag['paper_yearpub'],
+    //             'paper_sourcetitle' => $tag['paper_sourcetitle'],
+    //             'paper_volume' => $tag['paper_volume'],
+    //             'paper_issue' => $tag['paper_issue'],
+    //             'paper_page_start' => $first,
+    //             'paper_page_end' => $last,
+    //             'paper_citation' => $tag['paper_citation'],
+    //             'paper_doi' => $tag['paper_doi'],
+    //             'paper_subtype' => $tag['paper_subtype'], 
+    //         );
+    //     }, $p);
+    //     $tags = (object) $p;
+    //     //return $tags;
+    //     ob_end_clean(); // this
+    //     ob_start(); // and this
+    //     $fileName = $user->fname_en;
+    //     return Excel::download(new UsersExport($tags), $fileName . '.csv');
+    // }
     public function generateInvoicePDF(Request $request)
     {
         $data = [
