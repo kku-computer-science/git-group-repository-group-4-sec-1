@@ -202,6 +202,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <span class="menu-title">Manage Publications</span>
                                 <i class="menu-arrow"></i>
                             </a>
+
                             <div class="collapse" id="ManagePublications">
                                 <ul class="nav flex-column sub-menu">
                                     <li class="nav-item"> <a class="nav-link"
@@ -210,6 +211,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <li class="nav-item"> <a class="nav-link" href="/patents">ผลงานวิชาการอื่นๆ</a></li>
                                 </ul>
                             </div>
+                        </li>
+                    @endcan
+                     @can("papers-list")
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route("experts.index") }}">
+                                <i class="menu-icon mdi mdi-briefcase-download"></i>
+                                <span class="menu-title">Export Report</span>
+
+                            </a>
                         </li>
                     @endcan
                     @can("export")
@@ -276,15 +286,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                         </li>
                     @endcan
-                    @can("expertises-list")
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route("experts.index") }}">
-                                <i class="menu-icon mdi mdi-briefcase-download"></i>
-                                <span class="menu-title">Publications Report</span>
-
-                            </a>
-                        </li>
-                    @endcan
+                   
                 </ul>
             </nav>
 
