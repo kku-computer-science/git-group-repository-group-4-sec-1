@@ -65,14 +65,16 @@ class GetDataReportPrint
                 "ac_type"=>$acWork["ac_type"],
             ];
 
-            if($isBook) array_merge($academicwork,[
-                "ac_sourcetitle"=>$acWork["ac_sourcetitle"],
-                "ac_page"=>$acWork["ac_page"],
+            if($isBook) {
+                $academicwork = array_merge($academicwork,[
+                "ac_sourcetitle"=>$acWork["ac_sourcetitle"] ?? null,
+                "ac_page"=>$acWork["ac_page"] ?? null,
             ]);
-            else array_merge($academicwork,[
-                "ac_refnumber"=>$acWork["ac_refnumber"],
+            } else {
+                $academicwork = array_merge($academicwork,[
+                "ac_refnumber"=>$acWork["ac_refnumber"] ?? null,
             ]);
-
+            }
             return $academicwork;
         });
         return $acWorksData;
@@ -115,6 +117,7 @@ class GetDataReportPrint
         $userData = [
             "fname_en"=>$user["fname_en"],
             "lname_en"=>$user["lname_en"],
+            "doctoral_degree"=>$user["doctoral_degree"],
             "academic_ranks_en"=>$user["academic_ranks_en"],
             "email"=>$user["email"],
             "education"=>$edu,
