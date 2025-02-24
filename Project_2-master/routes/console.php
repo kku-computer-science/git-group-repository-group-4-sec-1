@@ -33,6 +33,18 @@ Artisan::command('update:user_paper', function () {
     app(App\Http\Controllers\UpDateUserPaperController::class)->updateUserPaper();
 });
 
+Artisan::command('docx:test_getuser {id}', function ($id) {
+    app(App\Http\Controllers\GetReportDocxController::class)->getUserInfo($id);
+});
+
+Artisan::command('docx:test_getpub {id}', function ($id) {
+    app(App\Http\Controllers\GetReportDocxController::class)->getPublicationInfo($id);
+});
+
+Artisan::command('docx:test_getbook {id}', function ($id) {
+    app(App\Http\Controllers\GetReportDocxController::class)->getPublicationBook($id);
+});
+
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');

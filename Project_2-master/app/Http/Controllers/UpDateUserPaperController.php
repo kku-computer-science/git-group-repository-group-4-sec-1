@@ -23,6 +23,7 @@ class UpDateUserPaperController extends Controller
             echo implode(", ",$PaperAuthorFName) . "\n";
             echo "**************\n";    
             $updateUserPaper = $ServiceUserPaper->assignAuthorsToPaper($paper->id,$PaperAuthorFName);
+            echo "**************\n";    
         }
     }
 }

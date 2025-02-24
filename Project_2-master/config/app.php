@@ -235,7 +235,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        'PDF' => \Barryvdh\DomPDF\Facade\Pdf::class,
     ],
 
 ];
