@@ -8,8 +8,9 @@
     <form action="{{ route('generate_pdf') }}" method="GET">
         <input type="hidden" name="id" value="{{Auth::id()}}"> <!-- ใช้ ID ผู้ใช้ที่ล็อกอิน -->
 
-        <button type="submit" class="btn btn-primary">Preview PDF</button>
+        {{-- <button type="submit" class="btn btn-primary">Preview PDF</button> --}}
         <button type="submit" name="download" value="1" class="btn btn-success">Download PDF</button>
+        {{-- <button></button> --}}
     </form>
 
     <div id="pdf-preview" class="mt-4">
