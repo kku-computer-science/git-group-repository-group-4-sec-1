@@ -178,12 +178,17 @@ class PublicationRetrieval
     }
     public function getPaperOpenAlxe($searchTitle){
         $dataPaper = self::getDataOpenAlex($searchTitle);
+
+        if (!$dataPaper) {
+            return null;
+        }
+
         $paper = [
             'title' => $dataPaper['title'] ?? null,
 
             'authorships'=>array_map(fn($author)=>[
                 $author["author"]["display_name"]
-            ],$dataPaper["authorships"]) ,
+            ],$dataPaper["authorships"]) ?? [],
 
             'keywords' => array_map(fn($key)=>[
                 $key["display_name"]

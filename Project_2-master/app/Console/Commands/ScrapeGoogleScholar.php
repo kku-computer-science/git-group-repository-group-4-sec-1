@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\PublicationRetrieval;
-use App\Services\GetDataReportPrint;
 
 class ScrapeGoogleScholar extends Command
 {
@@ -34,11 +33,10 @@ class ScrapeGoogleScholar extends Command
     public function handle()
     {
         $scholarId = $this->argument('scholar_id');
-        //$data = GetDataReportPrint::getAuthorData(2);
-        //$data = GetDataReportPrint::getPaperData(8);
-        //$data = GetDataReportPrint::getBookData(8);
-        $data = GetDataReportPrint::getOtherWorkData(8);
-        echo json_encode($data);
+        $author = new PublicationRetrieval();
+        //$author->getAuthor("cYJ4r_BHQR8C");
+        $data = $author->getPaperOpenAlxe("Service priority classification using machine learning");
+        dd($data);
         return 0;
 
 
