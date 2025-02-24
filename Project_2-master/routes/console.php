@@ -45,6 +45,10 @@ Artisan::command('docx:test_getbook {id}', function ($id) {
     app(App\Http\Controllers\GetReportDocxController::class)->getPublicationBook($id);
 });
 
+Artisan::command('docx:test_getother {id}', function ($id) {
+    app(App\Http\Controllers\GetReportDocxController::class)->getOtherWork($id);
+});
+
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
