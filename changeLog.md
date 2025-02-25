@@ -7,6 +7,7 @@
 - เพิ่ม document ของวิธีใช้ class GetDataReport
 - เพิ่ม pdf template เพื่อจัด format นำไปใช้กับฟังก์ชันสร้าง pdf
 - ฟังก์ชันสร้าง pdf และสามารถดาวน์โหลดได้
+- สร้างหน้า Export Report ใน User login
 ### Update
 - ปรับ function getPaperOpenAlxe ใน class PublicationRetrieval โดยแยกส่วนหีวออกมาสร้าง functionใหม่่ คือ getDataOpenAlex
 ### Bug fix
