@@ -85,7 +85,7 @@
 
     <p class="sub-header">Professor Information</p>
     <p class="content">
-        {{ $author['fname_en'] ?? '' }} {{ $author['lname_en'] ?? '' }}, {{ $author['doctoral_degree'] ?? 'N/A' }}
+        {{ $author['fname_en'] ?? '' }} {{ $author['lname_en'] ?? '' }}, {{ $author['doctoral_degree'] ?? '' }}
         <br>
         {{ $author['academic_ranks_en'] ?? 'N/A' }}
         <br>
