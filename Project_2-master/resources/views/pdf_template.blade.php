@@ -68,6 +68,7 @@
             font-weight: bold;
             padding-top: 1.2rem;
         }
+
         .email {
             line-height: 1rem;
             font-size: 1.1rem;
@@ -246,8 +247,13 @@
                                 pp. {{ $publication['paper_page'] }}.
                             @endif
                             @if (!empty($publication['paper_doi']))
-                                <a
-                                    href="https://doi.org/{{ $publication['paper_doi'] }}">https://doi.org/{{ $publication['paper_doi'] }}</a>
+                                @php
+                                    $doi = $publication['paper_doi'];
+                                    if (!Str::startsWith($doi, 'https://doi.org/')) {
+                                        $doi = 'https://doi.org/' . $doi;
+                                    }
+                                @endphp
+                                <a href="{{ $doi }}">{{ $doi }}</a>
                             @elseif (!empty($publication['paper_url']))
                                 <a href="{{ $publication['paper_url'] }}">{{ $publication['paper_url'] }}</a>
                             @endif

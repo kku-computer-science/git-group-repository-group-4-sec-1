@@ -92,12 +92,22 @@ class GetReportDocxController extends Controller
         } else {
             foreach ($papers as $paper) {
                 $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-                $doiOrUrl = $paper['paper_doi'];
-                if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
-                    $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+                
+                if (!empty($paper['paper_doi'])) {
+                    $doiOrUrl = $paper['paper_doi'];
+                    if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
+                        $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+                    }
+                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                    $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+                } elseif (!empty($paper['paper_url'])) {
+                    
+                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $paper[paper_url]";
+                    
+                    $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
+                    $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+                    $section->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
                 }
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
-                $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 $indexPub++;
             }
         }
@@ -111,12 +121,22 @@ class GetReportDocxController extends Controller
     } else {
         foreach ($olderPapers as $paper) {
             $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-            $doiOrUrl = $paper['paper_doi'];
-            if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
-                $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+            
+            if (!empty($paper['paper_doi'])) {
+                $doiOrUrl = $paper['paper_doi'];
+                if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
+                    $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+                }
+                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+            } elseif (!empty($paper['paper_url'])) {
+                
+                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                
+                $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
+                $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+                $section->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
             }
-            $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
-            $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
     }
@@ -153,8 +173,9 @@ class GetReportDocxController extends Controller
             $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
         } else {
             foreach ($books as $book) {
+                $year = isset($book['ac_year']) ? date('Y', strtotime($book['ac_year'])) : null;
                 $authors = array_map([$this, 'formatAuthorName'], $book['authors']);
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name].";
+                $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 $indexPub++;
             }
@@ -169,7 +190,7 @@ class GetReportDocxController extends Controller
         foreach ($olderBooks as $book) {
             $year = isset($book['ac_year']) ? date('Y', strtotime($book['ac_year'])) : null;
             $authors = array_map([$this, 'formatAuthorName'], $book['authors']);
-             $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name].";
+             $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
              $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
@@ -221,6 +242,8 @@ class GetReportDocxController extends Controller
             $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
         } else {
             foreach ($others as $other) {
+                $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'] . ' -543 year')) : null;
+
                 $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
                 
                 $text = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
@@ -236,7 +259,8 @@ class GetReportDocxController extends Controller
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
     } else {
         foreach ($olderOther as $other) {
-            $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'])) : null;
+            $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'] . ' -543 year')) : null;
+
             $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
         
             $text = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
