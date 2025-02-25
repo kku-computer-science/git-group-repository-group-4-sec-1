@@ -7,10 +7,12 @@
 <div class="container">
     <form action="{{ route('generate_pdf') }}" method="GET">
         <input type="hidden" name="id" value="{{Auth::id()}}"> <!-- ใช้ ID ผู้ใช้ที่ล็อกอิน -->
+        <h3 style="padding-top: 10px; padding-bottom: 10px; text-align: center;">ดาวน์โหลดเอกสารรายงาน งานวิจัย ตำราหนังสือและงานอื่นๆย้อนหลัง</h3>
 
         {{-- <button type="submit" class="btn btn-primary">Preview PDF</button> --}}
-        <button type="submit" name="download" value="1" class="btn btn-success">Download PDF</button>
-        {{-- <button></button> --}}
+        <button type="submit" name="download" value="1" class="btn btn-danger ">Download as PDF</button>
+        
+        <a href="{{ route('generate_word', ['id' => Auth::user()->id]) }}" class="btn btn-primary mx-3">Download as Word</a> 
     </form>
 
     <div id="pdf-preview" class="mt-4">

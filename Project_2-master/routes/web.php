@@ -39,6 +39,8 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
+use App\Http\Controllers\GetReportDocxController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,8 +75,8 @@ Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
 
 
 Route::get('/generate-pdf', [PDFprintController::class, 'generatePDF'])->name('generate_pdf');
+Route::get('/generate-word/{id}', [GetReportDocxController::class, 'generateWord'])->name('generate_word');
 Route::get('/export-report', [App\Http\Controllers\PDFprintController::class, 'index'])->name('exportreport.export');
-
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::get('/researchers',[ResearcherController::class,'index'])->name('researchers');
 Route::get('researchers/{id}', [ResearcherController::class, 'request'])->name('researchers');
@@ -106,7 +108,7 @@ Route::group(['middleware' => ['isAdmin', 'auth', 'PreventBackHistory']], functi
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-
+    
     Route::get('importfiles', [ImportExportController::class, 'index'])->name('importfiles');
     Route::post('import', [ImportExportController::class, 'import']);
     // Route::get('export', [ImportExportController::class, 'export']);
