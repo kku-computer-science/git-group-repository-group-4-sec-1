@@ -96,7 +96,7 @@ class GetDataReportPrint
         $papersData = $papers->map(fn($paper)=>
                         self::extractSiglePaper($paper));
 
-        return $papersData;
+        return $papersData->sortByDesc('paper_yearpub');
     }
 
     public static function getAuthorData($userId){

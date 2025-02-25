@@ -38,12 +38,12 @@
 
         body {
             font-family: "THSarabunNew";
+            line-height: 0.8rem;
         }
 
         .date {
             text-align: right;
             font-size: 1.2rem;
-            padding: 1rem;
         }
 
         .header {
@@ -54,8 +54,7 @@
 
         .sub-header {
             font-weight: bold;
-            padding-top: 1rem;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         .content {
@@ -66,7 +65,6 @@
         .year {
             font-size: 1.3rem;
             font-weight: bold;
-            padding-top: 1.2rem;
         }
 
         .email {
@@ -82,7 +80,6 @@
 </head>
 
 <body>
-
     <p class="header">Publication Report</p>
     <p class="date">{{ $from }}</p>
 
