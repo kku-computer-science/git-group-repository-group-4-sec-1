@@ -101,12 +101,11 @@ class GetReportDocxController extends Controller
                     $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
                     $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 } elseif (!empty($paper['paper_url'])) {
-                    
-                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $paper[paper_url]";
+                    $textRun = $section->addTextRun();
+                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
                     
                     $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
-                    $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
-                    $section->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
+                    $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
                 }
                 $indexPub++;
             }
@@ -130,12 +129,11 @@ class GetReportDocxController extends Controller
                 $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             } elseif (!empty($paper['paper_url'])) {
-                
+                $textRun = $section->addTextRun();
                 $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
                 
                 $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
-                $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
-                $section->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
+                $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
             }
             $indexPub++;
         }
