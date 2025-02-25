@@ -93,7 +93,7 @@
 
                 </div>
             </div>
-  
+
             <div class="col-md-4">
                 <h6 class="title-pub">{{ trans('message.publications2') }}</h6>
                 <div class="col-xs-12 text-center bt">
@@ -106,7 +106,7 @@
                             Since {{ date('Y') - 5 }}
                           </div>
                         </div>
-                        
+
                         <div class="row status_citation pt-2">
                           <div id="citation" class="col fw-bolder pb-1">
                             Citations
@@ -651,7 +651,7 @@
     var paper_tci = <?php echo $paper_tci; ?>;
     var paper_scopus = <?php echo $paper_scopus; ?>;
     var paper_wos = <?php echo $paper_wos; ?>;
-    var paper_google_s = [0, 0, 0, 0, 0]; 
+    var paper_google_s = [0, 0, 0, 0, 0];
     var areaChartData = {
 
         labels: year,
@@ -748,7 +748,7 @@
     async function myFunction() {
         var res = <?php echo $res; ?>;
         //var fname = res.fname_en;
-        //var fname = res.fname_en.substr(0, 1); 
+        //var fname = res.fname_en.substr(0, 1);
         //console.log(fname);
         //const response = await fetch('https://api.elsevier.com/content/search/scopus?query=AUTHOR-NAME('+ res.lname_en +','+fname+')%20&apikey=6ab3c2a01c29f0e36b00c8fa1d013f83&httpAccept=application%2Fjson');
         const response = await fetch('https://api.elsevier.com/content/search/author?query=authlast(' + res.lname_en +
@@ -814,23 +814,23 @@
         let sum = sumsco + sumtci + sumwos + sumbook + sumpatent + sumgoogle;
 
         //$("#scopus").append('data-to="100"');
-        document.getElementById("all").innerHTML += `   
+        document.getElementById("all").innerHTML += `
                 <h2 class="timer count-title count-number" data-to="${sum}" data-speed="1500"></h2>
                 <p class="count-text ">SUMMARY</p>`
 
-        document.getElementById("scopus_sum").innerHTML += `   
+        document.getElementById("scopus_sum").innerHTML += `
                 <h2 class="timer count-title count-number" data-to="${sumsco}" data-speed="1500"></h2>
                 <p class="count-text">SCOPUS</p>`
 
-        document.getElementById("wos_sum").innerHTML += `    
+        document.getElementById("wos_sum").innerHTML += `
                 <h2 class="timer count-title count-number" data-to="${sumwos}" data-speed="1500"></h2>
                 <p class="count-text ">WOS</p>`
 
-        document.getElementById("tci_sum").innerHTML += `  
+        document.getElementById("tci_sum").innerHTML += `
                 <h2 class="timer count-title count-number" data-to="${sumtci}" data-speed="1500"></h2>
                 <p class="count-text ">TCI</p>`
 
-        document.getElementById("google_sum").innerHTML += `  
+        document.getElementById("google_sum").innerHTML += `
                 <h2 class="timer count-title count-number" data-to="${sumgoogle}" data-speed="1500"></h2>
                 <p class="count-text ">GOOGLE SCHOLAR</p>`
 
@@ -942,7 +942,7 @@
     const myArray =  a.text.toString().split(" ");
     console.log(myArray)
     document.getElementById("authtd").innerHTML = "name :"+ myArray;
-    
+
 });
 </script> -->
 @endsection

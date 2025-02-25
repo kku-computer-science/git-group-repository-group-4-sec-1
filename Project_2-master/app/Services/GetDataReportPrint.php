@@ -77,7 +77,7 @@ class GetDataReportPrint
             }
             return $academicwork;
         });
-        return $acWorksData;
+        return $acWorksData->sortByDesc('ac_year');
     }
 
     public static function getBookData($userId){
