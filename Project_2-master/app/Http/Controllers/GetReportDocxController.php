@@ -49,7 +49,7 @@ class GetReportDocxController extends Controller
     $section->addText("Education",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
     foreach ($DataUser["education"] as $user) {
         if ($user) {
-            $section->addText(" - $user[year] $user[qua_name] ($user[uname])",array('name' => 'TH Sarabun New', 'size' => 14));
+            $section->addListItem(" $user[year] $user[qua_name] ($user[uname])",0,['name' => 'TH Sarabun New', 'size' => 14]);
         }
     }
 
@@ -57,7 +57,7 @@ class GetReportDocxController extends Controller
     $section->addText("Research Expertise",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
         foreach ($DataUser["experties"] as $experties) {
             if($user){
-                $section->addText(" - $experties",array('name' => 'TH Sarabun New', 'size' => 14));
+                $section->addListItem(" $experties",0,['name' => 'TH Sarabun New', 'size' => 14]);
             }
         }
     $section->addText("_________________________________________________________________________________");
@@ -69,7 +69,7 @@ class GetReportDocxController extends Controller
 
     $currentYear = date('Y');
     $pastYears = range($currentYear, $currentYear - 2);
-    $beforeYear = $currentYear - 3;
+    $beforeYear = $currentYear - 2;
 
     foreach ($pastYears as $year) {
         $papersByYear[$year] = []; // กำหนดให้เป็น array ว่าง
@@ -104,7 +104,7 @@ class GetReportDocxController extends Controller
 
     }
 
-    $beforeYearView = $beforeYear + 1;
+    $beforeYearView = $beforeYear;
     $section->addText("Year Before $beforeYearView",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
     if (empty($olderPapers)) {
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
@@ -127,7 +127,7 @@ class GetReportDocxController extends Controller
 
     $currentYear = date('Y');
     $pastYears = range($currentYear, $currentYear - 2);
-    $beforeYear = $currentYear - 3;
+    $beforeYear = $currentYear - 2;
     // จัดกลุ่มข้อมูลตามปี
     $BooksByYear = [];
     $olderBooks = [];
@@ -161,7 +161,7 @@ class GetReportDocxController extends Controller
         }
 
     }
-    $beforeYearView = $beforeYear + 1;
+    $beforeYearView = $beforeYear;
     $section->addText("Year Before $beforeYearView",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
     if (empty($olderBooks)) {
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
@@ -181,7 +181,7 @@ class GetReportDocxController extends Controller
     // กำหนดปีปัจจุบัน
     $currentYear = date('Y');
     $pastYears = range($currentYear, $currentYear - 2);
-    $beforeYear = $currentYear - 3;
+    $beforeYear = $currentYear - 2;
     // จัดกลุ่มข้อมูลตามปี
     $OtherByYear = [];
     $olderOther = [];
@@ -230,7 +230,7 @@ class GetReportDocxController extends Controller
         }
 
     }
-    $beforeYearView = $beforeYear + 1;
+    $beforeYearView = $beforeYear;
     $section->addText("Year Before $beforeYearView",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
     if (empty($olderOther)) {
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
