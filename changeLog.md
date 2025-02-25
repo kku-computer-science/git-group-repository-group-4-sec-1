@@ -3,7 +3,7 @@
 ## Sprint 2
 ### New
 - เพิ่ม class GetDataReport เพื่อ query ข้อมูลออกไปปริ้นท์
-- ใน class GetDataReport เพิ่ม function ส่งออกข้อมูลไปเพื่อไปปริ้นmN โดยมี fucntion ส่งออกดังนี้ getAuthorData, getPaperData, getOtherWorkData,getBookData
+- ใน class GetDataReport เพิ่ม function ส่งออกข้อมูลไปเพื่อไปปริ้นท์ โดยมี fucntion ส่งออกดังนี้ getAuthorData, getPaperData, getOtherWorkData,getBookData
 - เพิ่ม document ของวิธีใช้ class GetDataReport
 - เพิ่ม pdf template เพื่อจัด format นำไปใช้กับฟังก์ชันสร้าง pdf
 - ฟังก์ชันสร้าง pdf และสามารถดาวน์โหลดได้
