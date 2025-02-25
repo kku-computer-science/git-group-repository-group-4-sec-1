@@ -12,6 +12,7 @@
 - เพิ่ม class GetReportDocxController เพื่อสร้างไฟล์ word จากข้อมูลที่ได้ใน GetDataReport
 - เพิ่ม class UpDateUserPaper เพื่อดึงข้อมูลผู้เขียน และ Update ตาราง user_paper
 - เพิ่ม class UpDateUserPaperController เพื่อใช้งาน Services UpDateUserPaper
+- เพิ่ม UserManual_sprint2
 ### Update
 - ปรับ route console เพื่อใช้งาน controller UpDateUserPaperController
 - ปรับ function getPaperOpenAlxe ใน class PublicationRetrieval โดยแยกส่วนหัวออกมาสร้าง functionใหม่ คือ getDataOpenAlex
