@@ -33,7 +33,7 @@
         "laravel/sail": "^1.12",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.11",
-        "phpunit/phpunit": "9.5"
+        "phpunit/phpunit": "9.6"
     },
     "autoload": {
         "psr-4": {
@@ -70,7 +70,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.3.0"
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
