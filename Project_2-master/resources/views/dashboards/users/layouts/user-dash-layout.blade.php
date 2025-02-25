@@ -245,15 +245,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </div>
                         </li>
                     @endcan
-                     @can("export-report")
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route("exportreport.export") }}">
-                                <i class="menu-icon mdi mdi-briefcase-download"></i>
-                                <span class="menu-title">Export Report</span>
-
-                            </a>
-                        </li>
-                    @endcan
+                     
+                      
+                    
                     @can("export")
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route("exportfile") }}">
