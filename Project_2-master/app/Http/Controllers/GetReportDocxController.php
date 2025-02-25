@@ -49,7 +49,7 @@ class GetReportDocxController extends Controller
     $section->addText("Education",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
     foreach ($DataUser["education"] as $user) {
         if ($user) {
-            $section->addText(" - $user[year] $user[qua_name] ($user[uname])",array('name' => 'TH Sarabun New', 'size' => 14));
+            $section->addListItem(" $user[year] $user[qua_name] ($user[uname])",0,['name' => 'TH Sarabun New', 'size' => 14]);
         }
     }
 
@@ -57,7 +57,7 @@ class GetReportDocxController extends Controller
     $section->addText("Research Expertise",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
         foreach ($DataUser["experties"] as $experties) {
             if($user){
-                $section->addText(" - $experties",array('name' => 'TH Sarabun New', 'size' => 14));
+                $section->addListItem(" $experties",0,['name' => 'TH Sarabun New', 'size' => 14]);
             }
         }
     $section->addText("_________________________________________________________________________________");
@@ -69,7 +69,7 @@ class GetReportDocxController extends Controller
 
     $currentYear = date('Y');
     $pastYears = range($currentYear, $currentYear - 2);
-    $beforeYear = $currentYear - 3;
+    $beforeYear = $currentYear - 2;
 
     foreach ($pastYears as $year) {
         $papersByYear[$year] = []; // กำหนดให้เป็น array ว่าง
@@ -92,31 +92,49 @@ class GetReportDocxController extends Controller
         } else {
             foreach ($papers as $paper) {
                 $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-                $doiOrUrl = $paper['paper_doi'];
-                if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
-                    $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+                
+                if (!empty($paper['paper_doi'])) {
+                    $doiOrUrl = $paper['paper_doi'];
+                    if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
+                        $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+                    }
+                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                    $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+                } elseif (!empty($paper['paper_url'])) {
+                    $textRun = $section->addTextRun();
+                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                    
+                    $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
+                    $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
                 }
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
-                $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 $indexPub++;
             }
         }
 
     }
 
-    $beforeYearView = $beforeYear + 1;
+    $beforeYearView = $beforeYear;
     $section->addText("Year Before $beforeYearView",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
     if (empty($olderPapers)) {
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
     } else {
         foreach ($olderPapers as $paper) {
             $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-            $doiOrUrl = $paper['paper_doi'];
-            if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
-                $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+            
+            if (!empty($paper['paper_doi'])) {
+                $doiOrUrl = $paper['paper_doi'];
+                if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
+                    $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
+                }
+                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+            } elseif (!empty($paper['paper_url'])) {
+                $textRun = $section->addTextRun();
+                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                
+                $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
+                $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
             }
-            $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
-            $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
     }
@@ -127,7 +145,7 @@ class GetReportDocxController extends Controller
 
     $currentYear = date('Y');
     $pastYears = range($currentYear, $currentYear - 2);
-    $beforeYear = $currentYear - 3;
+    $beforeYear = $currentYear - 2;
     // จัดกลุ่มข้อมูลตามปี
     $BooksByYear = [];
     $olderBooks = [];
@@ -153,15 +171,16 @@ class GetReportDocxController extends Controller
             $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
         } else {
             foreach ($books as $book) {
+                $year = isset($book['ac_year']) ? date('Y', strtotime($book['ac_year'])) : null;
                 $authors = array_map([$this, 'formatAuthorName'], $book['authors']);
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name].";
+                $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 $indexPub++;
             }
         }
 
     }
-    $beforeYearView = $beforeYear + 1;
+    $beforeYearView = $beforeYear;
     $section->addText("Year Before $beforeYearView",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
     if (empty($olderBooks)) {
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
@@ -169,7 +188,7 @@ class GetReportDocxController extends Controller
         foreach ($olderBooks as $book) {
             $year = isset($book['ac_year']) ? date('Y', strtotime($book['ac_year'])) : null;
             $authors = array_map([$this, 'formatAuthorName'], $book['authors']);
-             $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name].";
+             $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
              $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
@@ -181,7 +200,7 @@ class GetReportDocxController extends Controller
     // กำหนดปีปัจจุบัน
     $currentYear = date('Y');
     $pastYears = range($currentYear, $currentYear - 2);
-    $beforeYear = $currentYear - 3;
+    $beforeYear = $currentYear - 2;
     // จัดกลุ่มข้อมูลตามปี
     $OtherByYear = [];
     $olderOther = [];
@@ -221,6 +240,8 @@ class GetReportDocxController extends Controller
             $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
         } else {
             foreach ($others as $other) {
+                $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'] . ' -543 year')) : null;
+
                 $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
                 
                 $text = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
@@ -230,13 +251,14 @@ class GetReportDocxController extends Controller
         }
 
     }
-    $beforeYearView = $beforeYear + 1;
+    $beforeYearView = $beforeYear;
     $section->addText("Year Before $beforeYearView",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
     if (empty($olderOther)) {
         $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
     } else {
         foreach ($olderOther as $other) {
-            $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'])) : null;
+            $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'] . ' -543 year')) : null;
+
             $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
         
             $text = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
