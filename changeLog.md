@@ -2,13 +2,14 @@
 
 ## Sprint 2
 ### New
-- เพิ่ม class GetDataReport เพื่อ query ข้อมูลออกไปปริน
-- ใน class GetDataReport เพิ่ม function ส่งออกข้อมูลไปเพื่อไปปริ้น โดยมี fucntion ส่งออกดั้งนี้ getAuthorData, getPaperData, getOtherWorkData,getBookData
+- เพิ่ม class GetDataReport เพื่อ query ข้อมูลออกไปปริ้นท์
+- ใน class GetDataReport เพิ่ม function ส่งออกข้อมูลไปเพื่อไปปริ้นmN โดยมี fucntion ส่งออกดังนี้ getAuthorData, getPaperData, getOtherWorkData,getBookData
 - เพิ่ม document ของวิธีใช้ class GetDataReport
 - เพิ่ม pdf template เพื่อจัด format นำไปใช้กับฟังก์ชันสร้าง pdf
 - ฟังก์ชันสร้าง pdf และสามารถดาวน์โหลดได้
+- สร้างและจัดการหน้า Export Report ใน User profile หลังจาก login
 ### Update
-- ปรับ function getPaperOpenAlxe ใน class PublicationRetrieval โดยแยกส่วนหีวออกมาสร้าง functionใหม่่ คือ getDataOpenAlex
+- ปรับ function getPaperOpenAlxe ใน class PublicationRetrieval โดยแยกส่วนหัวออกมาสร้าง functionใหม่ คือ getDataOpenAlex
 ### Bug fix
 - แก้ปัญหา getPaperOpenAlxe หาข้อมูลไม่เจอ
 
