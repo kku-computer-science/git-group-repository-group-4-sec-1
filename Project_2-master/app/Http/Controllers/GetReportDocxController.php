@@ -94,18 +94,18 @@ class GetReportDocxController extends Controller
         } else {
             foreach ($papers as $paper) {
                 $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-                
+                $paperName = str_replace('<inf>0</inf>', '₀', $paper['paper_name']);
                 if (!empty($paper['paper_doi'])) {
                     $doiOrUrl = $paper['paper_doi'];
                     if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
                         $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
                     }
-                    $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                    $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
                     $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                     $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 } elseif (!empty($paper['paper_url'])) {
                     $textRun = $section->addTextRun();
-                    $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                    $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
                     $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                     $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
                     $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
@@ -123,18 +123,18 @@ class GetReportDocxController extends Controller
     } else {
         foreach ($olderPapers as $paper) {
             $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-            
+            $paperName = str_replace('<inf>0</inf>', '₀', $paper['paper_name']);
             if (!empty($paper['paper_doi'])) {
                 $doiOrUrl = $paper['paper_doi'];
                 if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
                     $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
                 }
-                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
                 $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             } elseif (!empty($paper['paper_url'])) {
                 $textRun = $section->addTextRun();
-                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
                 $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
                 $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
