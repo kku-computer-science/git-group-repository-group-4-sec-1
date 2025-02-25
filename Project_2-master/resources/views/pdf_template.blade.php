@@ -85,7 +85,7 @@
 
     <p class="sub-header">Professor Information</p>
     <p class="content">
-        {{ $author['fname_en'] ?? '' }} {{ $author['lname_en'] ?? '' }}, {{ $author['doctoral_degree'] ?? '' }}
+        {{ $author['fname_en'] ?? '' }} {{ $author['lname_en'] ?? '' }}, {{ $author['doctoral_degree'] ?? 'N/A' }}
         <br>
         {{ $author['academic_ranks_en'] ?? 'N/A' }}
         <br>
@@ -93,7 +93,7 @@
     </p>
 
     <!-- Education -->
-    @if (!empty($author['education']))
+    @if (!empty($author['education'] && count($author['education']) > 0))
         <p class="sub-header">Education</p>
         <ul class="content">
             @foreach ($author['education'] as $edu)
@@ -101,11 +101,12 @@
             @endforeach
         </ul>
     @else
+        <p class="sub-header">Education</p>
         <p class="content">No education data available.</p>
     @endif
 
     <!-- Expertise -->
-    @if (!empty($author['experties']))
+    @if (!empty($author['experties'] && count($author['experties']) > 0))
         <p class="sub-header">Research Expertise</p>
         <ul class="content">
             @foreach ($author['experties'] as $expertise)
@@ -113,6 +114,7 @@
             @endforeach
         </ul>
     @else
+        <p class="sub-header">Research Expertise</p>
         <p class="content">No expertise data available.</p>
     @endif
 
