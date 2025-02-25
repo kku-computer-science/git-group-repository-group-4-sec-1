@@ -47,20 +47,24 @@ class GetReportDocxController extends Controller
    
     // หัวข้อ: การศึกษา
     $section->addText("Education",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
-    foreach ($DataUser["education"] as $user) {
-        if ($user) {
-            $textBefore = " $user[year] $user[qua_name] ($user[uname])";
-            $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
-            $section->addListItem($text,0,['name' => 'TH Sarabun New', 'size' => 14]);
+        if ($DataUser["education"]->isNotEmpty()) {
+            foreach ($DataUser["education"] as $user) {
+                    $textBefore = " $user[year] $user[qua_name] ($user[uname])";
+                    $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
+                    $section->addListItem($text,0,['name' => 'TH Sarabun New', 'size' => 14]);
+                }
+        } else {
+            $section->addText("No education data available.",array('name' => 'TH Sarabun New', 'size' => 14));
         }
-    }
 
     // หัวข้อ: Research Expertise
     $section->addText("Research Expertise",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
-        foreach ($DataUser["experties"] as $experties) {
-            if($experties){
-                $section->addListItem(" $experties",0,['name' => 'TH Sarabun New', 'size' => 14]);
+        if ($DataUser["experties"]->isNotEmpty()) {
+            foreach ($DataUser["experties"] as $experties) {
+                    $section->addListItem(" $experties",0,['name' => 'TH Sarabun New', 'size' => 14]);
             }
+        }else{
+            $section->addText("No expertise data available.",array('name' => 'TH Sarabun New', 'size' => 14));
         }
     $section->addText("_________________________________________________________________________________");
     // หัวข้อ: งานวิจัย
