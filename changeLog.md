@@ -8,9 +8,15 @@
 - เพิ่ม pdf template เพื่อจัด format นำไปใช้กับฟังก์ชันสร้าง pdf
 - ฟังก์ชันสร้าง pdf และสามารถดาวน์โหลดได้
 - สร้างและจัดการหน้า Export Report ใน User profile หลังจาก login
+- ฟังก์ชันสร้าง word และสามารถดาวน์โหลดได้
+- เพิ่ม class GetReportDocxController เพื่อสร้างไฟล์ word จากข้อมูลที่ได้ใน GetDataReport
+- เพิ่ม class UpDateUserPaper เพื่อดึงข้อมูลผู้เขียน และ Update ตาราง user_paper
+- เพิ่ม class UpDateUserPaperController เพื่อใช้งาน Services UpDateUserPaper
 ### Update
+- ปรับ route console เพื่อใช้งาน controller UpDateUserPaperController
 - ปรับ function getPaperOpenAlxe ใน class PublicationRetrieval โดยแยกส่วนหัวออกมาสร้าง functionใหม่ คือ getDataOpenAlex
 ### Bug fix
+- แก้ไขข้อมูลในตาราง paper และ user_paper
 - แก้ปัญหา getPaperOpenAlxe หาข้อมูลไม่เจอ
 
 
