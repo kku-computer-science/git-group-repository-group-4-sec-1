@@ -56,7 +56,13 @@ class GetReportDocxController extends Controller
         } else {
             $section->addText("No education data available.",array('name' => 'TH Sarabun New', 'size' => 14));
         }
+<<<<<<< HEAD
 
+=======
+    
+    
+    
+>>>>>>> c634d012a1384aee6c865c074a994d2d14a2e70a
     // หัวข้อ: Research Expertise
     $section->addText("Research Expertise",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
         if ($DataUser["experties"]->isNotEmpty()) {
@@ -294,7 +300,7 @@ class GetReportDocxController extends Controller
 
     // ส่งไฟล์ให้ดาวน์โหลด
     return response()->download($path, $fileName)->deleteFileAfterSend(true);
-}
+    }
 
 
 

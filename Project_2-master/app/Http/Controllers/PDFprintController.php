@@ -19,14 +19,14 @@ class PDFprintController extends Controller
 
     public function index()
     {
-       
-        return view('exportreport.export');  
+
+        return view('exportreport.export');
     }
 
     // ฟังก์ชันสำหรับสร้าง PDF
     public function generatePDF(Request $request)
     {
-        
+
         $userId = Auth::id();
         if (!$userId) {
             return redirect()->route('pdfprint.index')->with('error', 'User not authenticated.');
@@ -37,6 +37,12 @@ class PDFprintController extends Controller
         $papers = GetDataReportPrint::getPaperData($userId);
         $books = GetDataReportPrint::getBookData($userId);
         $otherWorks = GetDataReportPrint::getOtherWorkData($userId);
+
+        // ฟังก์ชันปกติสำหรับแปลงเครื่องหมาย `-`
+        function normalizeHyphen($text)
+        {
+            return str_replace(["‐", "–"], "-", $text);
+        }
 
         // ฟังก์ชันสำหรับแปลงปี พ.ศ. เป็น ค.ศ.
         function convertToCE($dateString)
@@ -50,7 +56,12 @@ class PDFprintController extends Controller
             }
             return "N/A"; // ถ้าไม่มีข้อมูลให้ใส่ "N/A"
         }
-
+        // **ปรับปรุงข้อมูล papers**
+        $papers = collect($papers)->map(function ($paper) {
+            $paper['paper_name'] = normalizeHyphen($paper['paper_name']);
+            $paper['paper_sourcetitle'] = normalizeHyphen($paper['paper_sourcetitle']);
+            return $paper;
+        });
         // **แปลงปีของ books และ otherWorks ก่อนส่งไป PDF Template**
         $books = collect($books)->map(function ($book) {
             $book['ac_year'] = convertToCE($book['ac_year'] ?? null);
@@ -74,6 +85,7 @@ class PDFprintController extends Controller
 
         // สร้าง PDF จาก view
         $pdf = PDF::loadView('pdf_template', $data);
+        $pdf->setOptions(['isHtml5ParserEnabled' => true]);
 
         // คืนค่าตัวอย่าง PDF หรือให้ผู้ใช้ดาวน์โหลด
         if ($request->has('download')) {
