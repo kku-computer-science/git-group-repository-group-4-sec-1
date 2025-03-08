@@ -41,6 +41,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\GetReportDocxController;
 
+use App\Http\Controllers\ManageHighlight;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,11 +70,12 @@ use App\Http\Controllers\GetReportDocxController;
 // });
 
 
+
 Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
     Auth::routes();
 });
 
-
+Route::get('/highlight-detail', [ManageHighlight::class, 'testDetail'])->name('highlight_detail');
 Route::get('/generate-pdf', [PDFprintController::class, 'generatePDF'])->name('generate_pdf');
 Route::get('/generate-word/{id}', [GetReportDocxController::class, 'generateWord'])->name('generate_word');
 Route::get('/export-report', [App\Http\Controllers\PDFprintController::class, 'index'])->name('exportreport.export');
@@ -144,6 +146,10 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('tests', [TestController::class, 'index']); //call department
     Route::get('tests/{id}', [TestController::class, 'getCategory'])->name('tests'); //call program
 
+    Route::get('/add-highlight', [ManageHighlight::class, 'addHighlight'])->name('highlight.add');
+    Route::get('/manage-highlight', [ManageHighlight::class, 'manageHighlight'])->name('highlight.manage');
+    Route::post('/highlight/store', [ManageHighlight::class, 'storeHighlight'])->name('highlight.store');
+    Route::delete('/delete-highlight/{newsId}', [ManageHighlight::class, 'destroy'])->name('highlight.destroy');
 });
 
 
