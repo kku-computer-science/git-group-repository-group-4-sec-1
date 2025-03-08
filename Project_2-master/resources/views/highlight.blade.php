@@ -125,14 +125,14 @@
                 <div class="row">
                     @foreach ($highlights as $highlight)
                         <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
-                            <a href="{{ route('news.details', $highlight->news_id) }}" class="text-decoration-none">
+                            <a href="{{ route('news.details', $highlight->news_id ?? '#') }}" class="text-decoration-none">
                                 <div class="card highlight-card">
-                                    <img src="{{ $highlight->path_banner_img }}" 
+                                    <img src="{{ $highlight->banner ?? asset('default-image.jpg') }}" 
                                         class="card-img-top rounded img-fluid" 
-                                        alt="{{ $highlight->title }}">
+                                        alt="{{ $highlight->title ?? 'ไม่มีชื่อเรื่อง' }}">
                                     <div class="card-tooltip">อ่านเพิ่มเติม</div>
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ Str::limit($highlight->title, 50) }}</h5>
+                                        <h5 class="card-title">{{ Str::limit($highlight->title ?? 'ไม่มีชื่อเรื่อง', 50) }}</h5>
                                     </div>
                                 </div>
                             </a>
