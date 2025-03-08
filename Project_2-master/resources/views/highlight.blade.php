@@ -29,7 +29,6 @@
     font-size: 16px;
 }
 
-/* ปรับขนาดการ์ดให้เท่ากัน */
 .highlight-card {
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -42,13 +41,11 @@
     flex-direction: column;
 }
 
-/* ปรับรูปภาพให้ขนาดคงที่ */
 .card-img-top {
     height: 200px;
     object-fit: cover;
 }
 
-/* ทำให้ card-body มีความสูงเต็ม */
 .card-body {
     flex-grow: 1;
     display: flex;
@@ -58,7 +55,6 @@
     text-align: center;
 }
 
-/* ปรับ Tooltip "อ่านเพิ่มเติม" */
 .card-tooltip {
     position: absolute;
     bottom: 0;
@@ -77,7 +73,6 @@
     opacity: 1;
 }
 
-/* ปรับช่องค้นหา */
 .search-container {
     margin-bottom: 20px;
     display: flex;
@@ -110,7 +105,7 @@
     <div class="container">
         <h2 class="text-center">ไฮไลท์ทั้งหมด</h2>
 
-        <!-- ช่องค้นหา -->
+
         <div class="search-container">
             <form method="GET" action="{{ route('highlight.index') }}">
                 <input type="text" name="search" placeholder="ค้นหาข่าว..." value="{{ request()->query('search') }}">
