@@ -84,7 +84,8 @@ class HighlightEditor
         if(!in_array($status,$allStatus)) return false;
 
         $news->publish_status = $status;
-        $news->update = now();
+        $news->publish = now();
+        $news->update= now();
         $news->save();
         return true;
     }
