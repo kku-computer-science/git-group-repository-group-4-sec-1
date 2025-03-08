@@ -35,8 +35,8 @@ class GetReportDocxController extends Controller
     $phpWord = new PhpWord();
     $section = $phpWord->addSection();
     $section->addText("                                      Publication Report",array('name' => 'TH Sarabun New', 'size' => 20, 'bold' => true));
-    
-    $currentDate = Carbon::now()->format('F d, Y'); 
+
+    $currentDate = Carbon::now()->format('F d, Y');
     $section->addText("                                                                                                                                                 $currentDate",array('align' => 'right', 'name' => 'TH Sarabun New', 'size' => 14));
 
     // หัวข้อ: ข้อมูลผู้ใช้
@@ -44,7 +44,7 @@ class GetReportDocxController extends Controller
     $section->addText("$DataUser[fname_en] $DataUser[lname_en], $DataUser[doctoral_degree]",array('name' => 'TH Sarabun New', 'size' => 14));
     $section->addText("$DataUser[academic_ranks_en]",array('name' => 'TH Sarabun New', 'size' => 14));
     $section->addText("E-mail: $DataUser[email]",array('name' => 'TH Sarabun New', 'size' => 14));
-   
+
     // หัวข้อ: การศึกษา
     $section->addText("Education",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
         if ($DataUser["education"]->isNotEmpty()) {
@@ -56,13 +56,9 @@ class GetReportDocxController extends Controller
         } else {
             $section->addText("No education data available.",array('name' => 'TH Sarabun New', 'size' => 14));
         }
-<<<<<<< HEAD
 
-=======
-    
-    
-    
->>>>>>> c634d012a1384aee6c865c074a994d2d14a2e70a
+
+
     // หัวข้อ: Research Expertise
     $section->addText("Research Expertise",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
         if ($DataUser["experties"]->isNotEmpty()) {
@@ -169,7 +165,7 @@ class GetReportDocxController extends Controller
     }
 
     foreach ($DataBook as $Book) {
-            
+
     $year = isset($Book['ac_year']) ? date('Y', strtotime($Book['ac_year'])) : null;
     if ($year && in_array($year, $pastYears)) {
         $BooksByYear[$year][] = $Book;
@@ -209,7 +205,7 @@ class GetReportDocxController extends Controller
             $indexPub++;
         }
     }
-    
+
     //หัวข้อ Other
     $section->addText("_________________________________________________________________________________");
     $section->addText("Other works",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
@@ -238,7 +234,7 @@ class GetReportDocxController extends Controller
     }
 
     foreach ($DataOther as $Other) {
-        
+
         $yearPS = isset($Other['ac_year']) ? date('Y', strtotime($Other['ac_year'])) : null;
         $year = convertToCE($yearPS);
         if ($year && in_array($year, $pastYears)) {
@@ -250,7 +246,7 @@ class GetReportDocxController extends Controller
 
     $indexPub = 1;
     foreach ($OtherByYear as $year => $others) {
-        //dd($papers); 
+        //dd($papers);
         $section->addText("Year $year",array('name' => 'TH Sarabun New', 'size' => 16, 'bold' => true));
         if (empty($others)) {
             $section->addText("No publications available for this year.",array('name' => 'TH Sarabun New', 'size' => 14));
@@ -259,7 +255,7 @@ class GetReportDocxController extends Controller
                 $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'] . ' -543 year')) : null;
 
                 $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
-                
+
                 $textBefore = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
                 $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
@@ -277,13 +273,13 @@ class GetReportDocxController extends Controller
             $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'] . ' -543 year')) : null;
 
             $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
-        
+
             $textBefore = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
             $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
             $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
-    }    
+    }
 
 
     // บันทึกไฟล์
@@ -307,7 +303,7 @@ class GetReportDocxController extends Controller
     private function formatAuthorName($author) {
         $fname = trim($author['fname_en'] ?? '');
         $lname = trim($author['lname_en'] ?? '');
-    
+
         // ตรวจสอบว่าชื่อเป็นภาษาไทยหรือไม่
         if (preg_match('/[ก-ฮ]/u', $fname) || preg_match('/[ก-ฮ]/u', $lname)) {
             return "{$fname} {$lname}";
@@ -359,7 +355,7 @@ class GetReportDocxController extends Controller
         }
 
         foreach ($DataPub as $paper) {
-            
+
             $year = $paper['paper_yearpub'] ?? null;
             if ($year && in_array($year, $pastYears)) {
                 $papersByYear[$year][] = $paper;
@@ -371,7 +367,7 @@ class GetReportDocxController extends Controller
         // แสดงผลลัพธ์
         $indexPub = 1;
         foreach ($papersByYear as $year => $papers) {
-            //dd($papers); 
+            //dd($papers);
             echo "Year " . "$year" . "\n";
             if (empty($papers)) {
                 echo "No publications available for this year.\n";
@@ -387,7 +383,7 @@ class GetReportDocxController extends Controller
                 }
             }
             echo "\n";
-        }        
+        }
 
         echo "Before $beforeYear\n";
         if (empty($olderPapers)) {
@@ -421,7 +417,7 @@ class GetReportDocxController extends Controller
         }
 
         foreach ($DataBook as $Book) {
-            
+
             $year = isset($Book['ac_year']) ? date('Y', strtotime($Book['ac_year'])) : null;
             if ($year && in_array($year, $pastYears)) {
                 $BooksByYear[$year][] = $Book;
@@ -432,7 +428,7 @@ class GetReportDocxController extends Controller
 
         $indexPub = 1;
         foreach ($BooksByYear as $year => $books) {
-            //dd($papers); 
+            //dd($papers);
             echo "Year " . "$year" . "\n";
             if (empty($books)) {
                 echo "No publications available for this year.\n";
@@ -462,7 +458,7 @@ class GetReportDocxController extends Controller
     public function getOtherWork($id){
         $GetOther = new GetDataReportPrint();
         $DataOther = $GetOther->getOtherWorkData($id);
-        
+
         // กำหนดปีปัจจุบัน
         $currentYear = date('Y');
         $pastYears = range($currentYear, $currentYear - 2);
@@ -471,24 +467,14 @@ class GetReportDocxController extends Controller
         $OtherByYear = [];
         $olderOther = [];
 
-        function convertToCE($dateString)
-        {
-            if (!empty($dateString)) {
-                $year = explode('-', $dateString)[0]; // ดึงแค่ "ปี" จาก "2562-02-25"
-                if (is_numeric($year) && $year > 2400) {
-                    return $year - 543; // แปลง พ.ศ. -> ค.ศ.
-                }
-                return $year; // ถ้าเป็น ค.ศ. อยู่แล้วให้ใช้เหมือนเดิม
-            }
-            return "N/A"; // ถ้าไม่มีข้อมูลให้ใส่ "N/A"
-        }
+
 
         foreach ($pastYears as $year) {
             $OtherByYear[$year] = []; // กำหนดให้เป็น array ว่าง
         }
 
         foreach ($DataOther as $Other) {
-            
+
             $yearPS = isset($Other['ac_year']) ? date('Y', strtotime($Other['ac_year'])) : null;
             $year = convertToCE($yearPS);
             if ($year && in_array($year, $pastYears)) {
@@ -500,14 +486,14 @@ class GetReportDocxController extends Controller
 
         $indexPub = 1;
         foreach ($OtherByYear as $year => $others) {
-            //dd($papers); 
+            //dd($papers);
             echo "Year " . "$year" . "\n";
             if (empty($others)) {
                 echo "No publications available for this year.\n";
             } else {
                 foreach ($others as $other) {
                     $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
-                    
+
                     echo "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
                     $indexPub++;
                 }
@@ -522,7 +508,7 @@ class GetReportDocxController extends Controller
             foreach ($olderOther as $other) {
                 $year = isset($other['ac_year']) ? date('Y', strtotime($other['ac_year'])) : null;
                 $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
-            
+
                 echo "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
                 $indexPub++;
             }
