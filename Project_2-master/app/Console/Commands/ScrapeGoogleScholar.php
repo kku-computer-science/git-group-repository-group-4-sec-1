@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\PublicationRetrieval;
+use App\Services\GetHighlight;
 
 class ScrapeGoogleScholar extends Command
 {
@@ -33,10 +33,12 @@ class ScrapeGoogleScholar extends Command
     public function handle()
     {
         $scholarId = $this->argument('scholar_id');
-        $author = new PublicationRetrieval();
-        //$author->getAuthor("cYJ4r_BHQR8C");
-        $data = $author->getPaperOpenAlxe("Service priority classification using machine learning");
-        dd($data);
+        //$data = GetHighlight::getAllNews();
+        //$data = GetHighlight::getNews(1);
+        //$data = GetHighlight::getHighlights();
+        //$data = GetHighlight::getNewsbyTag(2);
+        $data = GetHighlight::getTags();
+        echo json_encode($data);
         return 0;
 
 
