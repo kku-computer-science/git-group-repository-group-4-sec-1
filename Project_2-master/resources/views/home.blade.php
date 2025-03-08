@@ -31,28 +31,67 @@
         display: table;
         color: #4ad1e5;
     }
+
+    .news-item {
+        position: relative;
+        display: block;
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto; 
+    }
+
+    .news-img {
+        width: 100%;
+        height: auto;
+        max-height: 450px;
+        object-fit: cover;
+        display: block;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .news-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 16px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .news-item:hover .news-overlay {
+        opacity: 1;
+    }
+
 </style>
 @section('content')
 <div class="container home">
     <div class="container d-sm-flex justify-content-center mt-5">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                aria-label="Slide 3"></button> -->
+                @foreach ($latestNews as $index => $news)
+                    <button type="button" data-bs-target="#carouselExampleIndicators" 
+                        data-bs-slide-to="{{ $index }}" 
+                        class="{{ $index == 0 ? 'active' : '' }}" 
+                        aria-label="Slide {{ $index + 1 }}"></button>
+                @endforeach
             </div>
+
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{{asset('img/Banner1.png')}}" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item">
-                    <img src="{{asset('img/Banner2.png')}}" class="d-block w-100" alt="...">
-                </div>
-                <!-- <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-            </div> -->
+                @foreach ($latestNews as $index => $news)
+                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                        <a href="{{ url('/news/' . $news->news_id) }}" class="news-item">
+                        <img src="{{ asset($news->path_banner_img) }}" class="d-block w-100" alt="{{ $news->title }}">
+                            <div class="news-overlay">อ่านเพิ่มเติม</div>
+                        </a>
+                    </div>
+                @endforeach
             </div>
+
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -63,6 +102,9 @@
             </button>
         </div>
     </div>
+</div>
+
+
 
 
     <!-- Modal -->

@@ -10,7 +10,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileuserController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\ShowAllNews;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundController;
@@ -97,6 +97,13 @@ Route::get('index', [LocalizationController::class, 'index']);
 Route::get('lang/{lang}', ['as' => 'langswitch', 'uses' => 'App\Http\Controllers\LocalizationController@switchLang']);
 Route::get('/export', [ExportPaperController::class, 'exportUsers'])->name('export-papers');
 Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
+Route::get('/highlight', [ShowAllNews::class, 'index'])->name('highlight.index');
+
+//สำหรับหน้ารายละเอียดข่าว
+Route::get('/news/{id}', function ($id) {
+    return "หน้าแสดงรายละเอียดข่าว (News ID: $id) กำลังอยู่ระหว่างการพัฒนา";
+})->name('news.details');
+
 
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
 //Route::get('change/lang', [LocalizationController::class,'lang_change'])->name('LangChange');

@@ -3,40 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\News;
-use App\Models\Tag;
-use App\Models\NewsTag;
 use App\Services\GetHighlight;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
+class ShowAllNews extends Controller
+{
+    public function index(Request $request)
+    {
 
-class ShowAllNews extends Controller{
+        $News = collect(GetHighlight::getAllNews())->map(fn($item) => (object) $item);
 
-    public function index(Request $request){
-        $News = GetHighlight::getAllNews();
-        
-        $News_Pub = $News->filter(function ($item) {
-            return $item['publish_status'] !== 'not_published';
-        });
+        $News_Pub = $News->filter(fn($item) => $item->publish_status !== 'not_published');
 
-        if ($request->has('search') && !empty($request->search)){
+        if ($request->has('search') && !empty($request->search)) {
             $search = strtolower($request->search);
 
-            $News_Pub = $News_Pub->filter(function ($item) use ($search){
-                return str_contains(strtolower($item['title']),$search) ||
-                        str_contains(strtolower($item['content']),$search);                
-            });
+            $News_Pub = $News_Pub->filter(fn($item) => 
+                Str::contains(strtolower($item->title ?? ''), $search) ||
+                Str::contains(strtolower($item->content ?? ''), $search)
+            );
         }
 
-        $highlightNews = $News_Pub->where('publish_status','highlight');
-        $highlightNews = $highlightNews->sortByDesc('publish');
+        $highlightNews = $News_Pub->where('publish_status', 'highlight')
+                                  ->sortByDesc(fn($item) => strtotime($item->publish ?? '0'));
 
-        $publishNews = $News_Pub->where('publish_status','published');
-        $publishNews = $publishNews->sortByDesc('publish');
+        $publishNews = $News_Pub->where('publish_status', 'published')
+                                ->sortByDesc(fn($item) => strtotime($item->publish ?? '0'));
 
-        $SortNews = $highlightNews->merge($publishNews);        
-        
-        return view('highlight', ['SortNews' => $SortNews]);
+        $SortNews = $highlightNews->merge($publishNews);
+
+        return view('highlight', ['highlights' => $SortNews]);
     }
-
 }
-
