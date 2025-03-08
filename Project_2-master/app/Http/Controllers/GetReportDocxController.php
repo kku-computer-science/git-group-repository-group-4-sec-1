@@ -47,18 +47,30 @@ class GetReportDocxController extends Controller
    
     // หัวข้อ: การศึกษา
     $section->addText("Education",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
-    foreach ($DataUser["education"] as $user) {
-        if ($user) {
-            $section->addListItem(" $user[year] $user[qua_name] ($user[uname])",0,['name' => 'TH Sarabun New', 'size' => 14]);
+        if ($DataUser["education"]->isNotEmpty()) {
+            foreach ($DataUser["education"] as $user) {
+                    $textBefore = " $user[year] $user[qua_name] ($user[uname])";
+                    $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
+                    $section->addListItem($text,0,['name' => 'TH Sarabun New', 'size' => 14]);
+                }
+        } else {
+            $section->addText("No education data available.",array('name' => 'TH Sarabun New', 'size' => 14));
         }
-    }
+<<<<<<< HEAD
 
+=======
+    
+    
+    
+>>>>>>> c634d012a1384aee6c865c074a994d2d14a2e70a
     // หัวข้อ: Research Expertise
     $section->addText("Research Expertise",array('name' => 'TH Sarabun New', 'size' => 18, 'bold' => true));
-        foreach ($DataUser["experties"] as $experties) {
-            if($user){
-                $section->addListItem(" $experties",0,['name' => 'TH Sarabun New', 'size' => 14]);
+        if ($DataUser["experties"]->isNotEmpty()) {
+            foreach ($DataUser["experties"] as $experties) {
+                    $section->addListItem(" $experties",0,['name' => 'TH Sarabun New', 'size' => 14]);
             }
+        }else{
+            $section->addText("No expertise data available.",array('name' => 'TH Sarabun New', 'size' => 14));
         }
     $section->addText("_________________________________________________________________________________");
     // หัวข้อ: งานวิจัย
@@ -92,18 +104,19 @@ class GetReportDocxController extends Controller
         } else {
             foreach ($papers as $paper) {
                 $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-                
+                $paperName = str_replace('<inf>0</inf>', '₀', $paper['paper_name']);
                 if (!empty($paper['paper_doi'])) {
                     $doiOrUrl = $paper['paper_doi'];
                     if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
                         $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
                     }
-                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                    $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                    $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                     $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 } elseif (!empty($paper['paper_url'])) {
                     $textRun = $section->addTextRun();
-                    $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
-                    
+                    $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                    $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                     $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
                     $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
                 }
@@ -120,18 +133,19 @@ class GetReportDocxController extends Controller
     } else {
         foreach ($olderPapers as $paper) {
             $authors = array_map([$this, 'formatAuthorName'], $paper['authors']);
-            
+            $paperName = str_replace('<inf>0</inf>', '₀', $paper['paper_name']);
             if (!empty($paper['paper_doi'])) {
                 $doiOrUrl = $paper['paper_doi'];
                 if (!Str::startsWith($doiOrUrl, 'https://doi.org/')) {
                     $doiOrUrl = 'https://doi.org/' . $doiOrUrl;
                 }
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. $doiOrUrl";
+                $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             } elseif (!empty($paper['paper_url'])) {
                 $textRun = $section->addTextRun();
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paper[paper_name]. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
-                
+                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($paper[paper_yearpub]) $paperName. $paper[paper_sourcetitle], $paper[paper_volume] $paper[paper_issue] pp. $paper[paper_page]. ";
+                $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $paperUrl = htmlspecialchars($paper['paper_url'], ENT_QUOTES, 'UTF-8');
                 $textRun->addText($text,array('name' => 'TH Sarabun New', 'size' => 14)); $textRun->addText($paperUrl,array('name' => 'TH Sarabun New', 'size' => 14));
             }
@@ -173,7 +187,8 @@ class GetReportDocxController extends Controller
             foreach ($books as $book) {
                 $year = isset($book['ac_year']) ? date('Y', strtotime($book['ac_year'])) : null;
                 $authors = array_map([$this, 'formatAuthorName'], $book['authors']);
-                $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
+                $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
+                $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 $indexPub++;
             }
@@ -188,8 +203,9 @@ class GetReportDocxController extends Controller
         foreach ($olderBooks as $book) {
             $year = isset($book['ac_year']) ? date('Y', strtotime($book['ac_year'])) : null;
             $authors = array_map([$this, 'formatAuthorName'], $book['authors']);
-             $text = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
-             $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
+            $textBefore = "$indexPub. " . implode(", ", $authors) . ". ($year)" . " $book[ac_name]." . " $book[ac_sourcetitle].";
+            $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
+            $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
     }
@@ -244,7 +260,8 @@ class GetReportDocxController extends Controller
 
                 $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
                 
-                $text = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
+                $textBefore = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
+                $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
                 $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
                 $indexPub++;
             }
@@ -261,7 +278,8 @@ class GetReportDocxController extends Controller
 
             $authors = array_map([$this, 'formatAuthorName'], $other['authors']);
         
-            $text = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
+            $textBefore = "$indexPub. " . implode(", ", $authors) . " ($year)" . " $other[ac_name]." . " (Reference No. $other[ac_refnumber])." . "\n";
+            $text = htmlspecialchars($textBefore, ENT_QUOTES, 'UTF-8');
             $section->addText($text,array('name' => 'TH Sarabun New', 'size' => 14));
             $indexPub++;
         }
@@ -269,7 +287,7 @@ class GetReportDocxController extends Controller
 
 
     // บันทึกไฟล์
-    $fileName = "Professor_Report_$id.docx";
+    $fileName = 'publicationreport' . now()->format('Ymd') . '.docx';
     $path = storage_path("app/public/$fileName");
     // สร้าง Writer
     $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
@@ -282,7 +300,7 @@ class GetReportDocxController extends Controller
 
     // ส่งไฟล์ให้ดาวน์โหลด
     return response()->download($path, $fileName)->deleteFileAfterSend(true);
-}
+    }
 
 
 

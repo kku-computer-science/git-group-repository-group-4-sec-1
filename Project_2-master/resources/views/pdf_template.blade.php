@@ -38,12 +38,12 @@
 
         body {
             font-family: "THSarabunNew";
+            line-height: 0.8rem;
         }
 
         .date {
             text-align: right;
             font-size: 1.2rem;
-            padding: 1rem;
         }
 
         .header {
@@ -54,8 +54,7 @@
 
         .sub-header {
             font-weight: bold;
-            padding-top: 1rem;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         .content {
@@ -66,7 +65,6 @@
         .year {
             font-size: 1.3rem;
             font-weight: bold;
-            padding-top: 1.2rem;
         }
 
         .email {
@@ -82,7 +80,6 @@
 </head>
 
 <body>
-
     <p class="header">Publication Report</p>
     <p class="date">{{ $from }}</p>
 
@@ -96,7 +93,7 @@
     </p>
 
     <!-- Education -->
-    @if (!empty($author['education']))
+    @if (!empty($author['education'] && count($author['education']) > 0))
         <p class="sub-header">Education</p>
         <ul class="content">
             @foreach ($author['education'] as $edu)
@@ -104,11 +101,12 @@
             @endforeach
         </ul>
     @else
+        <p class="sub-header">Education</p>
         <p class="content">No education data available.</p>
     @endif
 
     <!-- Expertise -->
-    @if (!empty($author['experties']))
+    @if (!empty($author['experties'] && count($author['experties']) > 0))
         <p class="sub-header">Research Expertise</p>
         <ul class="content">
             @foreach ($author['experties'] as $expertise)
@@ -116,6 +114,7 @@
             @endforeach
         </ul>
     @else
+        <p class="sub-header">Research Expertise</p>
         <p class="content">No expertise data available.</p>
     @endif
 

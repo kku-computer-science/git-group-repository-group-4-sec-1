@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Paper;
+use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Bibtex;
@@ -16,6 +17,15 @@ class HomeController extends Controller
 
     public function index()
     {
+        $latestNews = News::where('publish_status', 'published')
+            ->orderBy('publish', 'desc') 
+            ->take(3) 
+            ->get();
+        
+
+        
+
+
         //$papers = Paper::all()->orderBy, 'DESC');
         // $papers = Paper::latest()->get(); // เทียบเท่า orderBy('created_at', 'DESC')
 
@@ -191,7 +201,8 @@ class HomeController extends Controller
 
         //$key="watchara";
         //return response()->json($bb);
-        return view('home', compact('papers'))->with('year', json_encode($year, JSON_NUMERIC_CHECK))
+        return view('home', compact('papers', 'latestNews'))
+            ->with('year', json_encode($year, JSON_NUMERIC_CHECK))
             ->with('paper_tci', json_encode($paper_tci, JSON_NUMERIC_CHECK))
             ->with('paper_scopus', json_encode($paper_scopus, JSON_NUMERIC_CHECK))
             ->with('paper_wos', json_encode($paper_wos, JSON_NUMERIC_CHECK))

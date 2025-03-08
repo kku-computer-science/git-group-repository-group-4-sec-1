@@ -90,6 +90,9 @@
                     <li class="nav-item {{ request()->is('reports') ? 'active' : ''}}">
                         <a class="nav-link" href="/reports">{{ trans('message.Report') }}</a>
                     </li>
+                    <li class="nav-item {{ request()->is('hi') ? 'highlight' : ''}}">
+                        <a class="nav-link" href="/highlight">Highlight</a>
+                    </li>
 
 
                     <li class="nav-item dropdown">
