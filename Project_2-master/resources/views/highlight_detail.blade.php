@@ -16,7 +16,7 @@
         <div class="news-meta mt-3">
             <span>Tags :
                 @foreach ($item['tags'] as $tag)
-                    <a href="/highlight/{{ $tag["tag_id"] }}" class="badge bg-secondary text-white">{{ $tag["tag_name"] }}</a>
+                    <a href="/highlight?search=&tag_id={{ $tag["tag_id"] }}" class="badge bg-secondary text-white">{{ $tag["tag_name"] }}</a>
                 @endforeach
             </span>
             <span class="float-end text-muted">เผยแพร่ {{ date('d/m/Y', strtotime($item['publish'])) }}</span>
