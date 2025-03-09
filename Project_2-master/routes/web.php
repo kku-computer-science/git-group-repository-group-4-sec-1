@@ -113,11 +113,11 @@ Route::get('/callscopus/{id}', [App\Http\Controllers\ScopuscallController::class
 
 Route::group(['middleware' => ['isAdmin', 'auth', 'PreventBackHistory']], function () {
     //Route::post('change-profile-picture',[ProfileuserController::class,'updatePicture'])->name('adminPictureUpdate');
-    
+
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    
+
     Route::get('importfiles', [ImportExportController::class, 'index'])->name('importfiles');
     Route::post('import', [ImportExportController::class, 'import']);
     // Route::get('export', [ImportExportController::class, 'export']);
@@ -157,6 +157,11 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/manage-highlight', [ManageHighlight::class, 'manageHighlight'])->name('highlight.manage');
     Route::post('/highlight/store', [ManageHighlight::class, 'storeHighlight'])->name('highlight.store');
     Route::delete('/delete-highlight/{newsId}', [ManageHighlight::class, 'destroy'])->name('highlight.destroy');
+    Route::get('/preview/{newsId}', [ManageHighlight::class, 'previewHighlight'])->name('highlight.preview');
+    
+    Route::post('/tag/store', [ManageHighlight::class, 'storeTag'])->name('tag.store');
+    Route::put('/tag/update', [ManageHighlight::class, 'updateTag'])->name('tag.update');
+    Route::delete('/tag/delete', [ManageHighlight::class, 'destroyTag'])->name('tag.delete');
 });
 
 

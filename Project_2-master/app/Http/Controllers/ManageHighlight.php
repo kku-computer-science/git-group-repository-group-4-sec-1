@@ -97,14 +97,16 @@ class ManageHighlight extends Controller
         $news = HighlightEditor::createNews($newsData, auth()->user()->id);
 
         if ($request->ajax()) {
-            return response()->json(['success' => 'เพิ่มไฮไลท์สำเร็จ']);
+            return response()->json(['success' => true, 'message' => 'เพิ่มไฮไลท์สำเร็จ']);
         }
         return redirect()->back()->with('success', 'เพิ่มไฮไลท์สำเร็จ');
     }
 
-    public function previewHighlight($id)
+    public function previewHighlight($newsId)
     {
-        // $news_items = News::findOrFail($id);
+        $news_items = GetHighlight::getNews($newsId);
+
+        // ส่งข้อมูลข่าวไปยัง preview
         return view('highlight.preview', compact('news_items'));
     }
 
@@ -114,25 +116,16 @@ class ManageHighlight extends Controller
         return view('highlight.edit', compact('news_items'));
     }
 
-    
+
     public function destroy($newsId)
     {
-        $news = News::find($newsId);
+        $deleted = HighlightEditor::deleteNews($newsId);
 
-        if (!$news) {
+        if ($deleted) {
+            return redirect()->back()->with('success', 'ลบไฮไลท์สำเร็จ');
+        } else {
             return redirect()->back()->with('error', 'ไม่พบไฮไลท์ที่ต้องการลบ');
         }
-
-        // ลบรูปภาพ
-        if ($news->banner) {
-            Storage::disk('public')->delete($news->banner);
-        }
-
-        // ลบแท็กและข่าว
-        $news->tags()->detach();
-        $news->delete();
-
-        return redirect()->back()->with('success', 'ลบไฮไลท์สำเร็จ');
     }
 
     public function showHighlight()
@@ -152,5 +145,51 @@ class ManageHighlight extends Controller
 
         // News::whereIn('id', $request->selected_news)->update(['publish_status' => 'highlight']);
         return redirect()->route('highlight.show')->with('success', 'เลือกไฮไลท์สำเร็จ');
+    }
+
+    // Method to store a new tag
+    public function storeTag(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $tag = HighlightEditor::createTag($request->name);
+        if ($tag) {
+            return response()->json(['tag_id' => $tag->id]);
+        }
+
+        return response()->json(['message' => 'Tag already exists or invalid input'], 400);
+    }
+
+    // Method to update an existing tag
+    public function updateTag(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:tags,id',
+            'name' => 'required|string|max:255'
+        ]);
+
+        $result = HighlightEditor::updateTag($request->id, $request->name);
+        if ($result) {
+            return response()->json(['name' => $request->name]);
+        }
+
+        return response()->json(['message' => 'Tag not found or invalid input'], 400);
+    }
+
+    // Method to delete an existing tag
+    public function destroyTag(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:tags,id'
+        ]);
+
+        $result = HighlightEditor::deleteTag($request->id);
+        if ($result) {
+            return response()->json(['status' => 'success']);
+        }
+
+        return response()->json(['message' => 'Tag not found'], 400);
     }
 }

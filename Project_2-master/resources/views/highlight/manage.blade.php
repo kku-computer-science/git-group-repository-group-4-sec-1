@@ -49,20 +49,14 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <!-- Edit and Delete Buttons -->
                                         <a href="{{ url('/edit-highlight/' . $item['news_id']) }}"
                                             class="btn btn-primary btn-sm mx-2">แก้ไข</a>
 
-                                        {{-- <button type="button" class="btn btn-danger btn-sm mx-2" data-toggle="modal"
-                                            data-target="#deleteModal" data-id="{{ $item['news_id'] }}">
+                                        <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal" data-id="{{ $item['news_id'] }}">
                                             ลบ
-                                        </button> --}}
-                                        <form id="deleteForm" action="" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <button type="submit" class="btn btn-danger">ลบ</button>
-                                        </form>
-                                        
+                                        </button>
+
 
                                         <a href="{{ url('/preview/' . $item['news_id']) }}"
                                             class="btn btn-dark btn-sm mx-2">พรีวิว</a>
@@ -88,7 +82,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <form id="deleteForm" action="" method="POST">
+                        <form id="deleteForm" action="{{ url('/delete-highlight/' . $item['news_id']) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">ลบ</button>
