@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\News;
+use App\Models\Tag;
+use App\Models\NewsTag;
 use App\Services\GetHighlight;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class ShowAllNews extends Controller{
 
@@ -27,9 +28,9 @@ class ShowAllNews extends Controller{
                         str_contains(strtolower($item['content']),$search);                
             });
         }
-
-        if ($request->has('tag') && !empty($request->tag)){
-            $selected = $request->tag;
+        //ค้นหาด้วย Tag
+        if ($request->has('tag_id') && !empty($request->tag_id)){
+            $selected = $request->tag_id;
 
             $newsWithTagIds = NewsTag::where('tag_id',$selected)->pluck('news_id');
 
@@ -45,7 +46,7 @@ class ShowAllNews extends Controller{
                                 ->sortByDesc(fn($item) => strtotime($item->publish ?? '0'));
 
         $SortNews = $highlightNews->merge($publishNews);        
-        dd($SortNews);
-        return view('highlight', ['SortNews' => $SortNews]);
+
+        return view('highlight', ['highlights' => $SortNews,'tags' => $Tag]);
     }
 }
