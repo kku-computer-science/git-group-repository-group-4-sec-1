@@ -33,31 +33,37 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($news_items as $item)
+                            @if (!empty($news_items) && count($news_items) > 0)
+                                @foreach ($news_items as $item)
+                                    <tr>
+                                        <td class="title-column">{{ $item['title'] ?? '-' }}</td>
+                                        <td>
+                                            @if (
+                                                !empty($item['publish_status']) &&
+                                                    ($item['publish_status'] == 'highlight' || $item['publish_status'] == 'published'))
+                                                <span class="text-success fw-bold">เผยแพร่</span>
+                                            @else
+                                                <span class="text-warning fw-bold">ฉบับร่าง</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ url('/edit-highlight/' . ($item['news_id'] ?? '')) }}"
+                                                class="btn btn-primary btn-sm mx-2">แก้ไข</a>
+
+                                            <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="{{ $item['news_id'] ?? '' }}">
+                                                ลบ
+                                            </button>
+
+                                            <a class="btn btn-dark btn-sm mx-2">พรีวิว</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td class="title-column">{{ $item['title'] }}</td>
-                                    <td>
-                                        @if ($item['publish_status'] == 'highlight' || $item['publish_status'] == 'published')
-                                            <span class="text-success fw-bold">เผยแพร่</span>
-                                        @else
-                                            <span class="text-warning fw-bold">ฉบับร่าง</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ url('/edit-highlight/' . $item['news_id']) }}"
-                                            class="btn btn-primary btn-sm mx-2">แก้ไข</a>
-
-                                        <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" data-id="{{ $item['news_id'] }}">
-                                            ลบ
-                                        </button>
-
-
-                                        <a 
-                                            class="btn btn-dark btn-sm mx-2">พรีวิว</a>
-                                    </td>
+                                    <td colspan="3" class="text-center">ไม่มีข้อมูลไฮไลท์</td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -73,11 +79,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="mdi mdi-alert-circle mdi-48px mb-3 text-danger"></div>
-                        <p class="fs-5 lh-base fw-bold">คุณแน่ใจหรือไม่ว่าต้องการลบไฮไลท์นี้? <br>ข้อมูลที่ลบจะไม่สามารถกู้คืนได้</p>
+                        <p class="fs-5 lh-base fw-bold">คุณแน่ใจหรือไม่ว่าต้องการลบไฮไลท์นี้?
+                            <br>ข้อมูลที่ลบจะไม่สามารถกู้คืนได้
+                        </p>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <form id="deleteForm" action="{{ url('/delete-highlight/' . $item['news_id']) }}" method="POST">
+                        <form id="deleteForm" action="" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">ลบ</button>
@@ -92,13 +100,14 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var deleteModal = document.getElementById("deleteModal");
+                var deleteForm = document.getElementById("deleteForm");
+
                 deleteModal.addEventListener("show.bs.modal", function(event) {
                     var button = event.relatedTarget || event.target.closest("[data-bs-target='#deleteModal']");
                     var newsId = button.getAttribute("data-id");
 
                     if (newsId) {
-                        var actionUrl = "/delete-highlight/" + newsId;
-                        document.getElementById("deleteForm").setAttribute("action", actionUrl);
+                        deleteForm.setAttribute("action", "/delete-highlight/" + newsId);
                     }
                 });
             });

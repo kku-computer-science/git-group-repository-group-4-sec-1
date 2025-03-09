@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\HighlightEditor;
 use App\Models\News;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Tag;
 
 class ManageHighlight extends Controller
 {
 
     public function manageHighlight()
     {
-        $news_items = GetHighlight::getAllNews();
+        $news_items = GetHighlight::getAllNews() ?? [];
         return view('highlight.manage', compact('news_items'));
     }
 
@@ -95,9 +96,38 @@ class ManageHighlight extends Controller
 
     public function editHighlight($id)
     {
-        return view('highlight.edit', compact('news_items'));
+        $news = News::with('tags')->where('news_id', $id)->firstOrFail();
+        $tags = Tag::all();
+        return view('highlight.edit', compact('news', 'tags'));
     }
 
+    public function updateHighlight(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'details' => 'required|string',
+            'file' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'tags' => 'nullable|array'
+        ]);
+
+        $newsData = [
+            'title' => $request->title,
+            'content' => $request->details,
+            'tags' => $request->tags ?? [],
+        ];
+
+        if ($request->hasFile('file')) {
+            $imagePath = $request->file('file')->store('highlight_images', 'public');
+            $newsData['path_banner_img'] = $imagePath;
+        }
+
+        $updatedNews = HighlightEditor::updateNewsContent($id, $newsData);
+
+        if ($updatedNews) {
+            return redirect()->route('highlight.edit', $id)->with('success', 'อัปเดตไฮไลท์สำเร็จ');
+        }
+        return back()->with('error', 'เกิดข้อผิดพลาดในการอัปเดตไฮไลท์');
+    }
 
     public function destroy($newsId)
     {
