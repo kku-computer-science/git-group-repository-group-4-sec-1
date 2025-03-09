@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\News;
-use App\Models\Tag;
-use App\Models\NewsTag;
 use App\Services\GetHighlight;
-
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class ShowAllNews extends Controller{
 
@@ -43,13 +41,11 @@ class ShowAllNews extends Controller{
         $highlightNews = $News_Pub->where('publish_status','highlight');
         $highlightNews = $highlightNews->sortByDesc('publish');
 
-        $publishNews = $News_Pub->where('publish_status','published');
-        $publishNews = $publishNews->sortByDesc('publish');
+        $publishNews = $News_Pub->where('publish_status', 'published')
+                                ->sortByDesc(fn($item) => strtotime($item->publish ?? '0'));
 
         $SortNews = $highlightNews->merge($publishNews);        
         dd($SortNews);
         return view('highlight', ['SortNews' => $SortNews]);
     }
-
 }
-
