@@ -83,10 +83,6 @@ return array (
     'bold' => $fontDir . '/thsarabunnew_bold_45180213bb6bf8c2189e09c48d7e3c7c',
     'italic' => $fontDir . '/thsarabunnew_italic_c384b0417564e6edb6cdfb01858a04ee',
     'bold_italic' => $fontDir . '/thsarabunnew_bold_italic_004294e4065bc55c4f168d311e23cbd7',
-<<<<<<< HEAD
-
-=======
->>>>>>> cebff7b19f66003690dddf9e1096d5ac463366fe
     'normal' => $fontDir . '/thsarabunnew_normal_dab8c2a88924d67abd6210f6eb21c33b',
     'bold' => $fontDir . '/thsarabunnew_bold_752c14af2b57524939e7081c80f52afa',
     'italic' => $fontDir . '/thsarabunnew_italic_4c56012a506016481cd265da0e47d78f',

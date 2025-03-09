@@ -40,6 +40,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\GetReportDocxController;
+use App\Http\Controllers\ReadNewsController;
 
 use App\Http\Controllers\ManageHighlight;
 /*
@@ -100,9 +101,7 @@ Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
 Route::get('/highlight', [ShowAllNews::class, 'index'])->name('highlight.index');
 
 //สำหรับหน้ารายละเอียดข่าว
-Route::get('/news/{id}', function ($id) {
-    return "หน้าแสดงรายละเอียดข่าว (News ID: $id) กำลังอยู่ระหว่างการพัฒนา";
-})->name('news.details');
+Route::get('/news/{id}',[ReadNewsController::class,'index'])->name('news.index');
 
 
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
@@ -158,7 +157,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::post('/highlight/store', [ManageHighlight::class, 'storeHighlight'])->name('highlight.store');
     Route::delete('/delete-highlight/{newsId}', [ManageHighlight::class, 'destroy'])->name('highlight.destroy');
     Route::get('/preview/{newsId}', [ManageHighlight::class, 'previewHighlight'])->name('highlight.preview');
-    
+
     Route::post('/tag/store', [ManageHighlight::class, 'storeTag'])->name('tag.store');
     Route::put('/tag/update', [ManageHighlight::class, 'updateTag'])->name('tag.update');
     Route::delete('/tag/delete', [ManageHighlight::class, 'destroyTag'])->name('tag.delete');
