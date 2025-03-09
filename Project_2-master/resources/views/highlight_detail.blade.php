@@ -2,19 +2,21 @@
 
 @section('content')
 <div class="container">
-    @foreach ($news_items as $item)
     <div class="news-article">
         <!-- Banner Image -->
         <div class="news-banner">
-            {{--<img src="{{ $item['banner'] }}" alt="bannar" class="w-100 h-50">  --}}
-            <img src="{{ asset('img/Banner1.png') }}" alt="bannar" class="w-100 h-50">
+            @if (!empty($item['banner']) && file_exists(public_path($item['banner'])))
+                <img src="{{ asset($item['banner']) }}" alt="banner" class="w-100 h-50">
+            @else
+                <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-50">
+            @endif
         </div>
 
         <!-- News Metadata -->
         <div class="news-meta mt-3">
-            <span>Tags : 
+            <span>Tags :
                 @foreach ($item['tags'] as $tag)
-                    <a href="#" class="badge bg-secondary text-white">{{ $tag }}</a>
+                    <a href="/highlight?search=&tag_id={{ $tag["tag_id"] }}" class="badge bg-secondary text-white">{{ $tag["tag_name"] }}</a>
                 @endforeach
             </span>
             <span class="float-end text-muted">เผยแพร่ {{ date('d/m/Y', strtotime($item['publish'])) }}</span>
@@ -25,7 +27,7 @@
 
         <!-- News Content -->
         <div class="news-content mt-3 lh-lg">
-            {!! $item['content'] !!}
+            {!! html_entity_decode($item['content']) !!}
         </div>
 
         <!-- Editor Information -->
@@ -33,7 +35,6 @@
             {{ $item['editor_author'] }}
         </div>
     </div>
-    @endforeach
 </div>
 
 @endsection

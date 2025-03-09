@@ -29,6 +29,7 @@
     font-size: 16px;
 }
 
+/* ปรับขนาดการ์ดให้เท่ากัน */
 .highlight-card {
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -41,11 +42,13 @@
     flex-direction: column;
 }
 
+/* ปรับรูปภาพให้ขนาดคงที่ */
 .card-img-top {
     height: 200px;
     object-fit: cover;
 }
 
+/* ทำให้ card-body มีความสูงเต็ม */
 .card-body {
     flex-grow: 1;
     display: flex;
@@ -55,6 +58,7 @@
     text-align: center;
 }
 
+/* ปรับ Tooltip "อ่านเพิ่มเติม" */
 .card-tooltip {
     position: absolute;
     bottom: 0;
@@ -73,6 +77,7 @@
     opacity: 1;
 }
 
+/* ปรับช่องค้นหา */
 .search-container {
     margin-bottom: 20px;
     display: flex;
@@ -105,10 +110,22 @@
     <div class="container">
         <h2 class="text-center">ไฮไลท์ทั้งหมด</h2>
 
-
         <div class="search-container">
             <form method="GET" action="{{ route('highlight.index') }}">
-                <input type="text" name="search" placeholder="ค้นหาข่าว..." value="{{ request()->query('search') }}">
+                <!-- ช่องค้นหาข่าว -->
+                <input type="text" name="search" placeholder="ค้นหาข่าว..." value="{{ request('search') }}">
+
+                <!-- Dropdown เลือกแท็ก -->
+                <select name="tag_id" onchange="this.form.submit()">
+                    <option value="">-- เลือก Tag --</option>
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag['tag_id'] }}" 
+                            {{ request('tag_id') == $tag['tag_id'] ? 'selected' : '' }}>
+                            {{ $tag['tag_name'] }}
+                        </option>
+                    @endforeach
+                </select>
+
                 <button type="submit">ค้นหา</button>
             </form>
         </div>
@@ -120,14 +137,14 @@
                 <div class="row">
                     @foreach ($highlights as $highlight)
                         <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
-                            <a href="{{ route('news.details', $highlight->news_id ?? '#') }}" class="text-decoration-none">
+                            <a href="{{ route('news.details', $highlight['news_id'] ?? '#') }}" class="text-decoration-none">
                                 <div class="card highlight-card">
-                                    <img src="{{ $highlight->banner ?? asset('default-image.jpg') }}" 
+                                    <img src="{{ $highlight['banner'] ?? asset('default-image.jpg') }}" 
                                         class="card-img-top rounded img-fluid" 
-                                        alt="{{ $highlight->title ?? 'ไม่มีชื่อเรื่อง' }}">
+                                        alt="{{ $highlight['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
                                     <div class="card-tooltip">อ่านเพิ่มเติม</div>
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ Str::limit($highlight->title ?? 'ไม่มีชื่อเรื่อง', 50) }}</h5>
+                                        <h5 class="card-title">{{ Str::limit($highlight['title'] ?? 'ไม่มีชื่อเรื่อง', 50) }}</h5>
                                     </div>
                                 </div>
                             </a>
