@@ -60,15 +60,15 @@
                         <!-- Title -->
                         <div class="form-group">
                             <label for="title" class="fw-bold">หัวข้อไฮไลท์</label>
-                            <input type="text" name="title" class="form-control">
+                            <input id="title" type="text" name="title" class="form-control"
+                                value="{{ old('title') }}">
                         </div>
 
                         <!-- Details -->
                         <div class="form-group">
                             <label for="details" class="fw-bold">รายละเอียด</label>
-                            <textarea name="details" id="details" class="form-control" rows="5"></textarea>
+                            <textarea name="details" id="details" class="form-control" rows="5">{{ old('details') }}</textarea>
                         </div>
-
 
                         <!-- Tags -->
                         <div class="form-group row">
@@ -76,13 +76,19 @@
                                 <label for="tags" class="fw-bold">Tags</label>
                                 <select name="tags[]" id="tags" class="form-control p-3 select2" multiple="multiple">
                                     @foreach ($tags as $tag)
-                                        <option value="{{ $tag['tag_id'] }}">{{ $tag['tag_name'] }}</option>
+                                        <option value="{{ $tag['tag_id'] }}"
+                                            {{ in_array($tag['tag_id'], old('tags', [])) ? 'selected' : '' }}>
+                                            {{ $tag['tag_name'] }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-4">
+                                <button type="button" class="btn btn-success mt-5 fw-bold" data-bs-toggle="modal"
+                                    data-bs-target="#addTagsModal">เพิ่ม Tags</button>
+
                                 <button type="button" class="btn btn-primary mt-5 fw-bold" data-bs-toggle="modal"
-                                    data-bs-target="#tagsModal">เพิ่ม Tags</button>
+                                    data-bs-target="#manageTagsModal">จัดการ Tags</button>
                             </div>
                         </div>
 
@@ -105,7 +111,7 @@
                                 <div class="modal-body text-center fw-bold">
                                     <div class="mdi mdi-checkbox-marked-circle mdi-48px mb-3 text-success"></div>
                                     <p class="fs-5">เพิ่มไฮไลท์สำเร็จ</p>
-                                  </div>
+                                </div>
                                 <div class="modal-footer d-flex justify-content-center">
                                     <button type="button" class="btn btn-secondary" id="closeSuccessModal"
                                         data-bs-dismiss="modal">
@@ -120,13 +126,12 @@
 
             </div>
 
-            
-
-            {{-- <div class="modal fade" id="tagsModal" tabindex="-1" aria-hidden="true">
+            {{-- โมเดลเพิ่มแท็ก --}}
+            <div class="modal fade" id="addTagsModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content ">
                         <div class="modal-header ">
-                            <h1 class="modal-title fs-5 fw-bold text-center" id="exampleModalLabel">เพิ่ม Tag</h1>
+                            <h1 class="modal-title fs-5 fw-bold text-center" id="addTagsModalLabel">เพิ่ม Tag</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -139,55 +144,90 @@
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                            <button type="button" class="btn btn-primary">บันทึก</button>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-
-            <!-- Modal for Adding/Editing Tags -->
-            <div class="modal fade" id="tagsModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5 fw-bold text-center" id="tagsModalLabel">จัดการ Tag</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <!-- Input for Tag -->
-                            <div class="mb-3">
-                                <label for="tagName" class="col-form-label">ชื่อ Tag:</label>
-                                <input class="form-control" id="tagName">
-                            </div>
-                            <!-- Display Existing Tags with Edit/Delete Options -->
-                            <div id="existingTags">
-                                @foreach ($tags as $tag)
-                                    <div class="tag-item">
-                                        <span>{{ $tag['tag_name'] }}</span>
-                                        <button type="button" class="btn btn-warning btn-sm edit-tag"
-                                            data-id="{{ $tag['tag_id'] }}" data-name="{{ $tag['tag_name'] }}">แก้ไข</button>
-                                        <button type="button" class="btn btn-danger btn-sm delete-tag"
-                                            data-id="{{ $tag['tag_id'] }}">ลบ</button>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
                             <button type="button" class="btn btn-primary" id="saveTagBtn">บันทึก</button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Modal แก้ไขแท็ก -->
+            <div class="modal fade" id="manageTagsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 fw-bold text-center" id="manageTagsModalLabel">จัดการ Tags</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="tagName" class="col-form-label">Tags:</label>
+                                <input class="form-control" id="tagName">
+                                <input type="hidden" id="tagId">
+                            </div>
+                            <div id="existingTags">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="p-1"></th>
+                                            <th class="p-1"></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($tags as $tag)
+                                            <tr>
+                                                <td class="p-1">{{ $tag['tag_name'] }}</td>
+                                                <td class="p-1">
+                                                    <div class="d-flex justify-content-end gap-2">
+                                                        <button type="button" class="btn btn-warning btn-sm edit-tag"
+                                                            data-id="{{ $tag['tag_id'] }}"
+                                                            data-name="{{ $tag['tag_name'] }}">แก้ไข</button>
+                                                        <button type="button" class="btn btn-danger btn-sm delete-tag"
+                                                            data-id="{{ $tag['tag_id'] }}">ลบ</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                            <button type="button" class="btn btn-primary" id="saveEditTagBtn">บันทึกการแก้ไข</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
+        <!-- Include Select2 JS & jQuery -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        {{-- Auto save --}}
         <script>
-            $(document).ready(function() {
+            document.addEventListener("DOMContentLoaded", function() {
+                if (sessionStorage.getItem("formSaved")) {
+                    localStorage.removeItem("title");
+                    localStorage.removeItem("details");
+                    localStorage.removeItem("tags");
+                    sessionStorage.removeItem("formSaved"); 
+                }
+                document.getElementById("title").value = localStorage.getItem("title") || "";
+
+                let savedTags = JSON.parse(localStorage.getItem("tags")) || [];
+                $('#tags').val(savedTags).trigger('change');
+
                 $('#details').trumbowyg({
                     btns: [
                         ['viewHTML'],
-                        ['undo', 'redo'], // Only supported in Blink browsers
+                        ['undo', 'redo'],
                         ['formatting'],
                         ['strong', 'em', 'del'],
                         ['superscript', 'subscript'],
@@ -198,40 +238,49 @@
                         ['removeformat'],
                         ['fullscreen']
                     ]
+                }).on('tbwinit', function() {
+                    let savedDetails = localStorage.getItem("details");
+                    if (savedDetails) {
+                        $('#details').trumbowyg('html', savedDetails);
+                    }
+                });
+
+                function autoSave() {
+                    localStorage.setItem("title", document.getElementById("title").value);
+                    localStorage.setItem("details", $('#details').trumbowyg('html'));
+                    localStorage.setItem("tags", JSON.stringify($('#tags').val() || []));
+                }
+
+                function clearAutoSave() {
+                    localStorage.removeItem("title");
+                    localStorage.removeItem("details");
+                    localStorage.removeItem("tags");
+                    sessionStorage.setItem("formSaved", "true");
+                }
+
+                document.getElementById("title").addEventListener("input", autoSave);
+                $('#details').on('tbwchange', autoSave);
+                $('#tags').on('change', autoSave);
+
+                document.querySelector("form").addEventListener("submit", function() {
+                    clearAutoSave();
                 });
             });
         </script>
 
-        <!-- Include Select2 JS & jQuery -->
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
-
-        {{-- <script>
-            $(document).ready(function() {
-                $('#tags').select2({
-                    placeholder: "เลือก Tags...",
-                    allowClear: true,
-                    width: '100%'
-                });
-            });
-        </script> --}}
-
-        <!-- JavaScript for Tag Handling -->
         <script>
             $(document).ready(function() {
-                // Select2 initialization
                 $('#tags').select2({
                     placeholder: "เลือก Tags...",
                     allowClear: true,
                     width: '100%'
                 });
 
-                // Adding new tag
                 $('#saveTagBtn').click(function() {
-                    let tagName = $('#tagName').val();
+                    let tagName = $('#tag').val();
                     if (tagName) {
                         $.ajax({
-                            url: "{{ route('tag.store') }}", // Adjust the route to your backend
+                            url: "{{ route('tag.store') }}", 
                             method: 'POST',
                             data: {
                                 _token: '{{ csrf_token() }}',
@@ -239,16 +288,21 @@
                             },
                             success: function(response) {
                                 $('#tags').append(new Option(tagName, response
-                                    .tag_id)); // Add new tag to select
-                                $('#existingTags').append(`
-                            <div class="tag-item">
-                                <span>${tagName}</span>
-                                <button type="button" class="btn btn-warning btn-sm edit-tag" data-id="${response.tag_id}" data-name="${tagName}">แก้ไข</button>
-                                <button type="button" class="btn btn-danger btn-sm delete-tag" data-id="${response.tag_id}">ลบ</button>
-                            </div>
+                                    .tag_id));
+                                $('tbody').append(`
+                            <tr>
+                                <td class="p-1">${tagName}</td>
+                                <td class="p-1">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm edit-tag" data-id="${response.tag_id}" data-name="${tagName}">แก้ไข</button>
+                                        <button type="button" class="btn btn-danger btn-sm delete-tag" data-id="${response.tag_id}">ลบ</button>
+                                    </div>
+                                </td>
+                            </tr>
                         `);
-                                $('#tagName').val(''); // Clear input
-                                $('#tagsModal').modal('hide'); // Close modal
+                                $('#tagName').val('');
+                                $('#addTagsModal').modal('hide');
+                                location.reload();
                             },
                             error: function(xhr) {
                                 alert('เกิดข้อผิดพลาดในการบันทึก tag');
@@ -258,62 +312,77 @@
                 });
 
                 // Editing tag
-                $(document).on('click', '.edit-tag', function() {
-                    let tagId = $(this).data('id');
-                    let tagName = $(this).data('name');
+                $('.edit-tag').click(function() {
+                    var tagId = $(this).data('id');
+                    var tagName = $(this).data('name');
+
+                    $('#tagId').val(tagId);
                     $('#tagName').val(tagName);
-                    $('#saveTagBtn').off().click(function() {
-                        $.ajax({
-                            url: "{{ route('tag.update') }}", // Adjust the route to your backend
-                            method: 'PUT',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                id: tagId,
-                                name: $('#tagName').val()
-                            },
-                            success: function(response) {
-                                $(`button[data-id="${tagId}"]`).prev().text(response
-                                    .name); // Update displayed tag name
-                                $('#tagsModal').modal('hide'); // Close modal
-                            }
-                        });
+
+                    // Open the modal (if using Bootstrap modal)
+                    $('#manageTagsModal').modal('show');
+                });
+
+                $('#saveEditTagBtn').click(function() {
+                    let tagId = $('#tagId').val();
+                    let tagName = $('#tagName').val();
+
+                    $.ajax({
+                        url: "{{ route('tag.update') }}",
+                        method: "PUT",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id: tagId,
+                            name: tagName
+                        },
+                        success: function(response) {
+                            alert('อัปเดตสำเร็จ');
+                            location.reload(); 
+                        },
+                        error: function(xhr) {
+                            alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
+                        }
                     });
                 });
 
-                // Deleting tag
-                $(document).on('click', '.delete-tag', function() {
+                $('.delete-tag').click(function() {
                     let tagId = $(this).data('id');
-                    if (confirm('คุณต้องการลบ tag นี้หรือไม่?')) {
+
+                    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ Tag นี้?')) {
                         $.ajax({
-                            url: "{{ route('tag.delete') }}", // Adjust the route to your backend
-                            method: 'DELETE',
+                            url: "{{ route('tag.delete') }}",
+                            method: "DELETE",
                             data: {
-                                _token: '{{ csrf_token() }}',
+                                _token: "{{ csrf_token() }}",
                                 id: tagId
                             },
-                            success: function() {
-                                $(`button[data-id="${tagId}"]`).parent()
-                                    .remove(); // Remove tag item from UI
-                                $('#tags option[value="' + tagId + '"]')
-                                    .remove(); // Remove from select2
+                            success: function(response) {
+                                alert('ลบสำเร็จ');
+                                location.reload();
                             },
-                            error: function() {
-                                alert('เกิดข้อผิดพลาดในการลบ tag');
+                            error: function(xhr) {
+                                alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
                             }
                         });
                     }
                 });
+
             });
         </script>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {
+                function clearAutoSave() {
+                    localStorage.removeItem("title");
+                    localStorage.removeItem("details");
+                    localStorage.removeItem("tags");
+                    sessionStorage.setItem("formSaved", "true");
+                }
                 function validateFileInput() {
                     var fileInput = $("#formFile")[0];
                     var file = fileInput.files[0];
                     var allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-                    var maxSize = 10 * 1024 * 1024; // 10MB
+                    var maxSize = 5 * 1024 * 1024; // 5MB
                     $(".file-error").remove(); // ลบแจ้งเตือนก่อนหน้า
 
                     if (!file) {
@@ -338,7 +407,7 @@
                 }
 
                 $("form").submit(function(e) {
-                    e.preventDefault(); // ป้องกันการส่งฟอร์มปกติ
+                    e.preventDefault(); 
                     $(".alert-danger").remove(); // ล้างข้อความแจ้งเตือนก่อน
 
                     if (!validateFileInput()) {
@@ -356,6 +425,7 @@
                         contentType: false,
                         success: function(response) {
                             if (response.success) {
+                                clearAutoSave(); // ล้างข้อมูล auto save
                                 $("#successModal").modal("show");
                                 setTimeout(function() {
                                     window.location.href =

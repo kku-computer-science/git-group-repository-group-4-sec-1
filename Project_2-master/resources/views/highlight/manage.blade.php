@@ -3,7 +3,6 @@
     <style>
         td.title-column {
             max-width: 500px;
-            /* ปรับขนาดความกว้างตามต้องการ */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -17,18 +16,14 @@
             <div class="card" style="padding: 16px;">
                 <div class="card-body">
 
-
-                    <!-- Success Message -->
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
                     @endif
 
-                    <!-- Add New File Button -->
                     <a href="{{ url('/add-highlight') }}" class="btn btn-success mb-3">เพิ่มไฮไลท์ใหม่</a>
 
-                    <!-- Files Table -->
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -58,7 +53,7 @@
                                         </button>
 
 
-                                        <a href="{{ url('/preview/' . $item['news_id']) }}"
+                                        <a 
                                             class="btn btn-dark btn-sm mx-2">พรีวิว</a>
                                     </td>
                                 </tr>
@@ -74,11 +69,11 @@
             <div class="modal-dialog">
                 <div class="modal-content text-center">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold" id="deleteModalLabel">ยืนยันการลบ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        คุณแน่ใจหรือไม่ว่าต้องการลบไฮไลท์นี้? ข้อมูลที่ลบจะไม่สามารถกู้คืนได้
+                        <div class="mdi mdi-alert-circle mdi-48px mb-3 text-danger"></div>
+                        <p class="fs-5 lh-base fw-bold">คุณแน่ใจหรือไม่ว่าต้องการลบไฮไลท์นี้? <br>ข้อมูลที่ลบจะไม่สามารถกู้คืนได้</p>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
