@@ -33,6 +33,18 @@ class GetHighlight
         });
     }
 
+    public static function getLatestNews($limit = 5) {
+        return News::with('tags')
+            ->whereIn('publish_status', ["published", "highlight"])
+            ->orderBy('publish', 'desc')
+            ->limit($limit)
+            ->get()
+            ->map(function($news) {
+                return self::getNewsObj($news);
+            });
+    }
+
+
     public static function getNews($newsId){
         $news = News::with('tags')->findOrFail($newsId);
         return self::getNewsObj($news);
@@ -57,6 +69,18 @@ class GetHighlight
                 return self::getNewsObj($news);
             });
     }
+
+    public static function getNewsbyMultiTags($tagIds){
+        return News::with('tags')
+            ->whereHas('tags', function ($query) use ($tagIds) {
+                $query->whereIn('tag.tag_id', $tagIds);
+            }, '=', count($tagIds))
+            ->get()
+            ->map(function ($news) {
+                return self::getNewsObj($news);
+            });
+    }
+
 
     public static function getTags(){
         return Tag::all()->map(function($tag) {
