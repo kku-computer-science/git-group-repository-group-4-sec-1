@@ -70,7 +70,7 @@
     .highlight-card {
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* เพิ่ม transition เพื่อให้การเปลี่ยนแปลงเรียบเนียน */
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -79,6 +79,11 @@
     flex-direction: column;
     }
 
+        /* เมื่อ hover card */
+    .highlight-card:hover {
+        transform: scale(1.05); /* ขยายขนาด card ขึ้นเล็กน้อย */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเพื่อทำให้ดูเด่นขึ้น */
+    }
     .card-img-top {
     height: 200px;
     object-fit: cover;
@@ -98,6 +103,10 @@
     transition: opacity 0.2s ease-in-out;
     }
 
+    .highlight-card:hover .card-tooltip {
+    opacity: 1;
+    }
+
     .card-title {
     color: #19568A;
     font-family: 'Kanit', sans-serif;
@@ -111,47 +120,44 @@
     justify-content: space-between;
     padding: 12px;
     text-align: center;
+    transform: scale(1.05);
     }
 
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        position: relative;
-        z-index: 1;
-        background-image: none; /* เอาไอคอน Bootstrap ออกก่อน */
-        width: 20px; /* ปรับขนาดลูกศร */
-        height: 20px;
+
+    /* สไตล์สำหรับปุ่ม "อ่านเพิ่มเติม" */
+    .btn-read-more-link {
+        display: block;
+        margin: 15px auto; /* จัดให้ปุ่มอยู่กลาง */
+        width: 80%; /* ปรับความกว้างของปุ่ม */
     }
 
-    /* ใช้ pseudo-element สร้างไอคอนลูกศรสีขาว */
-    .carousel-control-prev-icon::after,
-    .carousel-control-next-icon::after {
-        content: ''; /* ใช้ Unicode ลูกศร */
-        font-size: 30px;
-        color: white; /* เปลี่ยนสีลูกศรเป็นสีขาว */
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    .btn-read-more {
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgb(0, 0, 0 ,0.5)); /* ไล่สีจากโปร่งแสง (ใส) ไปเป็นสีฟ้าเข้ม */
+        color: white;
+        border: none;
+        padding: 15px 0; /* ความสูงของปุ่ม */
+        width: 100%; /* ปรับให้กว้างเต็มความกว้างของ parent container */
+        border-radius: 5px; /* ทำให้มุมโค้งมน */
+        font-size: 18px; /* ขนาดฟอนต์ */
+        cursor: pointer;
+        text-align: center; /* ให้ข้อความอยู่กลาง */
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    /* ปรับไอคอนลูกศรด้านขวา */
-    .carousel-control-next-icon::after {
-        content: '';
+    .btn-read-more:hover {
+        background: linear-gradient(to bottom, rgba(61, 63, 65, 0.3), rgb(0, 0, 0, 0.7)); /* เพิ่มความชัดเจนเมื่อ hover */
+        transform: scale(1.05); /* เพิ่มขนาดเมื่อ hover */
     }
-
-    
-    
-
-
 
 
 </style>
 @section('content')
-<div class="container home">
-    <div class="container d-sm-flex justify-content-center mt-5">
-        
-        @if($highlightNews->isNotEmpty())
-            <style>
+<div class="container home"> <br>
+<h2 class="text-center">Highlight</h2>
+        <div class="container d-sm-flex justify-content-center mt-5">
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                @if($highlightNews->isNotEmpty())
+                <style>
                 /* วงกลมสีดำโปร่งแสงอยู่ด้านหลัง */
                 .carousel-control-prev::before{
                     content: '';
@@ -178,56 +184,51 @@
                     z-index: -1; /* ให้วงกลมอยู่ด้านหลังลูกศร */
                 }
             </style>
-            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-                
-                <div class="carousel-indicators">
-                    @foreach ($highlightNews as $index => $news)
-                        <button type="button" data-bs-target="#carouselExampleIndicators" 
-                            data-bs-slide-to="{{ $index }}" 
-                            class="{{ $index == 0 ? 'active' : '' }}" 
-                            aria-label="Slide {{ $index + 1 }}"></button>
-                    @endforeach
-                </div>
-                
-                <div class="carousel-inner">
-                    
-                    @foreach ($highlightNews as $index => $news)
-                        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                            <a href="{{ url('/news/' . $news['news_id']) }}" class="news-item">
-                            <img src="{{ asset('storage/' . $news['banner']) }}" class="d-block w-100" alt="{{ $news['title'] }}">
-                                <div class="news-overlay">อ่านเพิ่มเติม</div>
-                            </a>
+                        <div class="carousel-indicators">
+                            @foreach ($highlightNews as $index => $news)
+                                <button type="button" data-bs-target="#carouselExampleIndicators" 
+                                    data-bs-slide-to="{{ $index }}" 
+                                    class="{{ $index == 0 ? 'active' : '' }}" 
+                                    aria-label="Slide {{ $index + 1 }}"></button>
+                            @endforeach
                         </div>
-                    @endforeach
-                    
-                </div>
+                        
+                        <div class="carousel-inner">
+                            @foreach ($highlightNews as $index => $news)
+                                <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                    <a href="{{ url('/news/' . $news->news_id) }}" class="news-item">
+                                        <img src="{{ asset('storage/' . $news->path_banner_img) }}" class="d-block w-100" alt="{{ $news->title }}">
+                                        <div class="news-overlay">อ่านเพิ่มเติม</div>
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
 
-                <!-- ปุ่มซ้ายขวา -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            
+                        <!-- ปุ่มซ้ายขวา -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                @else
+                    <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-100">
+                @endif
             </div>
-        @else
-        <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-50">
-        @endif
-    </div>
+        </div>
     
-    <!-- แสดงข่าว 6 ข่าว -->
+    <!-- แสดงข่าวhighlight 6 ข่าว -->
 
     <div id="highlight-container"><br>
-    <h2 class="text-center">Newest Highlight</h2>
+    <h2 class="text-center">ข่าวประชาสัมพันธ์</h2>
     <br>
             @if ($latestNews->isEmpty())
                 <p class="text-center">ไม่มีไฮไลท์.</p>
             @else
                 <div class="row">
-                    @foreach ($latestNews as $latestNews)
+                    @foreach ($latestNews->take(6) as $latestNews)
                         <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
                             <a href="{{ route('news.details', $latestNews['news_id'] ?? '#') }}" class="text-decoration-none">
                                 <div class="card highlight-card">
@@ -240,8 +241,6 @@
                                         ไม่พบรูปภาพ
                                     </div>
                                 @endif
-
-
                                     <div class="card-tooltip">อ่านเพิ่มเติม</div>
                                     <div class="card-body">
                                         <h5 class="card-title">{{ Str::limit($latestNews['title'] ?? 'ไม่มีชื่อเรื่อง', 50) }}</h5>
@@ -249,8 +248,14 @@
                                 </div>
                             </a>
                         </div>
+                        
                     @endforeach
+                    
+                    <a href="{{ route('highlight.index') }}" class="btn-read-more-link">
+                        <button type="button" class="btn-read-more">อ่านเพิ่มเติม</button>
+                    </a>
                 </div>
+                
             @endif
         </div>
 </div>
@@ -374,7 +379,34 @@
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<!-- ลิงก์ Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<!-- ลิงก์ JavaScript ของ Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var myCarousel = document.querySelector("#carouselExampleIndicators");
+        var carousel = new bootstrap.Carousel(myCarousel, {
+            interval: 5000,
+            wrap: true
+        });
+
+        document.querySelector(".carousel-control-prev").addEventListener("click", function (event) {
+            event.preventDefault();
+            console.log("Previous button clicked"); // เพิ่มการตรวจสอบ
+            carousel.prev();
+        });
+
+        document.querySelector(".carousel-control-next").addEventListener("click", function (event) {
+            event.preventDefault();
+            console.log("Next button clicked"); // เพิ่มการตรวจสอบ
+            carousel.next();
+        });
+    });
+</script>
 <script>
     $(document).ready(function() {
         $(".moreBox").slice(0, 1).show();     
