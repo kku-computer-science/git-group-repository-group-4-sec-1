@@ -30,15 +30,15 @@ class ShowAllNews extends Controller{
         }
         //ค้นหาด้วย Tag
         if ($request->has('tag_id') && !empty($request->tag_id)){
-            $selected = $request->tag_id;
+            $selected = is_array($request->tag_id) ? $request->tag_id : explode(',', $request->tag_id);
 
-            $newsWithTagIds = NewsTag::where('tag_id',$selected)->pluck('news_id');
-
-            $News_Pub = $News_Pub->filter(function ($item) use ($newsWithTagIds){
-                return in_array($item['news_id'],$newsWithTagIds->toArray());
+            $newsWithTagIds = GetHighlight::getNewsbyMultiTags($selected);
+            
+            $News_Pub = $News_Pub->filter(function ($news) use ($newsWithTagIds) {
+                return $newsWithTagIds->contains('news_id', $news['news_id']);
             });
         }
-
+        
         $highlightNews = $News_Pub->where('publish_status','highlight');
         $highlightNews = $highlightNews->sortByDesc('publish');
 
