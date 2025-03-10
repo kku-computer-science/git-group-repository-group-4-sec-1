@@ -67,13 +67,105 @@
         opacity: 1;
     }
 
+    .highlight-card {
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    }
+
+    .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    }
+
+    .card-tooltip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 0;
+    font-size: 14px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    }
+
+    .card-title {
+    color: #19568A;
+    font-family: 'Kanit', sans-serif;
+    font-size: 16px;
+    }
+
+    .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 12px;
+    text-align: center;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        position: relative;
+        z-index: 1;
+        background-image: none; /* เอาไอคอน Bootstrap ออกก่อน */
+        width: 20px; /* ปรับขนาดลูกศร */
+        height: 20px;
+    }
+
+    /* ใช้ pseudo-element สร้างไอคอนลูกศรสีขาว */
+    .carousel-control-prev-icon::after,
+    .carousel-control-next-icon::after {
+        content: ''; /* ใช้ Unicode ลูกศร */
+        font-size: 30px;
+        color: white; /* เปลี่ยนสีลูกศรเป็นสีขาว */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* ปรับไอคอนลูกศรด้านขวา */
+    .carousel-control-next-icon::after {
+        content: '';
+    }
+
+    /* วงกลมสีดำโปร่งแสงอยู่ด้านหลัง */
+    .carousel-control-prev::before,
+    .carousel-control-next::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 50px;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.5); /* สีดำโปร่งแสง */
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1; /* ให้วงกลมอยู่ด้านหลังลูกศร */
+    }
+
+
+
+
+
 </style>
 @section('content')
 <div class="container home">
     <div class="container d-sm-flex justify-content-center mt-5">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            
             <div class="carousel-indicators">
-                @foreach ($latestNews as $index => $news)
+                @foreach ($highlightNews as $index => $news)
                     <button type="button" data-bs-target="#carouselExampleIndicators" 
                         data-bs-slide-to="{{ $index }}" 
                         class="{{ $index == 0 ? 'active' : '' }}" 
@@ -82,7 +174,7 @@
             </div>
 
             <div class="carousel-inner">
-                @foreach ($latestNews as $index => $news)
+                @foreach ($highlightNews as $index => $news)
                     <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                         <a href="{{ url('/news/' . $news->news_id) }}" class="news-item">
                         <img src="{{ asset($news->path_banner_img) }}" class="d-block w-100" alt="{{ $news->title }}">
@@ -92,6 +184,7 @@
                 @endforeach
             </div>
 
+            <!-- ปุ่มซ้ายขวา -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -101,7 +194,43 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+       
     </div>
+    <!-- แสดงข่าว 6 ข่าว -->
+
+    <div id="highlight-container"><br>
+    <h2 class="text-center">Newest Highlight</h2>
+    <br>
+            @if ($latestNews->isEmpty())
+                <p class="text-center">ไม่มีไฮไลท์.</p>
+            @else
+                <div class="row">
+                    @foreach ($latestNews as $latestNews)
+                        <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
+                            <a href="{{ route('news.details', $latestNews['news_id'] ?? '#') }}" class="text-decoration-none">
+                                <div class="card highlight-card">
+                                @if (filter_var($latestNews['banner'], FILTER_VALIDATE_URL) && @getimagesize($latestNews['banner']))
+                                    <!-- ถ้ามี URL และเป็นภาพจริง -->
+                                    <img src="{{ $latestNews['banner'] }}" class="card-img-top rounded img-fluid" alt="{{ $latestNews['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
+                                @else
+                                    <!-- ถ้าไม่มีรูป หรือไม่สามารถโหลดรูป -->
+                                    <div class="card-img-top rounded img-fluid text-center" style="border: 2px solid #000; padding: 100px; font-size: 20px; color: #000;">
+                                        ไม่พบรูปภาพ
+                                    </div>
+                                @endif
+
+
+                                    <div class="card-tooltip">อ่านเพิ่มเติม</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ Str::limit($latestNews['title'] ?? 'ไม่มีชื่อเรื่อง', 50) }}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </div>
 </div>
 
 
