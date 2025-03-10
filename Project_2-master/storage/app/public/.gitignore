@@ -1,2 +1,4 @@
 *
 !.gitignore
+!news_banners/
+!news_banners/*

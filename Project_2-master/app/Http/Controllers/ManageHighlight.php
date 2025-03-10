@@ -115,6 +115,9 @@ class ManageHighlight extends Controller
 
     public function updateHighlight(Request $request, $id)
     {
+        // ดึงข้อมูลข่าวจากฐานข้อมูล
+        $news = News::where('news_id', $id)->firstOrFail();
+
         $request->validate([
             'title' => 'required|string|max:255',
             'details' => 'required|string',
@@ -122,6 +125,7 @@ class ManageHighlight extends Controller
             'tags' => 'nullable|array'
         ]);
 
+        // เตรียมข้อมูลสำหรับการอัปเดต
         $newsData = [
             'title' => $request->title,
             'content' => $request->details,
@@ -129,10 +133,17 @@ class ManageHighlight extends Controller
         ];
 
         if ($request->hasFile('file')) {
-            $imagePath = $request->file('file')->store('highlight_images', 'public');
-            $newsData['path_banner_img'] = $imagePath;
+            // ลบไฟล์เก่าก่อน
+            if ($news->banner && Storage::exists('public/' . $news->banner)) {
+                Storage::delete('public/' . $news->banner);
+            }
+        
+            // เก็บไฟล์ใหม่
+            $imagePath = $request->file('file')->store('news_banners', 'public'); 
+            $newsData['banner'] = $imagePath;  // ใช้ชื่อ banner ให้ตรงกับ storeHighlight
         }
 
+        // อัปเดตข้อมูลในฐานข้อมูล
         $updatedNews = HighlightEditor::updateNewsContent($id, $newsData);
 
         if ($updatedNews) {
