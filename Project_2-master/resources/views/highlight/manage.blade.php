@@ -47,15 +47,17 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ url('/edit-highlight/' . ($item['news_id'] ?? '')) }}"
-                                                class="btn btn-primary btn-sm mx-2">แก้ไข</a>
+                                            <a href="{{ url('/edit-highlight/' . $item['news_id']) }}" 
+                                            class="btn btn-primary btn-sm mx-2">แก้ไข</a>
 
                                             <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal" data-id="{{ $item['news_id'] ?? '' }}">
                                                 ลบ
                                             </button>
 
-                                            <a href="{{url('/preview/{newsId}' . ($item['news_id' ?? '']))}}" class="btn btn-dark btn-sm mx-2">พรีวิว</a>
+                                            <a href="{{ url('/preview/' . $item['news_id']) }}"
+                                                class="btn btn-dark btn-sm mx-2">พรีวิว</a>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -94,8 +96,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {

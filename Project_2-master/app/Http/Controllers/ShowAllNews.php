@@ -42,8 +42,8 @@ class ShowAllNews extends Controller{
         $highlightNews = $News_Pub->where('publish_status','highlight');
         $highlightNews = $highlightNews->sortByDesc('publish');
 
-        $publishNews = $News_Pub->where('publish_status', 'published')
-                                ->sortByDesc(fn($item) => strtotime($item->publish ?? '0'));
+        $publishNews = $News_Pub->where('publish_status', 'published');
+        $publishNews = $publishNews->sortByDesc('publish');
 
         $SortNews = $highlightNews->merge($publishNews);        
 
