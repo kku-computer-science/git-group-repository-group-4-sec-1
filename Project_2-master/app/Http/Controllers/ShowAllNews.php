@@ -34,7 +34,9 @@ class ShowAllNews extends Controller{
 
             $newsWithTagIds = GetHighlight::getNewsbyMultiTags($selected);
             
-            $News_Pub = $newsWithTagIds;
+            $News_Pub = $News_Pub->filter(function ($news) use ($newsWithTagIds) {
+                return $newsWithTagIds->contains('news_id', $news['news_id']);
+            });
         }
         
         $highlightNews = $News_Pub->where('publish_status','highlight');
