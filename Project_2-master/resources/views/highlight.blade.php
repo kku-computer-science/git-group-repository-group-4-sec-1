@@ -145,10 +145,56 @@
     font-size: 14px;
 }
 
+.select2-container .select2-selection--multiple {
+            min-height: 50px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #007bff;
+        }
+
+        .select2-container--default .select2-results__option {
+            font-size: 16px;
+            color: #333;
+        }
+
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .select2-container--default .select2-selection__placeholder {
+            font-size: 16px;
+            color: #888;
+        }
+
+        .select2-container--default .select2-selection__clear {
+            font-size: 18px;
+            color: red;
+        }
+
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            font-size: 14px;
+            background-color: #e3f2fd;
+            color: #fff;
+            border-radius: 5px;
+            padding: 4px 10px;
+        }
+
 
 </style>
 
 @section('content')
+
+<!-- jQuery (needed for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
     <div class="container">
         <h2 class="text-center">ไฮไลท์ทั้งหมด</h2>
 
@@ -156,21 +202,23 @@
             <form method="GET" action="{{ route('highlight.index') }}" class="search-form">
                 <input type="text" name="search" placeholder="ค้นหาข่าว..." value="{{ request('search') }}">
                 <button type="submit">ค้นหา</button>
-                <div class="dropdown-container">
-                    <select name="tag_id" onchange="this.form.submit()">
-                        <option value="">แท็กทั้งหมด</option>
-                        @foreach($tags as $tag)
-                            <option value="{{ $tag['tag_id'] }}" 
-                                {{ request('tag_id') == $tag['tag_id'] ? 'selected' : '' }}>
-                                {{ $tag['tag_name'] }}
-                            </option>
-                        @endforeach
-                    </select>
+                
+
+                    <div class="col-8 mt-4">
+                                <label for="tags" class="fw-bold">Tags</label>
+                                <select name="tag_id[]" id="tags" class="form-control p-3 select2" multiple="multiple">
+                                    @foreach ($tags as $tag)
+                                        <option value="{{ $tag['tag_id'] }}"
+                                            {{ in_array($tag['tag_id'], (array) request('tag_id', [])) ? 'selected' : '' }}>
+                                            {{ $tag['tag_name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                     <i class="fa fa-chevron-down dropdown-icon"></i>
                 </div>
             </form>
         </div>
-
 
         <div id="highlight-container">
             @if ($highlights->isEmpty())
@@ -181,9 +229,9 @@
                         <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
                             <a href="{{ route('news.details', $highlight['news_id'] ?? '#') }}" class="text-decoration-none">
                                 <div class="card highlight-card">
-                                @if (filter_var($highlight['banner'], FILTER_VALIDATE_URL) && @getimagesize($highlight['banner']))
+                                @if (!empty($highlight['banner']))
                                     <!-- ถ้ามี URL และเป็นภาพจริง -->
-                                    <img src="{{ $highlight['banner'] }}" class="card-img-top rounded img-fluid" alt="{{ $highlight['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
+                                    <img src="{{ asset('storage/' . $highlight['banner']) }}" class="card-img-top rounded img-fluid" alt="{{ $highlight['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
                                 @else
                                     <!-- ถ้าไม่มีรูป หรือไม่สามารถโหลดรูป -->
                                     <div class="card-img-top rounded img-fluid text-center" style="border: 2px solid #000; padding: 100px; font-size: 20px; color: #000;">
@@ -202,4 +250,19 @@
             @endif
         </div>
     </div>
+        
+
+        <script>
+    $(document).ready(function() {
+        $('#tags').select2({
+            placeholder: "เลือก Tags...",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+
+        
 @endsection
+
+
