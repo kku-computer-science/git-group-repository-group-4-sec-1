@@ -15,7 +15,8 @@
         {{-- banner --}}
             <div class="news-preview">
             <div class="news-header">
-            <img src="{{ asset('storage/' . $news_items['banner']) }}" alt="banner" class="img-fluid">
+            {{-- <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-50"> --}}
+            {{-- <img src="{{ asset('storage/' . $news_items['banner']) }}" alt="banner" class="img-fluid"> --}}
            
 
         {{-- tag --}}
@@ -27,15 +28,15 @@
                 @endforeach
                 
                 </span>
-                 <br>
-                <span class="news-date">เผยแพร่: {{ now()->format('d/m/Y') }}</span>
+                 
+                <span style="display: block; text-align: right;" class="news-date">เผยแพร่: {{ now()->format('d/m/Y') }}</span>
             </div>
             </div>
         
             
 
         {{-- Title --}}
-            <div class="news-content">
+            <div class="news-content text-center mt-4">
             <h3>{{ $news_items['title'] ?? 'ยังไม่ได้ใส่ข้อมูล'  }}</h3>
 
         {{-- Detail --}}

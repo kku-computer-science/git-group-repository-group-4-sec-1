@@ -16,17 +16,23 @@
 
         {{-- ตั้งเป็นไฮไลท์ --}}
         @if (!empty($news_items) && count($news_items) > 0)
+        
             @foreach ($news_items as $item)
                 <div class="col-sm-4 mb-3 text-center">
-                {{-- {{ $item['title'] ?? '-' }} --}}
-                    <img src="{{ asset('storage/' . $item['banner']) }}" alt="banner" class="img-fluid">
+                    @if (
+                    !empty($item['publish_status']) &&
+                    ($item['publish_status'] == 'highlight' || $item['publish_status'] == 'published'))
+                    <img src="{{ asset('storage/' . $item['banner']) }}" alt="banner" class="img-fluid"><br>
+                    {{ $item['title'] ?? '-' }}
                 </div>
                 <input type="checkbox">
             <label> ตั้งเป็นไฮไลท์</label><br>
+                    @endif
             @endforeach
+        
         @endif
             
-        <div class="text-center mt-4">
+        <div class="text-center mt-5 mx-10">
          <button type="submit" class="btn btn-success mt-4 mx-5 fw-bold text-center; ">บันทึก</button>
         </div>
 
