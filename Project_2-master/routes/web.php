@@ -161,6 +161,9 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::post('/tag/store', [ManageHighlight::class, 'storeTag'])->name('tag.store');
     Route::put('/tag/update', [ManageHighlight::class, 'updateTag'])->name('tag.update');
     Route::delete('/tag/delete', [ManageHighlight::class, 'destroyTag'])->name('tag.delete');
+
+    Route::get('/edit-highlight/{id}', [ManageHighlight::class, 'editHighlight'])->name('highlight.edit');
+    Route::put('/update-highlight/{id}/', [ManageHighlight::class, 'updateHighlight'])->name('highlight.update');
 });
 
 
