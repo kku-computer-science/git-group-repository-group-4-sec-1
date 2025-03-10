@@ -88,10 +88,10 @@ class ManageHighlight extends Controller
 
     public function previewHighlight($newsId)
     {
-        $news_items = GetHighlight::getNews($newsId);
+        $item = GetHighlight::getNews($newsId);
 
         // ส่งข้อมูลข่าวไปยัง preview
-        return view('highlight.preview', compact('news_items'));
+        return view('highlight.preview', compact('item'));
     }
 
     // เปลี่ยนสถานะข่าวจากฉบับร่างเป็นเผยแพร่

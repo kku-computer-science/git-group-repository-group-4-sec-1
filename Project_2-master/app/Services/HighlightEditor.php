@@ -70,7 +70,7 @@ class HighlightEditor
         if (!empty($updatedNews["title"]))
             $news->title = $updatedNews["title"];
         if (!empty($news->path_banner_img) && Storage::exists('public/' . $news->path_banner_img)) {
-            Storage::disk('public')->delete($news->path_banner_img);
+            Storage::delete('public/' . $news->path_banner_img);
 
             $news->path_banner_img = $updatedNews["banner"];
         }
