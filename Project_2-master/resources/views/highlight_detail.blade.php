@@ -5,8 +5,9 @@
     <div class="news-article">
         <!-- Banner Image -->
         <div class="news-banner">
-            @if (!empty($item['banner']) && file_exists(public_path($item['banner'])))
-                <img src="{{ asset($item['banner']) }}" alt="banner" class="w-100 h-50">
+            @if (!empty($item['banner']))
+           
+                <img src="{{ asset('storage/' . $item['banner']) }}" alt="banner" class="img-fluid">
             @else
                 <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-50">
             @endif

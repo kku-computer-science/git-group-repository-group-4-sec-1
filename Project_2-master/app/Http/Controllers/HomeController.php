@@ -11,18 +11,24 @@ use Bibtex;
 use RenanBr\BibTexParser\Listener;
 use RenanBr\BibTexParser\Parser;
 use RenanBr\BibTexParser\Processor;
+use App\Services\GetHighlight;
 
 class HomeController extends Controller
 {
 
     public function index()
     {
-        $latestNews = News::where('publish_status', 'published')
-            ->orderBy('publish', 'desc') 
-            ->take(3) 
-            ->get();
+        $highlightNews = GetHighlight::getAllNews();
+        $highlightNews = $highlightNews->filter(function ($item) {
+            return $item['publish_status'] == 'highlight';
+        });
         
-
+        $latestNews = GetHighlight::getAllNews();
+        
+        $latestNews = $latestNews->filter(function ($item) {
+            return $item['publish_status'] !== 'not_published';
+        });
+        $latestNews = $latestNews->sortByDesc('publish');
         
 
 
@@ -201,7 +207,7 @@ class HomeController extends Controller
 
         //$key="watchara";
         //return response()->json($bb);
-        return view('home', compact('papers', 'latestNews'))
+        return view('home', compact('papers', 'highlightNews', 'latestNews'))
             ->with('year', json_encode($year, JSON_NUMERIC_CHECK))
             ->with('paper_tci', json_encode($paper_tci, JSON_NUMERIC_CHECK))
             ->with('paper_scopus', json_encode($paper_scopus, JSON_NUMERIC_CHECK))

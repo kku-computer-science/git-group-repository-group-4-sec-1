@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\News;
 use App\Models\Tag;
 use App\Services\GetHighlight;
+use Illuminate\Support\Facades\Storage;
 
 class HighlightEditor
 {
@@ -47,6 +48,9 @@ class HighlightEditor
     public static function deleteNews($newsId){
         $news = News::find($newsId);
         if ($news) {
+            if ($news->path_banner_img) {
+                Storage::delete($news->path_banner_img);
+            }
             $news->tags()->detach();
             $news->delete();
             return true;
@@ -62,8 +66,12 @@ class HighlightEditor
             $news->content = $updatedNews["content"];
         if(!empty($updatedNews["title"]))
             $news->title = $updatedNews["title"];
-        if(!empty($updatedNews["path_banner_img"]))
-            $news->path_banner_img = $updatedNews["path_banner_img"];
+        if(!empty($updatedNews["banner"]) && $news->path_banner_img){
+            Storage::delete($news->path_banner_img);
+            $news->path_banner_img = $updatedNews["banner"];
+        }
+
+
 
         if(isset($updatedNews["tags"])){
             $news->tags()->sync($updatedNews['tags']);
