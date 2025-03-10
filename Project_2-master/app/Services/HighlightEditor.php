@@ -49,7 +49,7 @@ class HighlightEditor
         $news = News::find($newsId);
         if ($news) {
             if ($news->path_banner_img) {
-                Storage::delete($news->path_banner_img);
+                Storage::disk('public')->delete($news->path_banner_img);
             }
             $news->tags()->detach();
             $news->delete();

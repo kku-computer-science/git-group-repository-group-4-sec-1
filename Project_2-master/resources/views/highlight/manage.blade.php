@@ -55,7 +55,7 @@
                                                 ลบ
                                             </button>
 
-                                            <a href="{{ url('/preview/' . $item['news_id']) }}"
+                                            <a href="{{ url('/preview-highlight/' . $item['news_id']) }}"
                                                 class="btn btn-dark btn-sm mx-2">พรีวิว</a>
 
                                         </td>

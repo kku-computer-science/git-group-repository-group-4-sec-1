@@ -101,7 +101,7 @@ Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
 Route::get('/highlight', [ShowAllNews::class, 'index'])->name('highlight.index');
 
 //สำหรับหน้ารายละเอียดข่าว
-Route::get('/news/{id}',[ReadNewsController::class,'index'])->name('news.details');
+Route::get('/news/{id}', [ReadNewsController::class, 'index'])->name('news.details');
 
 
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
@@ -164,7 +164,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
     Route::get('/edit-highlight/{id}', [ManageHighlight::class, 'editHighlight'])->name('highlight.edit');
     Route::get('/preview-highlight/{id}', [ManageHighlight::class, 'previewHighlight'])->name('highlight.preview');
-    Route::put('/update-highlight/{id}/', [ManageHighlight::class, 'updateHighlight'])->name('highlight.update');
+    Route::put('/update-highlight/{id}', [ManageHighlight::class, 'updateHighlight'])->name('highlight.update');
     Route::post('/news/{id}/publish', [ManageHighlight::class, 'publish'])->name('highlight.publish');
 });
 
