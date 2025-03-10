@@ -18,12 +18,10 @@ class HomeController extends Controller
 
     public function index()
     {
-        $highlightNews = News::where('publish_status', 'highlight')
-            ->whereNotNull('path_banner_img')
-            ->where('path_banner_img', '<>', '')
-            ->orderBy('publish', 'desc') 
-            ->take(3) 
-            ->get();
+        $highlightNews = GetHighlight::getAllNews();
+        $highlightNews = $highlightNews->filter(function ($item) {
+            return $item['publish_status'] == 'highlight';
+        });
         
         $latestNews = GetHighlight::getAllNews();
         

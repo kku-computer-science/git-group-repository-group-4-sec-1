@@ -66,8 +66,12 @@ class HighlightEditor
             $news->content = $updatedNews["content"];
         if(!empty($updatedNews["title"]))
             $news->title = $updatedNews["title"];
-        if(!empty($updatedNews["banner"]))
+        if(!empty($updatedNews["banner"]) && $news->path_banner_img){
+            Storage::delete($news->path_banner_img);
             $news->path_banner_img = $updatedNews["banner"];
+        }
+
+
 
         if(isset($updatedNews["tags"])){
             $news->tags()->sync($updatedNews['tags']);

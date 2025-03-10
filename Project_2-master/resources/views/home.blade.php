@@ -139,21 +139,8 @@
         content: '';
     }
 
-    /* วงกลมสีดำโปร่งแสงอยู่ด้านหลัง */
-    .carousel-control-prev::before,
-    .carousel-control-next::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 50px;
-        height: 50px;
-        background-color: rgba(0, 0, 0, 0.5); /* สีดำโปร่งแสง */
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        z-index: -1; /* ให้วงกลมอยู่ด้านหลังลูกศร */
-    }
-
+    
+    
 
 
 
@@ -162,40 +149,75 @@
 @section('content')
 <div class="container home">
     <div class="container d-sm-flex justify-content-center mt-5">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        
+        @if($highlightNews->isNotEmpty())
+            <style>
+                /* วงกลมสีดำโปร่งแสงอยู่ด้านหลัง */
+                .carousel-control-prev::before{
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 50px;
+                    height: 50px;
+                    background-color: rgba(0, 0, 0, 0.5); /* สีดำโปร่งแสง */
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: -1; /* ให้วงกลมอยู่ด้านหลังลูกศร */
+                }
+                .carousel-control-next::before {
+                    content: '';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 50px;
+                    height: 50px;
+                    background-color: rgba(0, 0, 0, 0.5); /* สีดำโปร่งแสง */
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: -1; /* ให้วงกลมอยู่ด้านหลังลูกศร */
+                }
+            </style>
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                
+                <div class="carousel-indicators">
+                    @foreach ($highlightNews as $index => $news)
+                        <button type="button" data-bs-target="#carouselExampleIndicators" 
+                            data-bs-slide-to="{{ $index }}" 
+                            class="{{ $index == 0 ? 'active' : '' }}" 
+                            aria-label="Slide {{ $index + 1 }}"></button>
+                    @endforeach
+                </div>
+                
+                <div class="carousel-inner">
+                    
+                    @foreach ($highlightNews as $index => $news)
+                        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                            <a href="{{ url('/news/' . $news['news_id']) }}" class="news-item">
+                            <img src="{{ asset('storage/' . $news['banner']) }}" class="d-block w-100" alt="{{ $news['title'] }}">
+                                <div class="news-overlay">อ่านเพิ่มเติม</div>
+                            </a>
+                        </div>
+                    @endforeach
+                    
+                </div>
+
+                <!-- ปุ่มซ้ายขวา -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             
-            <div class="carousel-indicators">
-                @foreach ($highlightNews as $index => $news)
-                    <button type="button" data-bs-target="#carouselExampleIndicators" 
-                        data-bs-slide-to="{{ $index }}" 
-                        class="{{ $index == 0 ? 'active' : '' }}" 
-                        aria-label="Slide {{ $index + 1 }}"></button>
-                @endforeach
             </div>
-
-            <div class="carousel-inner">
-                @foreach ($highlightNews as $index => $news)
-                    <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                        <a href="{{ url('/news/' . $news->news_id) }}" class="news-item">
-                        <img src="{{ asset($news->path_banner_img) }}" class="d-block w-100" alt="{{ $news->title }}">
-                            <div class="news-overlay">อ่านเพิ่มเติม</div>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- ปุ่มซ้ายขวา -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-       
+        @else
+        <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-50">
+        @endif
     </div>
+    
     <!-- แสดงข่าว 6 ข่าว -->
 
     <div id="highlight-container"><br>
@@ -209,9 +231,9 @@
                         <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
                             <a href="{{ route('news.details', $latestNews['news_id'] ?? '#') }}" class="text-decoration-none">
                                 <div class="card highlight-card">
-                                @if (filter_var($latestNews['banner'], FILTER_VALIDATE_URL) && @getimagesize($latestNews['banner']))
+                                @if (!empty($latestNews['banner']))
                                     <!-- ถ้ามี URL และเป็นภาพจริง -->
-                                    <img src="{{ $latestNews['banner'] }}" class="card-img-top rounded img-fluid" alt="{{ $latestNews['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
+                                    <img src="{{ asset('storage/' . $latestNews['banner']) }}" class="card-img-top rounded img-fluid" alt="{{ $latestNews['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
                                 @else
                                     <!-- ถ้าไม่มีรูป หรือไม่สามารถโหลดรูป -->
                                     <div class="card-img-top rounded img-fluid text-center" style="border: 2px solid #000; padding: 100px; font-size: 20px; color: #000;">
