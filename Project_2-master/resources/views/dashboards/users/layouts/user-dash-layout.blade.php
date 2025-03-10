@@ -329,7 +329,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <ul class="nav flex-column sub-menu">
                                     <li class="nav-item"> <a class="nav-link"
                                             href="{{ route('highlight.manage') }}">Manage Highlight</a></li>
-                                    <li class="nav-item"> <a class="nav-link" href="#">Published Highlight</a></li>
+                                    <li class="nav-item"> <a class="nav-link" href="#">
+                                            Published Highlight</a></li>
                                 </ul>
                             </div>
                         </li>
