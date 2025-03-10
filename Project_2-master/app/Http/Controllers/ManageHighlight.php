@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\HighlightEditor;
 use App\Models\News;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Tag;
 
 class ManageHighlight extends Controller
 {
 
     public function manageHighlight()
     {
-        $news_items = GetHighlight::getAllNews();
+        $news_items = GetHighlight::getAllNews() ?? [];
         return view('highlight.manage', compact('news_items'));
     }
 
@@ -56,6 +57,11 @@ class ManageHighlight extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        // **ไม่ต้องเก็บไฟล์ลง Session**
+        if ($request->hasFile('file')) {
+            $request->file('file')->store('news_banners', 'public');
+        }
+
         // อัปโหลดไฟล์รูปภาพ
         if ($request->hasFile('file')) {
             $imagePath = $request->file('file')->store('news_banners', 'public');
@@ -77,7 +83,7 @@ class ManageHighlight extends Controller
         if ($request->ajax()) {
             return response()->json(['success' => true, 'message' => 'เพิ่มไฮไลท์สำเร็จ']);
         }
-        return redirect()->back()->with('success', 'เพิ่มไฮไลท์สำเร็จ');
+        return redirect()->back()->with('success', 'เพิ่มไฮไลท์สำเร็จ')->withInput();
     }
 
     public function previewHighlight($newsId)
@@ -88,12 +94,63 @@ class ManageHighlight extends Controller
         return view('highlight.preview', compact('news_items'));
     }
 
-    public function editHighlight($id)
+    // เปลี่ยนสถานะข่าวจากฉบับร่างเป็นเผยแพร่
+    public function publish(Request $request, $newsId)
     {
-        // $news_items = News::findOrFail($id);
-        return view('highlight.edit', compact('news_items'));
+        $updated = HighlightEditor::updateNewsStatus($newsId, 'published');
+
+        if ($updated) {
+            return response()->json(['success' => true, 'message' => 'ข่าวถูกเผยแพร่เรียบร้อยแล้ว']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'ไม่สามารถเผยแพร่ข่าวได้']);
     }
 
+    public function editHighlight($id)
+    {
+        $news = News::with('tags')->where('news_id', $id)->firstOrFail();
+        $tags = Tag::all();
+        return view('highlight.edit', compact('news', 'tags'));
+    }
+
+    public function updateHighlight(Request $request, $id)
+    {
+        // ดึงข้อมูลข่าวจากฐานข้อมูล
+        $news = News::where('news_id', $id)->firstOrFail();
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'details' => 'required|string',
+            'file' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+            'tags' => 'nullable|array'
+        ]);
+
+        // เตรียมข้อมูลสำหรับการอัปเดต
+        $newsData = [
+            'title' => $request->title,
+            'content' => $request->details,
+            'tags' => $request->tags ?? [],
+        ];
+
+        if ($request->hasFile('file')) {
+            // ลบไฟล์เก่าก่อน
+            if ($news->banner && Storage::exists('public/' . $news->banner)) {
+                Storage::delete('public/' . $news->banner);
+            }
+        
+            // เก็บไฟล์ใหม่
+            $imagePath = $request->file('file')->store('news_banners', 'public'); 
+            $newsData['banner'] = $imagePath;  // ใช้ชื่อ banner ให้ตรงกับ storeHighlight
+        }
+
+        // อัปเดตข้อมูลในฐานข้อมูล
+        $updatedNews = HighlightEditor::updateNewsContent($id, $newsData);
+
+        if ($updatedNews) {
+            return redirect()->route('highlight.edit', $id)->with('success', 'อัปเดตไฮไลท์สำเร็จ');
+        }
+        return back()->with('error', 'เกิดข้อผิดพลาดในการอัปเดตไฮไลท์');
+    }
 
     public function destroy($newsId)
     {
@@ -108,24 +165,30 @@ class ManageHighlight extends Controller
 
     public function showHighlight()
     {
-        //แสดง banner ไฮไลท์ทั้งหมดที่ publish_status = highlight และ published
-        return view('highlight.show');
+        // ดึงข่าวที่มี publish_status เป็น "published" หรือ "highlight"
+        $news = GetHighlight::getHighlights();
+
+        return view('highlight.show', compact('news'));
     }
 
     public function selectShowHighlight(Request $request)
     {
 
-        // สามารถเลือก publish_status เพื่อแสดงไฮไลท์ที่ต้องการโดยเลือกได้สูงสุด 5 รายการ ไฮไลท์ที่ได้รับการเลือกจะเปลี่ยน publish_status จาก published เป็น highlight
-        // $highlightedNews = News::where('publish_status', 'highlight')->count();
-        // if ($highlightedNews >= 5) {
-        //     return redirect()->route('highlight.show')->with('error', 'ไม่สามารถเลือกไฮไลท์เกิน 5 ข่าวได้');
-        // }
+        $newsList = $request->input('news', []);
+        $highlightCount = collect($newsList)->where('publish_status', 'highlight')->count();
 
-        // News::whereIn('id', $request->selected_news)->update(['publish_status' => 'highlight']);
-        return redirect()->route('highlight.show')->with('success', 'เลือกไฮไลท์สำเร็จ');
+        if ($highlightCount > 5) {
+            return response()->json(['message' => 'ไม่สามารถเลือกไฮไลท์เกิน 5 รายการ'], 400);
+        }
+
+        foreach ($newsList as $newsItem) {
+            HighlightEditor::updateNewsStatus($newsItem['news_id'], $newsItem['publish_status']);
+        }
+
+        return response()->json(['message' => 'อัปเดตไฮไลท์เรียบร้อย']);
+        // return redirect()->route('highlight.show')->with('success', 'เลือกไฮไลท์สำเร็จ');
     }
 
-    // Method to store a new tag
     public function storeTag(Request $request)
     {
         $request->validate([
@@ -140,11 +203,10 @@ class ManageHighlight extends Controller
         return response()->json(['message' => 'Tag already exists or invalid input'], 400);
     }
 
-    // Method to update an existing tag
     public function updateTag(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer|exists:tags,id',
+            'id' => 'required|integer|exists:tag,tag_id',
             'name' => 'required|string|max:255'
         ]);
 
@@ -156,11 +218,10 @@ class ManageHighlight extends Controller
         return response()->json(['message' => 'Tag not found or invalid input'], 400);
     }
 
-    // Method to delete an existing tag
     public function destroyTag(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer|exists:tags,id'
+            'id' => 'required|integer|exists:tag,tag_id'
         ]);
 
         $result = HighlightEditor::deleteTag($request->id);

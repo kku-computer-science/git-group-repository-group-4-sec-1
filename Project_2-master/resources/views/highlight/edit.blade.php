@@ -41,7 +41,7 @@
     <body>
 
         <div class="container mt-3">
-            <h3 class="text-center fw-bold mb-5">เพิ่มไฮไลท์ใหม่</h3>
+            <h3 class="text-center fw-bold mb-5">แก้ไขไฮไลท์</h3>
             <div class="card" style="padding: 16px;">
                 <div class="card-body">
 
@@ -54,7 +54,7 @@
                                 ขนาดไฟล์สูงสุด
                                 5MB)</label>
                             <input type="file" id="formFile" name="file" class="form-control form-control-lg"
-                                accept=".jpg, .jpeg, .png">
+                                accept=".jpg, .jpeg, .png" value = "{{old('file')}}">
                         </div>
 
                         <!-- Title -->
@@ -94,8 +94,9 @@
 
 
                         <!-- Submit Button -->
-                        <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary mt-4 fw-bold">บันทึก</button>
+                        <div class="d-flex justify-content-center ">
+                            <button type="submit" class="btn btn-primary mt-4 fw-bold">บันทึกการแก้ไข</button>
+                            <button type="submit" class="btn btn-success mt-4 mx-5 fw-bold; ">บันทึกและเผยแพร่</button>
                         </div>
                     </form>
 
@@ -110,7 +111,7 @@
                                 </div>
                                 <div class="modal-body text-center fw-bold">
                                     <div class="mdi mdi-checkbox-marked-circle mdi-48px mb-3 text-success"></div>
-                                    <p class="fs-5">เพิ่มไฮไลท์สำเร็จ</p>
+                                    <p class="fs-5">แก้ไขไฮไลท์สำเร็จ</p>
                                 </div>
                                 <div class="modal-footer d-flex justify-content-center">
                                     <button type="button" class="btn btn-secondary" id="closeSuccessModal"
@@ -144,7 +145,7 @@
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                            <button type="button" class="btn btn-primary" id="saveTagBtn">บันทึก</button>
+                            <button type="button" class="btn btn-primary" id="saveTagBtn">บันทึกการแก้ไข</button>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,13 @@
 # Change logs
 
+## Sprint 3
+### New
+- เพิ่ม Service GetHighlight สำหรับการจัดการการดึงข้อมูลของข่าว
+- เพิ่ม Service HighlightEditor สำหรับ CRUD เพื่อใช้เพื่อจัดการข่าวของ admin staff 
+- เพิ่ม Controller ReadNewsController สำหรับใช้อ่านข่าว
+### Update
+### Fix
+
 ## Sprint 2
 ### New
 - เพิ่ม class GetDataReport เพื่อ query ข้อมูลออกไปปริ้นท์

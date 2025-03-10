@@ -3,7 +3,6 @@
     <style>
         td.title-column {
             max-width: 500px;
-            /* ปรับขนาดความกว้างตามต้องการ */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -17,18 +16,14 @@
             <div class="card" style="padding: 16px;">
                 <div class="card-body">
 
-
-                    <!-- Success Message -->
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
                         </div>
                     @endif
 
-                    <!-- Add New File Button -->
                     <a href="{{ url('/add-highlight') }}" class="btn btn-success mb-3">เพิ่มไฮไลท์ใหม่</a>
 
-                    <!-- Files Table -->
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -38,31 +33,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($news_items as $item)
-                                <tr>
-                                    <td class="title-column">{{ $item['title'] }}</td>
-                                    <td>
-                                        @if ($item['publish_status'] == 'highlight' || $item['publish_status'] == 'published')
-                                            <span class="text-success fw-bold">เผยแพร่</span>
-                                        @else
-                                            <span class="text-warning fw-bold">ฉบับร่าง</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ url('/edit-highlight/' . $item['news_id']) }}"
+                            @if (!empty($news_items) && count($news_items) > 0)
+                                @foreach ($news_items as $item)
+                                    <tr>
+                                        <td class="title-column">{{ $item['title'] ?? '-' }}</td>
+                                        <td>
+                                            @if (
+                                                !empty($item['publish_status']) &&
+                                                    ($item['publish_status'] == 'highlight' || $item['publish_status'] == 'published'))
+                                                <span class="text-success fw-bold">เผยแพร่</span>
+                                            @else
+                                                <span class="text-warning fw-bold">ฉบับร่าง</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ url('/edit-highlight/' . $item['news_id']) }}" 
                                             class="btn btn-primary btn-sm mx-2">แก้ไข</a>
 
-                                        <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" data-id="{{ $item['news_id'] }}">
-                                            ลบ
-                                        </button>
+                                            <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" data-id="{{ $item['news_id'] ?? '' }}">
+                                                ลบ
+                                            </button>
 
+                                            <a href="{{ url('/preview/' . $item['news_id']) }}"
+                                                class="btn btn-dark btn-sm mx-2">พรีวิว</a>
 
-                                        <a href="{{ url('/preview/' . $item['news_id']) }}"
-                                            class="btn btn-dark btn-sm mx-2">พรีวิว</a>
-                                    </td>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3" class="text-center">ไม่มีข้อมูลไฮไลท์</td>
                                 </tr>
-                            @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -74,15 +77,17 @@
             <div class="modal-dialog">
                 <div class="modal-content text-center">
                     <div class="modal-header">
-                        <h5 class="modal-title fw-bold" id="deleteModalLabel">ยืนยันการลบ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        คุณแน่ใจหรือไม่ว่าต้องการลบไฮไลท์นี้? ข้อมูลที่ลบจะไม่สามารถกู้คืนได้
+                        <div class="mdi mdi-alert-circle mdi-48px mb-3 text-danger"></div>
+                        <p class="fs-5 lh-base fw-bold">คุณแน่ใจหรือไม่ว่าต้องการลบไฮไลท์นี้?
+                            <br>ข้อมูลที่ลบจะไม่สามารถกู้คืนได้
+                        </p>
                     </div>
                     <div class="modal-footer d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                        <form id="deleteForm" action="{{ url('/delete-highlight/' . $item['news_id']) }}" method="POST">
+                        <form id="deleteForm" action="" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">ลบ</button>
@@ -92,18 +97,17 @@
             </div>
         </div>
 
-
-
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 var deleteModal = document.getElementById("deleteModal");
+                var deleteForm = document.getElementById("deleteForm");
+
                 deleteModal.addEventListener("show.bs.modal", function(event) {
                     var button = event.relatedTarget || event.target.closest("[data-bs-target='#deleteModal']");
                     var newsId = button.getAttribute("data-id");
 
                     if (newsId) {
-                        var actionUrl = "/delete-highlight/" + newsId;
-                        document.getElementById("deleteForm").setAttribute("action", actionUrl);
+                        deleteForm.setAttribute("action", "/delete-highlight/" + newsId);
                     }
                 });
             });
