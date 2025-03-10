@@ -41,6 +41,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\GetReportDocxController;
 use App\Http\Controllers\ReadNewsController;
+use Illuminate\Support\Facades\Artisan;
 
 use App\Http\Controllers\ManageHighlight;
 /*
@@ -70,7 +71,25 @@ use App\Http\Controllers\ManageHighlight;
 //     return view('welcome');
 // });
 
+Route::get('/clear-all', function () {
+    Artisan::call('cache:clear');     // Clear Cache facade
+    Artisan::call('route:clear');     // Clear Route cache
+    Artisan::call('view:clear');      // Clear View cache
+    Artisan::call('config:clear');    // Clear Config cache
 
+    Artisan::call('optimize');        // Reoptimize class loader
+    Artisan::call('route:cache');     // Cache Routes
+    Artisan::call('config:cache');    // Cache Config
+    Artisan::call('storage:link');
+
+    return response()->json([
+        'cache' => 'Cache facade cleared',
+        'route' => 'Routes cached',
+        'view' => 'View cache cleared',
+        'config' => 'Config cached',
+        'optimize' => 'Class loader optimized'
+    ], 200);
+});
 
 Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
     Auth::routes();
