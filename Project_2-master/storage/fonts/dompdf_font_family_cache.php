@@ -79,10 +79,15 @@ return array (
     'normal' => $rootDir . '/lib/fonts/DejaVuSerif',
   ),
   'thsarabunnew' => array(
-    'normal' => $fontDir . '/thsarabunnew_normal_d1931ca94130202c49b131bbe1cd1669',
-    'bold' => $fontDir . '/thsarabunnew_bold_b7604dfb08ae055f91417a2c5cdbbda4',
-    'italic' => $fontDir . '/thsarabunnew_italic_c3c7a9531e546ae8e505b63d20de1b7e',
-    'bold_italic' => $fontDir . '/thsarabunnew_bold_italic_6c06bf9c162e8994559f05de43da1239',
+    'normal' => $fontDir . '/thsarabunnew_normal_132fe2115ca0999744942d2fd3fae227',
+    'bold' => $fontDir . '/thsarabunnew_bold_45180213bb6bf8c2189e09c48d7e3c7c',
+    'italic' => $fontDir . '/thsarabunnew_italic_c384b0417564e6edb6cdfb01858a04ee',
+    'bold_italic' => $fontDir . '/thsarabunnew_bold_italic_004294e4065bc55c4f168d311e23cbd7',
+    'normal' => $fontDir . '/thsarabunnew_normal_dab8c2a88924d67abd6210f6eb21c33b',
+    'bold' => $fontDir . '/thsarabunnew_bold_752c14af2b57524939e7081c80f52afa',
+    'italic' => $fontDir . '/thsarabunnew_italic_4c56012a506016481cd265da0e47d78f',
+    'bold_italic' => $fontDir . '/thsarabunnew_bold_italic_2e3497bba78a2efac1f750e1cc759e22',
+
   ),
   'fontawesome' => array(
     'normal' => $fontDir . '/fontawesome_normal_f6b2e9286a2b9f34642c243947f39e1a',

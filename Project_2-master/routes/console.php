@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UpdateUserScopusScholarId;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Console Routes
@@ -47,6 +48,16 @@ Artisan::command('docx:test_getbook {id}', function ($id) {
 
 Artisan::command('docx:test_getother {id}', function ($id) {
     app(App\Http\Controllers\GetReportDocxController::class)->getOtherWork($id);
+});
+
+Artisan::command('highlight {keyword?}', function ($keyword = null) {
+    $request = app(Request::class);
+
+    if($keyword){
+        $request->merge(['search' => $keyword]);
+    }
+
+    app(App\Http\Controllers\ShowAllNews::class)->index($request);
 });
 
 Artisan::command('inspire', function () {

@@ -118,7 +118,7 @@ class ProfileController extends Controller
                 ->where(DB::raw('(paper_yearpub)'), $value)
                 ->count();
         }
-        
+
 
         $year2 = range(Carbon::now()->year - 20, Carbon::now()->year);
         $paper_tci_s = [];
@@ -162,7 +162,7 @@ class ProfileController extends Controller
                 ->where(DB::raw('(paper_yearpub)'), $value)
                 ->count();
         }
-    
+
 
         foreach ($year2 as $key => $value) {
             $paper_book_s[] = Academicwork::where('ac_type', '=', 'book')
@@ -178,12 +178,13 @@ class ProfileController extends Controller
         }
         //return $paper_patent_s;
 
-        
+
         return view('researchprofiles')->with('year', json_encode($year, JSON_NUMERIC_CHECK))
             ->with('paper_tci', json_encode($paper_tci, JSON_NUMERIC_CHECK))
             ->with('paper_scopus', json_encode($paper_scopus, JSON_NUMERIC_CHECK))
             ->with('paper_wos', json_encode($paper_wos, JSON_NUMERIC_CHECK))
             ->with('paper_google_s', json_encode($paper_google_s, JSON_NUMERIC_CHECK))
+            ->with('papers_google', json_encode($papers_google, JSON_NUMERIC_CHECK))
             ->with('paper_tci_s', json_encode($paper_tci_s, JSON_NUMERIC_CHECK))
             ->with('paper_scopus_s', json_encode($paper_scopus_s, JSON_NUMERIC_CHECK))
             ->with('paper_wos_s', json_encode($paper_wos_s, JSON_NUMERIC_CHECK))
@@ -200,10 +201,11 @@ class ProfileController extends Controller
                 'paper_google_s',
                 'book_chapter',
                 'patent',
+                'papers_google',
                 'stats'
             ));
 
-            
+
 
         //return view('researchprofiles',compact('res','papers','year','paper'))->with('year',json_encode($year,JSON_NUMERIC_CHECK))->with('paper',json_encode($paper,JSON_NUMERIC_CHECK));
 

@@ -10,7 +10,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileuserController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\ShowAllNews;
 use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundController;
@@ -40,7 +40,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\GetReportDocxController;
+use App\Http\Controllers\ReadNewsController;
 
+use App\Http\Controllers\ManageHighlight;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -69,11 +71,12 @@ use App\Http\Controllers\GetReportDocxController;
 // });
 
 
+
 Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
     Auth::routes();
 });
 
-
+Route::get('/highlight-detail', [ManageHighlight::class, 'testDetail'])->name('highlight_detail');
 Route::get('/generate-pdf', [PDFprintController::class, 'generatePDF'])->name('generate_pdf');
 Route::get('/generate-word/{id}', [GetReportDocxController::class, 'generateWord'])->name('generate_word');
 Route::get('/export-report', [App\Http\Controllers\PDFprintController::class, 'index'])->name('exportreport.export');
@@ -95,6 +98,11 @@ Route::get('index', [LocalizationController::class, 'index']);
 Route::get('lang/{lang}', ['as' => 'langswitch', 'uses' => 'App\Http\Controllers\LocalizationController@switchLang']);
 Route::get('/export', [ExportPaperController::class, 'exportUsers'])->name('export-papers');
 Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
+Route::get('/highlight', [ShowAllNews::class, 'index'])->name('highlight.index');
+
+//สำหรับหน้ารายละเอียดข่าว
+Route::get('/news/{id}',[ReadNewsController::class,'index'])->name('news.details');
+
 
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
 //Route::get('change/lang', [LocalizationController::class,'lang_change'])->name('LangChange');
@@ -104,11 +112,11 @@ Route::get('/callscopus/{id}', [App\Http\Controllers\ScopuscallController::class
 
 Route::group(['middleware' => ['isAdmin', 'auth', 'PreventBackHistory']], function () {
     //Route::post('change-profile-picture',[ProfileuserController::class,'updatePicture'])->name('adminPictureUpdate');
-    
+
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    
+
     Route::get('importfiles', [ImportExportController::class, 'index'])->name('importfiles');
     Route::post('import', [ImportExportController::class, 'import']);
     // Route::get('export', [ImportExportController::class, 'export']);
@@ -144,6 +152,15 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('tests', [TestController::class, 'index']); //call department
     Route::get('tests/{id}', [TestController::class, 'getCategory'])->name('tests'); //call program
 
+    Route::get('/add-highlight', [ManageHighlight::class, 'addHighlight'])->name('highlight.add');
+    Route::get('/manage-highlight', [ManageHighlight::class, 'manageHighlight'])->name('highlight.manage');
+    Route::post('/highlight/store', [ManageHighlight::class, 'storeHighlight'])->name('highlight.store');
+    Route::delete('/delete-highlight/{newsId}', [ManageHighlight::class, 'destroy'])->name('highlight.destroy');
+    Route::get('/preview/{newsId}', [ManageHighlight::class, 'previewHighlight'])->name('highlight.preview');
+
+    Route::post('/tag/store', [ManageHighlight::class, 'storeTag'])->name('tag.store');
+    Route::put('/tag/update', [ManageHighlight::class, 'updateTag'])->name('tag.update');
+    Route::delete('/tag/delete', [ManageHighlight::class, 'destroyTag'])->name('tag.delete');
 });
 
 
