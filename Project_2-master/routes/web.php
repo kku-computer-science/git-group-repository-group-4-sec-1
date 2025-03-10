@@ -101,7 +101,8 @@ Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
 Route::get('/highlight', [ShowAllNews::class, 'index'])->name('highlight.index');
 
 //สำหรับหน้ารายละเอียดข่าว
-Route::get('/news/{id}',[ReadNewsController::class,'index'])->name('news.details');
+Route::get('/news/{id}',[ReadNewsController::class,'index'])->name('news.index');
+
 
 
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
