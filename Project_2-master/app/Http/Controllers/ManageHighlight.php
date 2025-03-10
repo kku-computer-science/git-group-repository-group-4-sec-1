@@ -143,7 +143,8 @@ class ManageHighlight extends Controller
     public function showHighlight()
     {
         //แสดง banner ไฮไลท์ทั้งหมดที่ publish_status = highlight และ published
-        return view('highlight.publish');
+        $news_items = GetHighlight::getAllNews() ?? [];
+        return view('highlight.show' ,compact('news_items'));
     }
 
     public function selectShowHighlight(Request $request)

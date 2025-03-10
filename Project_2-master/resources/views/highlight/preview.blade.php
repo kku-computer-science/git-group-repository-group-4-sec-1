@@ -36,13 +36,13 @@
 
         {{-- Title --}}
             <div class="news-content">
-            <h3>{{ $news_items['title'] ?? '-'  }}</h3>
+            <h3>{{ $news_items['title'] ?? 'ยังไม่ได้ใส่ข้อมูล'  }}</h3>
 
         {{-- Detail --}}
             <div  class="text-center mt-4">
             <p>{{ $news_items['details'] ?? '-ยังไม่ได้ใส่ข้อมูล-'  }}</p>
             </div>
-             {{-- <p>{!! nl2br(e($news_items['details'] ?? '-' )) !!}</p> --}}
+            
         </div>
 
         {{-- Author --}}
