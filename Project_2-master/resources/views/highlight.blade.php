@@ -33,7 +33,7 @@
 .highlight-card {
     border-radius: 8px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -41,7 +41,10 @@
     display: flex;
     flex-direction: column;
 }
-
+.highlight-card:hover {
+        transform: scale(1.05); /* ขยายขนาด card ขึ้นเล็กน้อย */
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเพื่อทำให้ดูเด่นขึ้น */
+    }
 .card-img-top {
     height: 200px;
     object-fit: cover;
@@ -146,6 +149,7 @@
 }
 
 .select2-container .select2-selection--multiple {
+            height: 40px;
             min-height: 50px;
             font-size: 16px;
             border-radius: 8px;
@@ -199,40 +203,24 @@
         <h2 class="text-center">ไฮไลท์ทั้งหมด</h2>
 
         <div class="search-container">
-            <form method="GET" action="{{ route('highlight.index') }}" class="search-form">
-                <input type="text" name="search" placeholder="ค้นหาข่าว..." value="{{ request('search') }}">
+            <form method="GET" action="{{ route('highlight.index') }}" class="search-form">      
+                    
+                <input type="text" name="search" placeholder="ค้นหาข่าว..." value="{{ request('search') }}">              
+                           
+                <select name="tag_id[]" id="tags" class="form-control p-3 select2" multiple="multiple">
+                    @foreach ($tags as $tag)
+                        <option value="{{ $tag['tag_id'] }}"
+                            {{ in_array($tag['tag_id'], (array) request('tag_id', [])) ? 'selected' : '' }}>
+                            {{ $tag['tag_name'] }}
+                        </option>
+                    @endforeach            
+                </select>  
+                <i class="fa fa-chevron-down dropdown-icon"></i>
                 <button type="submit">ค้นหา</button>
-                
-
-                    <div class="col-8 mt-4">
-                                <label for="tags" class="fw-bold">Tags</label>
-                                <select name="tag_id[]" id="tags" class="form-control p-3 select2" multiple="multiple">
-                                    @foreach ($tags as $tag)
-                                        <option value="{{ $tag['tag_id'] }}"
-                                            {{ in_array($tag['tag_id'], (array) request('tag_id', [])) ? 'selected' : '' }}>
-                                            {{ $tag['tag_name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                    <i class="fa fa-chevron-down dropdown-icon"></i>
                 </div>
             </form>
         </div>
-
-                        <!-- Tags -->
-                        <div class="form-group row">
-                            
-                            <div class="col-4">
-                                <button type="button" class="btn btn-success mt-5 fw-bold" data-bs-toggle="modal"
-                                    data-bs-target="#addTagsModal">ค้นหา</button>
-
-                            </div>
-                        </div>
-
-
-
-
+        <div class="container mt-4">
         <div id="highlight-container">
             @if ($highlights->isEmpty())
                 <p class="text-center">ไม่มีไฮไลท์.</p>
@@ -270,7 +258,7 @@
         $('#tags').select2({
             placeholder: "เลือก Tags...",
             allowClear: true,
-            width: '100%'
+            width: '15%'
         });
     });
 </script>
