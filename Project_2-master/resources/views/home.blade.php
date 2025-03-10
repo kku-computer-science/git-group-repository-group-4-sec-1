@@ -199,7 +199,7 @@
     <!-- แสดงข่าว 6 ข่าว -->
 
     <div id="highlight-container"><br>
-    <h2 class="text-center">New Highlight</h2>
+    <h2 class="text-center">Newest Highlight</h2>
     <br>
             @if ($latestNews->isEmpty())
                 <p class="text-center">ไม่มีไฮไลท์.</p>
