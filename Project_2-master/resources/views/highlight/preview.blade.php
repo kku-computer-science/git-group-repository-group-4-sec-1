@@ -16,7 +16,7 @@
             <div class="news-preview">
             <div class="news-header">
             {{-- <img src="{{ asset('img/Banner1.png') }}" alt="banner" class="w-100 h-50"> --}}
-            {{-- <img src="{{ asset('storage/' . $news_items['banner']) }}" alt="banner" class="img-fluid"> --}}
+            <img src="{{ asset('storage/' . $news_items['banner']) }}" alt="banner" class="img-fluid">
            
 
         {{-- tag --}}

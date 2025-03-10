@@ -15,9 +15,10 @@
                         {{-- @csrf --}}
 
         {{-- ตั้งเป็นไฮไลท์ --}}
-        @if (!empty($news_items) && count($news_items) > 0)
+        @if (!empty($news) && count($news) > 0)
         
-            @foreach ($news_items as $item)
+            @foreach ($news as $item)
+                <h3 class="text-center mb-5 fw-bold">พรีวิวไฮไลท์</h3>
                 <div class="col-sm-4 mb-3 text-center">
                     @if (
                     !empty($item['publish_status']) &&
