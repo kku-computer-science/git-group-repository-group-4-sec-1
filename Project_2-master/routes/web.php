@@ -164,6 +164,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
 
     Route::get('/edit-highlight/{id}', [ManageHighlight::class, 'editHighlight'])->name('highlight.edit');
     Route::put('/update-highlight/{id}/', [ManageHighlight::class, 'updateHighlight'])->name('highlight.update');
+    Route::post('/news/{id}/publish', [ManageHighlight::class, 'publish'])->name('highlight.publish');
 });
 
 
