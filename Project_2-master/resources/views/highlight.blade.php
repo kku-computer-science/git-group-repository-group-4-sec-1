@@ -181,9 +181,15 @@
                         <div class="col-md-4 col-sm-6 col-12 mb-3 highlight-item">
                             <a href="{{ route('news.details', $highlight['news_id'] ?? '#') }}" class="text-decoration-none">
                                 <div class="card highlight-card">
-                                    <img src="{{ asset('storage/' . $highlight['banner']) ?? asset('default-image.jpg') }}" 
-                                        class="card-img-top rounded img-fluid" 
-                                        alt="{{ $highlight['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
+                                @if (filter_var($highlight['banner'], FILTER_VALIDATE_URL) && @getimagesize($highlight['banner']))
+                                    <!-- ถ้ามี URL และเป็นภาพจริง -->
+                                    <img src="{{ $highlight['banner'] }}" class="card-img-top rounded img-fluid" alt="{{ $highlight['title'] ?? 'ไม่มีชื่อเรื่อง' }}">
+                                @else
+                                    <!-- ถ้าไม่มีรูป หรือไม่สามารถโหลดรูป -->
+                                    <div class="card-img-top rounded img-fluid text-center" style="border: 2px solid #000; padding: 100px; font-size: 20px; color: #000;">
+                                        ไม่พบรูปภาพ
+                                    </div>
+                                @endif
                                     <div class="card-tooltip">อ่านเพิ่มเติม</div>
                                     <div class="card-body">
                                         <h5 class="card-title">{{ Str::limit($highlight['title'] ?? 'ไม่มีชื่อเรื่อง', 50) }}</h5>
