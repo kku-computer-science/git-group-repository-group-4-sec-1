@@ -17,7 +17,8 @@ class ManageHighlight extends Controller
     public function manageHighlight()
     {
         $news_items = GetHighlight::getAllNews() ?? [];
-        return view('highlight.manage', compact('news_items'));
+        $tags = GetHighlight::getTags();
+        return view('highlight.manage', compact('news_items','tags'));
     }
 
     public function addHighlight()
