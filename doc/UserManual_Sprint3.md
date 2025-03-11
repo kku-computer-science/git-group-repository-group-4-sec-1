@@ -58,13 +58,13 @@
 **เนื้อหา** - การใช้งานการเข้าสู่หน้า Manage Highlight
 4. เมื่อคลิกเพื่อเข้าสู่หน้า Highlight แล้วเข้าเมนู Manage Highlight จะเห็น list ข่าว ซึ่งสามารถเห็นชื่อข่าว , สถานะการเผยแพร่ข่าว , ทำการเพิ่มข่าวใหม่ , แก้ไขข่าว , ลบข่าว , พรีวิวข่าวก่อนเผยแพร่
    ![04](img/reference_manual_sprint3/admin_4_manage.PNG)
-5. เมื่อต้องการจะเพิ่มไฮไลท์ใหม่ ให้คลิกที่ 'เพิ่มไฮไลท์' แล้วจะเข้าสู่หน้าเพิ่มไฮไลท์
-    ![05](img/reference_manual_sprint3/admin_5_add.PNG)
-6. สามารถเพื่อรูป , ชื่อข่าว , เนื้อหาข่าว , และ tag จัดหมวดหมู่ข่าวได้ 
-   ![alt text](img/reference_manual_sprint3/admin_6_addhi_2.PNG)
-7. สามารถจัดการทั้งเพิ่ม tag ใหม่ และจัดการกับ tag เก่า ได้ 
+5. สามารถจัดการทั้งเพิ่ม tag ใหม่ และจัดการกับ tag เก่า ได้ 
     ![alt text](img/reference_manual_sprint3/admin_7_addtag_1.PNG)
     ![alt text](img/reference_manual_sprint3/admin_8_addtag_2.PNG)
+6. เมื่อต้องการจะเพิ่มไฮไลท์ใหม่ ให้คลิกที่ 'เพิ่มไฮไลท์' แล้วจะเข้าสู่หน้าเพิ่มไฮไลท์
+    ![05](img/reference_manual_sprint3/admin_5_add.PNG)
+7. สามารถเพื่อรูป , ชื่อข่าว , เนื้อหาข่าว , และ tag จัดหมวดหมู่ข่าวได้ 
+   ![alt text](img/reference_manual_sprint3/admin_6_addhi_2.PNG)
 8.  เมื่อทำการจัดการข้อมูลสำเร็จให้ทำการบันทึก จะมีการแจ้งเตือนว่าเพิ่มไฮไลต์สำเร็จ แล้วจะกลับสู่หน้า Manage Highlight 
     ![alt text](img/reference_manual_sprint3/admin_9_save.PNG)
     ![alt text](img/reference_manual_sprint3/admin_10_manage.PNG)
@@ -75,7 +75,6 @@
     ![alt text](img/reference_manual_sprint3/admin_11_edit.PNG)
 10. เมื่อทำการแก้ไขข้อมูลสำเร็จให้ทำการกดปุ่มบันทึกการแก้ไข จะมีการแจ้งเตือนว่าเเก้ไขไฮไลต์สำเร็จ แล้วจะกลับสู่หน้า Manage Highlight 
     ![alt text](img/reference_manual_sprint3/admin_11_edit2.PNG)
-    ![alt text](img/reference_manual_sprint3/admin_11_edit3.PNG)
 
 ### **2.1.4 ลบ Highlight (administrative staff)**
 **เนื้อหา** - การใช้งานการลบไฮไลท์
@@ -92,12 +91,12 @@
 
 ### **2.1.6 Published Highlight (administrative staff)**
 **เนื้อหา** - การใช้งานการเข้าสู่เมนู Published Highlight และแสดงไฮไลท์
-14. ใต้เมนู Manage Higlight จะมีเมนู Published Highlight ซึ่งจะเป็นหน้าจอสำหรับการเพิ่มไฮไลท์ในเมนูหลักโดยจะปรากฏ Banner และชื่อของข่าวที่มีในระบบโดยแต่ละข่าวจะมี checkbox ตั้งเป็นไฮไลท์  และปุ่มบันทึกหลัก 
-    ![alt text](img/reference_manual_sprint3/admin_16_pub.PNG)
+14. ใต้เมนู Manage Higlight จะมีเมนู Published Highlight ซึ่งจะเป็นหน้าจอสำหรับการเพิ่มไฮไลท์ในเมนูหลักโดยจะปรากฏ Banner และชื่อของข่าวที่มีในระบบโดยแต่ละข่าวจะมี checkbox ตั้งเป็นไฮไลท์  และปุ่มบันทึกหลัก
+    ![alt text](img/reference_manual_sprint3/admin_15_pub_up.PNG)
 15. เมื่อทำการ check ที่ checkbox แล้วกดปุ่มบันทึก จะทำการเพิ่มไฮไลท์สู่หน้าเว็ปไซต์หลัก 
-    ![alt text](img/reference_manual_sprint3/admin_16_pub_up.PNG)
+    ![alt text](img/reference_manual_sprint3/admin_16_pub.PNG)
     หน้าเว็ปไซต์หลักก่อนการเพิ่มไฮไลท์
-    ![alt text](img/reference_manual_sprint3/admin_16_pub_up.PNG)
+    ![alt text](img/reference_manual_sprint3/admin_16_pub_bf.PNG)
 
     หน้าเว็ปไซต์หลักหลังการเพิ่มไฮไลท์
     ![alt text](img/reference_manual_sprint3/admin_17_pub_af.PNG)
@@ -124,7 +123,7 @@
 ### **2.2.2 เมนูข่าวประชาสัมพันธ์ (visitors) **
 **เนื้อหา** - การใช้งานเนื้อหาที่เพิ่มเติม
 1. เข้าสู่หน้าหลักของเว็ปเพจ จะปรากฏเมนูข่าวประชาสัมพันธ์ที่แสดงข้างล่างไฮไลท์ที่แสดงขึ้นตรงบนกลางจอให้เห็น ซึ่งจะแสดงทุกข่าวไม่เฉพาะข่าวที่เป็นไฮไลท์
-   ![alt text](img/reference_manual_sprint3/visitors_1_mainpage.PNG)
+   ![alt text](img/reference_manual_sprint3/visitors_5_mainpage.PNG)
 2. เมื่อกดอ่านเพิ่มเติม จะเข้าสู่หน้าเมนูที่รวบรวมข่าวประชาสัมพันธ์และไฮไลท์ทั้งหมด 
    ![alt text](img/reference_manual_sprint3/visitors_3_allhightlight.PNG)
 3. สามารถกดหาข่าวได้ทั้งจากการหาชื่อข่าวและ Tag ของข่าว 
