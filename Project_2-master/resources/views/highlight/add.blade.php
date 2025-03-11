@@ -305,7 +305,7 @@
                                 location.reload();
                             },
                             error: function(xhr) {
-                                alert('เกิดข้อผิดพลาดในการบันทึก tag');
+                                alert('เกิดข้อผิดพลาดในการบันทึก tag ใหม่: ' + xhr.responseJSON.message);
                             }
                         });
                     }
