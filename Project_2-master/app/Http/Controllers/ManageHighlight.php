@@ -110,6 +110,7 @@ class ManageHighlight extends Controller
     {
         $news = News::with('tags')->where('news_id', $id)->firstOrFail();
         $tags = Tag::all();
+        // dd($news);
         return view('highlight.edit', compact('news', 'tags'));
     }
 
@@ -148,9 +149,10 @@ class ManageHighlight extends Controller
 
         // ถ้ามีการอัปโหลดไฟล์
         if ($request->hasFile('file')) {
+            
             // ลบไฟล์เก่าก่อน
-            if ($news->banner && Storage::exists('public/' . $news->banner)) {
-                Storage::delete('public/' . $news->banner);
+            if ($news->path_banner_img && Storage::exists('public/' . $news->path_banner_img)) {
+                Storage::delete('public/' . $news->path_banner_img);
             }
 
             // เก็บไฟล์ใหม่
@@ -158,7 +160,7 @@ class ManageHighlight extends Controller
             $newsData['banner'] = $imagePath;
         } else {
             // ถ้าไม่มีไฟล์ใหม่ ก็ไม่ต้องทำการอัปเดตไฟล์
-            $newsData['banner'] = $news->banner; // เก็บไฟล์เดิมไว้
+            $newsData['banner'] = $news->path_banner_img; // เก็บไฟล์เดิมไว้
         }
 
         // อัปเดตข้อมูลในฐานข้อมูล
@@ -191,28 +193,35 @@ class ManageHighlight extends Controller
     public function showHighlight()
     {
         // ดึงข่าวที่มี publish_status เป็น "published" หรือ "highlight"
-        $news = GetHighlight::getHighlights();
+        $news = News::whereIn('publish_status', ['published', 'highlight'])->get();
 
         return view('highlight.show', compact('news'));
     }
 
     public function selectShowHighlight(Request $request)
     {
+        $selectedNewsIds = $request->input('news', []);
 
-        $newsList = $request->input('news', []);
-        $highlightCount = collect($newsList)->where('publish_status', 'highlight')->count();
+        // นับจำนวนข่าวที่ถูกเลือกเป็น highlight
+        $highlightCount = News::whereIn('news_id', $selectedNewsIds)
+            ->where('publish_status', 'highlight')
+            ->count();
 
         if ($highlightCount > 5) {
             return response()->json(['message' => 'ไม่สามารถเลือกไฮไลท์เกิน 5 รายการ'], 400);
         }
 
-        foreach ($newsList as $newsItem) {
-            HighlightEditor::updateNewsStatus($newsItem['news_id'], $newsItem['publish_status']);
-        }
+        // อัปเดตสถานะของข่าวที่ถูกเลือก
+        News::whereIn('news_id', $selectedNewsIds)->update(['publish_status' => 'highlight']);
+
+        // อัปเดตข่าวอื่นที่ไม่ได้เลือกให้กลับไปเป็น "published"
+        News::whereNotIn('news_id', $selectedNewsIds)
+            ->where('publish_status', 'highlight')
+            ->update(['publish_status' => 'published']);
 
         return response()->json(['message' => 'อัปเดตไฮไลท์เรียบร้อย']);
-        // return redirect()->route('highlight.show')->with('success', 'เลือกไฮไลท์สำเร็จ');
     }
+
 
     public function storeTag(Request $request)
     {
