@@ -39,8 +39,10 @@
     </style>
 
     <body>
+        {{-- <pre>{{ print_r($news, true) }}</pre> --}}
 
         <div class="container mt-3">
+
             <h3 class="text-center fw-bold mb-5">แก้ไขไฮไลท์</h3>
             <div class="card" style="padding: 16px;">
                 <div class="card-body">
@@ -55,6 +57,18 @@
                             <label for="formFile" class="form-label fw-bold">อัปโหลดรูปภาพ (ไฟล์ .jpg, .jpeg, .png,
                                 ขนาดไฟล์สูงสุด
                                 5MB)</label>
+                                @if (!empty($news->path_banner_img))
+                                <div class=" mb-3">
+                                    <p class="text-muted mb-1"><strong>รูปภาพปัจจุบัน:</strong> {{ basename($news->path_banner_img) }}</p>
+                                    <img src="{{ asset('storage/' . $news->path_banner_img) }}" alt="ไฟล์รูปไฮไลท์"
+                                        class="img-fluid border rounded shadow-sm d-block " 
+                                        style="max-width: 400px; height: auto;">
+                                </div>
+                            @else
+                                <p class="text-danger">ไม่มีไฟล์ที่อัปโหลด</p>
+                            @endif
+
+
                             <input type="file" id="formFile" name="file" class="form-control form-control-lg"
                                 accept=".jpg, .jpeg, .png" value = "{{ old('file') }}">
                         </div>
@@ -463,13 +477,13 @@
 
                 // เมื่อกดปุ่มบันทึกการแก้ไข
                 $("#btnSave").click(function() {
-                    isPublish = false; 
+                    isPublish = false;
                     // console.log("Save clicked, isPublish: " + isPublish); 
                 });
 
                 // เมื่อกดปุ่มบันทึกและเผยแพร่
                 $("#btnPublish").click(function() {
-                    isPublish = true; 
+                    isPublish = true;
                     // console.log("Publish clicked, isPublish: " + isPublish); 
                 });
 
@@ -518,12 +532,12 @@
 
                 $("#closeSuccessModal").click(function() {
                     console.log("Closing modal and redirecting...");
-                    $("#successEditModal").modal("hide"); 
+                    $("#successEditModal").modal("hide");
                     window.location.href =
-                        "{{ route('highlight.manage') }}"; 
+                        "{{ route('highlight.manage') }}";
                 });
 
-                
+
                 $("#closeSuccessPublishModal").click(function() {
                     console.log("Closing modal and redirecting...");
                     $("#successPublishModal").modal("hide");

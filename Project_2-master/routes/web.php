@@ -186,6 +186,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/preview-highlight/{id}', [ManageHighlight::class, 'previewHighlight'])->name('highlight.preview');
     Route::put('/update-highlight/{id}', [ManageHighlight::class, 'updateHighlight'])->name('highlight.update');
     Route::get('/show-highlight', [ManageHighlight:: class, 'showHighlight' ])->name('highlight.show');
+    Route::post('/highlight/select', [ManageHighlight::class, 'selectShowHighlight'])->name('highlight.select');
     Route::post('/news/{id}/publish', [ManageHighlight::class, 'publish'])->name('highlight.publish');
 });
 
