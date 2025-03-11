@@ -177,7 +177,6 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/manage-highlight', [ManageHighlight::class, 'manageHighlight'])->name('highlight.manage');
     Route::post('/highlight/store', [ManageHighlight::class, 'storeHighlight'])->name('highlight.store');
     Route::delete('/delete-highlight/{newsId}', [ManageHighlight::class, 'destroy'])->name('highlight.destroy');
-    Route::get('/preview/{newsId}', [ManageHighlight::class, 'previewHighlight'])->name('highlight.preview');
 
     Route::post('/tag/store', [ManageHighlight::class, 'storeTag'])->name('tag.store');
     Route::put('/tag/update', [ManageHighlight::class, 'updateTag'])->name('tag.update');
