@@ -57,11 +57,12 @@
                             <label for="formFile" class="form-label fw-bold">อัปโหลดรูปภาพ (ไฟล์ .jpg, .jpeg, .png,
                                 ขนาดไฟล์สูงสุด
                                 5MB)</label>
-                                @if (!empty($news->path_banner_img))
+                            @if (!empty($news->path_banner_img))
                                 <div class=" mb-3">
-                                    <p class="text-muted mb-1"><strong>รูปภาพปัจจุบัน:</strong> {{ basename($news->path_banner_img) }}</p>
+                                    <p class="text-muted mb-1"><strong>รูปภาพปัจจุบัน:</strong>
+                                        {{ basename($news->path_banner_img) }}</p>
                                     <img src="{{ asset('storage/' . $news->path_banner_img) }}" alt="ไฟล์รูปไฮไลท์"
-                                        class="img-fluid border rounded shadow-sm d-block " 
+                                        class="img-fluid border rounded shadow-sm d-block "
                                         style="max-width: 400px; height: auto;">
                                 </div>
                             @else
@@ -151,7 +152,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5 fw-bold text-center" id="manageTagsModalLabel">จัดการ Tags</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
@@ -366,7 +368,7 @@
                                 location.reload();
                             },
                             error: function(xhr) {
-                                alert('เกิดข้อผิดพลาดในการบันทึก tag');
+                                alert('เกิดข้อผิดพลาดในการบันทึก Tag ใหม่: ' + xhr.responseJSON.message);
                             }
                         });
                     }
@@ -441,31 +443,50 @@
                     sessionStorage.setItem("formSaved", "true");
                 }
 
-                // ฟังก์ชันตรวจสอบไฟล์อัปโหลด
+                function validateForm() {
+                    let isValid = true;
+                    $(".alert-danger").remove(); // ลบข้อความแจ้งเตือนเก่าก่อน
+
+                    // ตรวจสอบ title (ต้องไม่ว่าง)
+                    if ($("#title").val().trim() === "") {
+                        $("#title").after('<div class="alert alert-danger mt-1">กรุณากรอกหัวข้อ</div>');
+                        isValid = false;
+                    }
+
+                    // ตรวจสอบรายละเอียด (ต้องไม่ว่าง)
+                    if ($("#details").val().trim() === "") {
+                        $("#details").after('<div class="alert alert-danger mt-1">กรุณากรอกรายละเอียด</div>');
+                        isValid = false;
+                    }
+
+                    // ตรวจสอบไฟล์ที่อัปโหลด
+                    isValid = validateFileInput() && isValid;
+
+                    return isValid;
+                }
+
                 function validateFileInput() {
                     var fileInput = $("#formFile")[0];
                     var file = fileInput.files[0];
                     var allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
                     var maxSize = 5 * 1024 * 1024; // 5MB
-                    $(".file-error").remove(); // ลบแจ้งเตือนก่อนหน้า
+                    $(".file-error").remove();
 
-                    // ถ้าไม่ได้เลือกไฟล์ใหม่ ให้ข้ามการตรวจสอบไฟล์
                     if (!file) {
-                        return true; // ไม่มีไฟล์ใหม่ก็ข้ามไป
+                        return true; // ถ้าไม่มีการเลือกไฟล์ใหม่ ให้ข้ามการตรวจสอบ
                     }
 
-                    // ตรวจสอบว่า file มีค่าหรือไม่ และตรวจสอบประเภทไฟล์
-                    if (file && !allowedTypes.includes(file.type)) {
+                    if (!allowedTypes.includes(file.type)) {
                         $("#formFile").after(
-                            '<div class="alert alert-danger mt-1 file-error">ประเภทไฟล์ไม่ถูกต้อง กรุณาอัปโหลดไฟล์ .jpg, .jpeg หรือ .png</div>'
-                        );
+                            '<div class="alert alert-danger mt-1 file-error">ประเภทไฟล์ไม่ถูกต้อง กรุณาอัปโหลด .jpg, .jpeg หรือ .png</div>'
+                            );
                         return false;
                     }
 
-                    if (file && file.size > maxSize) {
+                    if (file.size > maxSize) {
                         $("#formFile").after(
-                            '<div class="alert alert-danger mt-1 file-error">ขนาดไฟล์เกิน 5MB กรุณาอัปโหลดไฟล์ที่มีขนาดเล็กลง</div>'
-                        );
+                            '<div class="alert alert-danger mt-1 file-error">ขนาดไฟล์เกิน 5MB กรุณาอัปโหลดไฟล์ที่เล็กลง</div>'
+                            );
                         return false;
                     }
 
@@ -516,15 +537,22 @@
                             }
                         },
                         error: function(xhr) {
-                            if (xhr.status === 422) {
+                            $(".alert-danger").remove();
+                            if (xhr.status === 413) {
+                                $("#formFile").after(
+                                    '<div class="alert alert-danger mt-1">ขนาดไฟล์เกิน 5MB กรุณาอัปโหลดไฟล์ที่มีขนาดเล็กลง</div>'
+                                    );
+                                    
+                            } else if (xhr.status === 422) {
                                 var errors = xhr.responseJSON.errors;
                                 $.each(errors, function(key, value) {
                                     var inputField = $('[name="' + key + '"]');
                                     inputField.after(
                                         '<div class="alert alert-danger mt-1">' + value[
-                                            0] + '</div>'
-                                    );
+                                            0] + '</div>');
                                 });
+                            } else {
+                                alert("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
                             }
                         },
                     });
