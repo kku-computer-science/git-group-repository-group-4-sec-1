@@ -5,6 +5,8 @@
 - เพิ่ม Service GetHighlight สำหรับการจัดการการดึงข้อมูลของข่าว
 - เพิ่ม Service HighlightEditor สำหรับ CRUD เพื่อใช้เพื่อจัดการข่าวของ admin staff 
 - เพิ่ม Controller ReadNewsController สำหรับใช้อ่านข่าว
+- เพิ่ม user manual (ภูมิพิพัฒน์)
+- ร่างและจัดการหน้า preview highlight , edit highlight , published highlight(ภูมิพิพัฒน์)
 ### Update
 ### Fix
 
