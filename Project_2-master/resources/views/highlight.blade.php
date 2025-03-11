@@ -258,7 +258,7 @@
         $('#tags').select2({
             placeholder: "เลือก Tags...",
             allowClear: true,
-            width: '15%'
+            width: '20%'
         });
     });
 </script>
