@@ -83,13 +83,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-4">
+                            {{-- <div class="col-4">
                                 <button type="button" class="btn btn-success mt-5 fw-bold" data-bs-toggle="modal"
                                     data-bs-target="#addTagsModal">เพิ่ม Tags</button>
 
                                 <button type="button" class="btn btn-primary mt-5 fw-bold" data-bs-toggle="modal"
                                     data-bs-target="#manageTagsModal">จัดการ Tags</button>
-                            </div>
+                            </div> --}}
                         </div>
 
 
@@ -126,7 +126,7 @@
 
             </div>
 
-            {{-- โมเดลเพิ่มแท็ก --}}
+            {{-- โมเดลเพิ่มแท็ก
             <div class="modal fade" id="addTagsModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content ">
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
         </div>
@@ -213,16 +213,16 @@
         {{-- Auto save --}}
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                if (sessionStorage.getItem("formSaved")) {
-                    localStorage.removeItem("title");
-                    localStorage.removeItem("details");
-                    localStorage.removeItem("tags");
-                    sessionStorage.removeItem("formSaved"); 
-                }
-                document.getElementById("title").value = localStorage.getItem("title") || "";
+                // if (sessionStorage.getItem("formSaved")) {
+                //     localStorage.removeItem("title");
+                //     localStorage.removeItem("details");
+                //     localStorage.removeItem("tags");
+                //     sessionStorage.removeItem("formSaved"); 
+                // }
+                // document.getElementById("title").value = localStorage.getItem("title") || "";
 
-                let savedTags = JSON.parse(localStorage.getItem("tags")) || [];
-                $('#tags').val(savedTags).trigger('change');
+                // let savedTags = JSON.parse(localStorage.getItem("tags")) || [];
+                // $('#tags').val(savedTags).trigger('change');
 
                 $('#details').trumbowyg({
                     btns: [
@@ -245,26 +245,26 @@
                     }
                 });
 
-                function autoSave() {
-                    localStorage.setItem("title", document.getElementById("title").value);
-                    localStorage.setItem("details", $('#details').trumbowyg('html'));
-                    localStorage.setItem("tags", JSON.stringify($('#tags').val() || []));
-                }
+                // function autoSave() {
+                //     localStorage.setItem("title", document.getElementById("title").value);
+                //     localStorage.setItem("details", $('#details').trumbowyg('html'));
+                //     localStorage.setItem("tags", JSON.stringify($('#tags').val() || []));
+                // }
 
-                function clearAutoSave() {
-                    localStorage.removeItem("title");
-                    localStorage.removeItem("details");
-                    localStorage.removeItem("tags");
-                    sessionStorage.setItem("formSaved", "true");
-                }
+                // function clearAutoSave() {
+                //     localStorage.removeItem("title");
+                //     localStorage.removeItem("details");
+                //     localStorage.removeItem("tags");
+                //     sessionStorage.setItem("formSaved", "true");
+                // }
 
-                document.getElementById("title").addEventListener("input", autoSave);
-                $('#details').on('tbwchange', autoSave);
-                $('#tags').on('change', autoSave);
+                // document.getElementById("title").addEventListener("input", autoSave);
+                // $('#details').on('tbwchange', autoSave);
+                // $('#tags').on('change', autoSave);
 
-                document.querySelector("form").addEventListener("submit", function() {
-                    clearAutoSave();
-                });
+                // document.querySelector("form").addEventListener("submit", function() {
+                //     clearAutoSave();
+                // });
             });
         </script>
 
@@ -276,96 +276,96 @@
                     width: '100%'
                 });
 
-                $('#saveTagBtn').click(function() {
-                    let tagName = $('#tag').val();
-                    if (tagName) {
-                        $.ajax({
-                            url: "{{ route('tag.store') }}", 
-                            method: 'POST',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                name: tagName
-                            },
-                            success: function(response) {
-                                $('#tags').append(new Option(tagName, response
-                                    .tag_id));
-                                $('tbody').append(`
-                            <tr>
-                                <td class="p-1">${tagName}</td>
-                                <td class="p-1">
-                                    <div class="d-flex justify-content-end gap-2">
-                                        <button type="button" class="btn btn-warning btn-sm edit-tag" data-id="${response.tag_id}" data-name="${tagName}">แก้ไข</button>
-                                        <button type="button" class="btn btn-danger btn-sm delete-tag" data-id="${response.tag_id}">ลบ</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `);
-                                $('#tagName').val('');
-                                $('#addTagsModal').modal('hide');
-                                location.reload();
-                            },
-                            error: function(xhr) {
-                                alert('เกิดข้อผิดพลาดในการบันทึก tag');
-                            }
-                        });
-                    }
-                });
+                // $('#saveTagBtn').click(function() {
+                //     let tagName = $('#tag').val();
+                //     if (tagName) {
+                //         $.ajax({
+                //             url: "{{ route('tag.store') }}", 
+                //             method: 'POST',
+                //             data: {
+                //                 _token: '{{ csrf_token() }}',
+                //                 name: tagName
+                //             },
+                //             success: function(response) {
+                //                 $('#tags').append(new Option(tagName, response
+                //                     .tag_id));
+                //                 $('tbody').append(`
+                //             <tr>
+                //                 <td class="p-1">${tagName}</td>
+                //                 <td class="p-1">
+                //                     <div class="d-flex justify-content-end gap-2">
+                //                         <button type="button" class="btn btn-warning btn-sm edit-tag" data-id="${response.tag_id}" data-name="${tagName}">แก้ไข</button>
+                //                         <button type="button" class="btn btn-danger btn-sm delete-tag" data-id="${response.tag_id}">ลบ</button>
+                //                     </div>
+                //                 </td>
+                //             </tr>
+                //         `);
+                //                 $('#tagName').val('');
+                //                 $('#addTagsModal').modal('hide');
+                //                 location.reload();
+                //             },
+                //             error: function(xhr) {
+                //                 alert('เกิดข้อผิดพลาดในการบันทึก tag ใหม่: ' + xhr.responseJSON.message);
+                //             }
+                //         });
+                //     }
+                // });
 
-                // Editing tag
-                $('.edit-tag').click(function() {
-                    var tagId = $(this).data('id');
-                    var tagName = $(this).data('name');
+                // // Editing tag
+                // $('.edit-tag').click(function() {
+                //     var tagId = $(this).data('id');
+                //     var tagName = $(this).data('name');
 
-                    $('#tagId').val(tagId);
-                    $('#tagName').val(tagName);
+                //     $('#tagId').val(tagId);
+                //     $('#tagName').val(tagName);
 
-                    // Open the modal (if using Bootstrap modal)
-                    $('#manageTagsModal').modal('show');
-                });
+                //     // Open the modal (if using Bootstrap modal)
+                //     $('#manageTagsModal').modal('show');
+                // });
 
-                $('#saveEditTagBtn').click(function() {
-                    let tagId = $('#tagId').val();
-                    let tagName = $('#tagName').val();
+                // $('#saveEditTagBtn').click(function() {
+                //     let tagId = $('#tagId').val();
+                //     let tagName = $('#tagName').val();
 
-                    $.ajax({
-                        url: "{{ route('tag.update') }}",
-                        method: "PUT",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            id: tagId,
-                            name: tagName
-                        },
-                        success: function(response) {
-                            alert('อัปเดตสำเร็จ');
-                            location.reload(); 
-                        },
-                        error: function(xhr) {
-                            alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
-                        }
-                    });
-                });
+                //     $.ajax({
+                //         url: "{{ route('tag.update') }}",
+                //         method: "PUT",
+                //         data: {
+                //             _token: "{{ csrf_token() }}",
+                //             id: tagId,
+                //             name: tagName
+                //         },
+                //         success: function(response) {
+                //             alert('อัปเดตสำเร็จ');
+                //             location.reload(); 
+                //         },
+                //         error: function(xhr) {
+                //             alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
+                //         }
+                //     });
+                // });
 
-                $('.delete-tag').click(function() {
-                    let tagId = $(this).data('id');
+                // $('.delete-tag').click(function() {
+                //     let tagId = $(this).data('id');
 
-                    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ Tag นี้?')) {
-                        $.ajax({
-                            url: "{{ route('tag.delete') }}",
-                            method: "DELETE",
-                            data: {
-                                _token: "{{ csrf_token() }}",
-                                id: tagId
-                            },
-                            success: function(response) {
-                                alert('ลบสำเร็จ');
-                                location.reload();
-                            },
-                            error: function(xhr) {
-                                alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
-                            }
-                        });
-                    }
-                });
+                //     if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ Tag นี้?')) {
+                //         $.ajax({
+                //             url: "{{ route('tag.delete') }}",
+                //             method: "DELETE",
+                //             data: {
+                //                 _token: "{{ csrf_token() }}",
+                //                 id: tagId
+                //             },
+                //             success: function(response) {
+                //                 alert('ลบสำเร็จ');
+                //                 location.reload();
+                //             },
+                //             error: function(xhr) {
+                //                 alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
+                //             }
+                //         });
+                //     }
+                // });
 
             });
         </script>

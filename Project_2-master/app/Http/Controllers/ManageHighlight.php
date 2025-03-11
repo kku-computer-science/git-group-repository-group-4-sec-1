@@ -17,7 +17,8 @@ class ManageHighlight extends Controller
     public function manageHighlight()
     {
         $news_items = GetHighlight::getAllNews() ?? [];
-        return view('highlight.manage', compact('news_items'));
+        $tags = GetHighlight::getTags();
+        return view('highlight.manage', compact('news_items','tags'));
     }
 
     public function addHighlight()
@@ -119,32 +120,28 @@ class ManageHighlight extends Controller
         // ดึงข้อมูลข่าวจากฐานข้อมูล
         $news = News::where('news_id', $id)->firstOrFail();
         // เริ่มต้นสถานะการเผยแพร่
-        $isPublished = false;
-
         // ตรวจสอบว่าเป็นการเผยแพร่หรือไม่
-        if ($request->has('publish') && $request->publish == 1) {
-            // ตรวจสอบสถานะข่าวก่อนว่าเป็น "not_published"
-            if ($news->publish_status == 'not_published') {
-                // เปลี่ยนสถานะข่าวเป็น "published"
-                $news->publish_status = 'published';
-                $news->save(); // บันทึกการเปลี่ยนแปลงสถานะ
-                $isPublished = true; // กำหนดว่าเป็นการเผยแพร่
-            }
-        }
+    $isPublished = $request->has('publish') && $request->publish == 1;
 
-        // การ validate ข้อมูล
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'details' => 'required|string',
-            'file' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
-            'tags' => 'nullable|array'
-        ]);
+    // การ validate ข้อมูล
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'details' => 'required|string',
+        'file' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+        'tags' => 'nullable|array'
+    ], [
+        'title.required' => 'กรุณากรอกหัวข้อไฮไลท์',
+        'details.required' => 'กรุณากรอกรายละเอียดไฮไลท์',
+        'file.image' => 'ประเภทไฟล์ไม่ถูกต้อง กรุณาอัปโหลดไฟล์ .jpg, .jpeg หรือ .png',
+        'file.mimes' => 'ประเภทไฟล์ไม่ถูกต้อง กรุณาอัปโหลดไฟล์ .jpg, .jpeg หรือ .png',
+        'file.max' => 'ขนาดไฟล์เกิน 5MB กรุณาอัปโหลดไฟล์ที่เล็กลง',
+    ]);
 
         // เตรียมข้อมูลสำหรับการอัปเดต
         $newsData = [
-            'title' => $request->title,
-            'content' => $request->details,
-            'tags' => $request->tags ?? [],
+            'title' => $validatedData['title'],
+            'content' => $validatedData['details'],
+            'tags' => $validatedData['tags'] ?? [],
         ];
 
         // ถ้ามีการอัปโหลดไฟล์
@@ -167,16 +164,14 @@ class ManageHighlight extends Controller
         $updatedNews = HighlightEditor::updateNewsContent($id, $newsData);
 
         if ($updatedNews) {
-            // ตรวจสอบว่ากดปุ่ม "บันทึกและเผยแพร่" หรือไม่
-            if ($isPublished) {
-                $updatedNews = HighlightEditor::updateNewsStatus($id, "published");
-                return response()->json(['success' => true]); // เผยแพร่สำเร็จ
-            } else {
-                return response()->json(['success' => true]); // บันทึกการแก้ไขสำเร็จ
+            // **เปลี่ยนสถานะเป็น published หลังจาก validation ผ่านแล้วเท่านั้น**
+            if ($isPublished && $news->publish_status == 'not_published') {
+                HighlightEditor::updateNewsStatus($id, "published");
             }
+            return response()->json(['success' => true]);
         }
-
-        return redirect()->route('highlight.manage')->with('success', 'อัปเดตไฮไลท์สำเร็จ');
+    
+        return response()->json(['success' => false, 'error' => 'ไม่สามารถอัปเดตข้อมูลได้'], 500);
     }
 
     public function destroy($newsId)
@@ -234,7 +229,7 @@ class ManageHighlight extends Controller
             return response()->json(['tag_id' => $tag->id]);
         }
 
-        return response()->json(['message' => 'Tag already exists or invalid input'], 400);
+        return response()->json(['message' => 'Tag มีอยู่แล้วหรือข้อมูลไม่ถูกต้อง'], 400);
     }
 
     public function updateTag(Request $request)
@@ -249,7 +244,7 @@ class ManageHighlight extends Controller
             return response()->json(['name' => $request->name]);
         }
 
-        return response()->json(['message' => 'Tag not found or invalid input'], 400);
+        return response()->json(['message' => 'ไม่พบ Tag หรือข้อมูลไม่ถูกต้อง'], 400);
     }
 
     public function destroyTag(Request $request)
@@ -263,6 +258,6 @@ class ManageHighlight extends Controller
             return response()->json(['status' => 'success']);
         }
 
-        return response()->json(['message' => 'Tag not found'], 400);
+        return response()->json(['message' => 'ไม่พบ Tag'], 400);
     }
 }

@@ -22,7 +22,19 @@
                         </div>
                     @endif
 
-                    <a href="{{ url('/add-highlight') }}" class="btn btn-success mb-3">เพิ่มไฮไลท์ใหม่</a>
+                    <div class="d-flex justify-content-between mb-5">
+                        <div>
+                            <a href="{{ url('/add-highlight') }}" class="btn btn-success ">เพิ่มไฮไลท์ใหม่</a>
+                        </div>
+
+                        <div>
+                            <button type="button" class="btn btn-success fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#addTagsModal">เพิ่ม Tags</button>
+
+                            <button type="button" class="btn btn-primary fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#manageTagsModal">จัดการ Tags</button>
+                        </div>
+                    </div>
 
                     <table class="table table-striped">
                         <thead>
@@ -47,8 +59,8 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ url('/edit-highlight/' . $item['news_id']) }}" 
-                                            class="btn btn-primary btn-sm mx-2">แก้ไข</a>
+                                            <a href="{{ url('/edit-highlight/' . $item['news_id']) }}"
+                                                class="btn btn-primary btn-sm mx-2">แก้ไข</a>
 
                                             <button type="button" class="btn btn-danger btn-sm mx-2" data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal" data-id="{{ $item['news_id'] ?? '' }}">
@@ -58,7 +70,7 @@
                                             <a href="{{ url('/preview-highlight/' . $item['news_id']) }}"
                                                 class="btn btn-dark btn-sm mx-2">พรีวิว</a>
 
-                                            
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -69,6 +81,81 @@
                             @endif
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+
+        {{-- โมเดลเพิ่มแท็ก --}}
+        <div class="modal fade" id="addTagsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content ">
+                    <div class="modal-header ">
+                        <h1 class="modal-title fs-5 fw-bold text-center" id="addTagsModalLabel">เพิ่ม Tag</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="tag" class="col-form-label">Tag:</label>
+                                <input class="form-control" id="tag" required></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                        <button type="button" class="btn btn-primary" id="saveTagBtn">บันทึก</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal แก้ไขแท็ก -->
+        <div class="modal fade" id="manageTagsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5 fw-bold text-center" id="manageTagsModalLabel">จัดการ Tags</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tagName" class="col-form-label">Tags:</label>
+                            <input class="form-control" id="tagName" required>
+                            <input type="hidden" id="tagId">
+                        </div>
+                        <div id="existingTags">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="p-1"></th>
+                                        <th class="p-1"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($tags as $tag)
+                                        <tr>
+                                            <td class="p-1">{{ $tag['tag_name'] }}</td>
+                                            <td class="p-1">
+                                                <div class="d-flex justify-content-end gap-2">
+                                                    <button type="button" class="btn btn-warning btn-sm edit-tag"
+                                                        data-id="{{ $tag['tag_id'] }}"
+                                                        data-name="{{ $tag['tag_name'] }}">แก้ไข</button>
+                                                    <button type="button" class="btn btn-danger btn-sm delete-tag"
+                                                        data-id="{{ $tag['tag_id'] }}">ลบ</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                        <button type="button" class="btn btn-primary" id="saveEditTagBtn">บันทึกการแก้ไข</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,6 +184,113 @@
                 </div>
             </div>
         </div>
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#tags').select2({
+                    placeholder: "เลือก Tags...",
+                    allowClear: true,
+                    width: '100%'
+                });
+
+                $('#saveTagBtn').click(function() {
+                    let tagName = $('#tag').val();
+                    if (tagName) {
+                        $.ajax({
+                            url: "{{ route('tag.store') }}",
+                            method: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                name: tagName
+                            },
+                            success: function(response) {
+                                $('#tags').append(new Option(tagName, response
+                                    .tag_id));
+                                $('tbody').append(`
+                            <tr>
+                                <td class="p-1">${tagName}</td>
+                                <td class="p-1">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-warning btn-sm edit-tag" data-id="${response.tag_id}" data-name="${tagName}">แก้ไข</button>
+                                        <button type="button" class="btn btn-danger btn-sm delete-tag" data-id="${response.tag_id}">ลบ</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `);
+                                $('#tagName').val('');
+                                $('#addTagsModal').modal('hide');
+                                location.reload();
+                            },
+                            error: function(xhr) {
+                                alert('เกิดข้อผิดพลาดในการบันทึก tag ใหม่: ' + xhr.responseJSON
+                                    .message);
+                            }
+                        });
+                    }
+                });
+
+                // Editing tag
+                $('.edit-tag').click(function() {
+                    var tagId = $(this).data('id');
+                    var tagName = $(this).data('name');
+
+                    $('#tagId').val(tagId);
+                    $('#tagName').val(tagName);
+
+                    // Open the modal (if using Bootstrap modal)
+                    $('#manageTagsModal').modal('show');
+                });
+
+                $('#saveEditTagBtn').click(function() {
+                    let tagId = $('#tagId').val();
+                    let tagName = $('#tagName').val();
+
+                    $.ajax({
+                        url: "{{ route('tag.update') }}",
+                        method: "PUT",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id: tagId,
+                            name: tagName
+                        },
+                        success: function(response) {
+                            alert('อัปเดตสำเร็จ');
+                            location.reload();
+                        },
+                        error: function(xhr) {
+                            alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
+                        }
+                    });
+                });
+
+                $('.delete-tag').click(function() {
+                    let tagId = $(this).data('id');
+
+                    if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบ Tag นี้?')) {
+                        $.ajax({
+                            url: "{{ route('tag.delete') }}",
+                            method: "DELETE",
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                id: tagId
+                            },
+                            success: function(response) {
+                                alert('ลบสำเร็จ');
+                                location.reload();
+                            },
+                            error: function(xhr) {
+                                alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
+                            }
+                        });
+                    }
+                });
+
+            });
+        </script>
 
         <script>
             document.addEventListener("DOMContentLoaded", function() {
