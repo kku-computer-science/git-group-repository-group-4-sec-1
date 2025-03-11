@@ -88,10 +88,10 @@ class ManageHighlight extends Controller
 
     public function previewHighlight($newsId)
     {
-        $news_items = GetHighlight::getNews($newsId);
+        $item = GetHighlight::getNews($newsId);
 
         // ส่งข้อมูลข่าวไปยัง preview
-        return view('highlight.preview', compact('news_items'));
+        return view('highlight.preview', compact('item'));
     }
 
     // เปลี่ยนสถานะข่าวจากฉบับร่างเป็นเผยแพร่
@@ -117,7 +117,21 @@ class ManageHighlight extends Controller
     {
         // ดึงข้อมูลข่าวจากฐานข้อมูล
         $news = News::where('news_id', $id)->firstOrFail();
+        // เริ่มต้นสถานะการเผยแพร่
+        $isPublished = false;
 
+        // ตรวจสอบว่าเป็นการเผยแพร่หรือไม่
+        if ($request->has('publish') && $request->publish == 1) {
+            // ตรวจสอบสถานะข่าวก่อนว่าเป็น "not_published"
+            if ($news->publish_status == 'not_published') {
+                // เปลี่ยนสถานะข่าวเป็น "published"
+                $news->publish_status = 'published';
+                $news->save(); // บันทึกการเปลี่ยนแปลงสถานะ
+                $isPublished = true; // กำหนดว่าเป็นการเผยแพร่
+            }
+        }
+
+        // การ validate ข้อมูล
         $request->validate([
             'title' => 'required|string|max:255',
             'details' => 'required|string',
@@ -132,24 +146,35 @@ class ManageHighlight extends Controller
             'tags' => $request->tags ?? [],
         ];
 
+        // ถ้ามีการอัปโหลดไฟล์
         if ($request->hasFile('file')) {
             // ลบไฟล์เก่าก่อน
             if ($news->banner && Storage::exists('public/' . $news->banner)) {
                 Storage::delete('public/' . $news->banner);
             }
-        
+
             // เก็บไฟล์ใหม่
-            $imagePath = $request->file('file')->store('news_banners', 'public'); 
-            $newsData['banner'] = $imagePath;  // ใช้ชื่อ banner ให้ตรงกับ storeHighlight
+            $imagePath = $request->file('file')->store('news_banners', 'public');
+            $newsData['banner'] = $imagePath;
+        } else {
+            // ถ้าไม่มีไฟล์ใหม่ ก็ไม่ต้องทำการอัปเดตไฟล์
+            $newsData['banner'] = $news->banner; // เก็บไฟล์เดิมไว้
         }
 
         // อัปเดตข้อมูลในฐานข้อมูล
         $updatedNews = HighlightEditor::updateNewsContent($id, $newsData);
 
         if ($updatedNews) {
-            return redirect()->route('highlight.edit', $id)->with('success', 'อัปเดตไฮไลท์สำเร็จ');
+            // ตรวจสอบว่ากดปุ่ม "บันทึกและเผยแพร่" หรือไม่
+            if ($isPublished) {
+                $updatedNews = HighlightEditor::updateNewsStatus($id, "published");
+                return response()->json(['success' => true]); // เผยแพร่สำเร็จ
+            } else {
+                return response()->json(['success' => true]); // บันทึกการแก้ไขสำเร็จ
+            }
         }
-        return back()->with('error', 'เกิดข้อผิดพลาดในการอัปเดตไฮไลท์');
+
+        return redirect()->route('highlight.manage')->with('success', 'อัปเดตไฮไลท์สำเร็จ');
     }
 
     public function destroy($newsId)

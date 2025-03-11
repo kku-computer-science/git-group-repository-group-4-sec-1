@@ -138,7 +138,7 @@
                             <form>
                                 <div class="mb-3">
                                     <label for="tag" class="col-form-label">Tag:</label>
-                                    <input class="form-control" id="tag"></input>
+                                    <input class="form-control" id="tag" required></input>
                                 </div>
                             </form>
                         </div>
@@ -162,7 +162,7 @@
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="tagName" class="col-form-label">Tags:</label>
-                                <input class="form-control" id="tagName">
+                                <input class="form-control" id="tagName" required>
                                 <input type="hidden" id="tagId">
                             </div>
                             <div id="existingTags">

@@ -99,11 +99,11 @@
         </div>
 
         <!-- News Title --><br><br>
-        <h2 class="news-title">{{ $item['title'] }}</h2><br>
+        <h2 class="news-title lh-base">{{ $item['title'] }}</h2><br>
 
         <!-- News Content -->
         <div class="news-content mt-3 lh-lg">
-        <span class="news-content">{!! html_entity_decode($item['content']) !!}</span>
+        <span class="news-content lh-base">{!! html_entity_decode($item['content']) !!}</span>
         </div>
 
         <!-- Editor Information -->

@@ -45,8 +45,10 @@
             <div class="card" style="padding: 16px;">
                 <div class="card-body">
 
-                    <form action="{{ route('highlight.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('highlight.update', $news->news_id) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
 
                         <!-- File Upload -->
                         <div class="form-group ">
@@ -54,20 +56,20 @@
                                 ขนาดไฟล์สูงสุด
                                 5MB)</label>
                             <input type="file" id="formFile" name="file" class="form-control form-control-lg"
-                                accept=".jpg, .jpeg, .png" value = "{{old('file')}}">
+                                accept=".jpg, .jpeg, .png" value = "{{ old('file') }}">
                         </div>
 
                         <!-- Title -->
                         <div class="form-group">
                             <label for="title" class="fw-bold">หัวข้อไฮไลท์</label>
                             <input id="title" type="text" name="title" class="form-control"
-                                value="{{ old('title') }}">
+                                value="{{ $news->title }}">
                         </div>
 
                         <!-- Details -->
                         <div class="form-group">
                             <label for="details" class="fw-bold">รายละเอียด</label>
-                            <textarea name="details" id="details" class="form-control" rows="5">{{ old('details') }}</textarea>
+                            <textarea name="details" id="details" class="form-control" rows="5">{{ $news->content }}</textarea>
                         </div>
 
                         <!-- Tags -->
@@ -77,7 +79,7 @@
                                 <select name="tags[]" id="tags" class="form-control p-3 select2" multiple="multiple">
                                     @foreach ($tags as $tag)
                                         <option value="{{ $tag['tag_id'] }}"
-                                            {{ in_array($tag['tag_id'], old('tags', [])) ? 'selected' : '' }}>
+                                            {{ in_array($tag['tag_id'], $news->tags->pluck('tag_id')->toArray()) ? 'selected' : '' }}>
                                             {{ $tag['tag_name'] }}
                                         </option>
                                     @endforeach
@@ -95,36 +97,14 @@
 
                         <!-- Submit Button -->
                         <div class="d-flex justify-content-center ">
-                            <button type="submit" class="btn btn-primary mt-4 fw-bold">บันทึกการแก้ไข</button>
-                            <button type="submit" class="btn btn-success mt-4 mx-5 fw-bold; ">บันทึกและเผยแพร่</button>
+                            <button type="submit" id="btnSave"
+                                class="btn btn-primary mt-4 fw-bold">บันทึกการแก้ไข</button>
+                            <button type="submit" id="btnPublish" name="publish" value="1"
+                                class="btn btn-success mt-4 mx-5 fw-bold;">บันทึกและเผยแพร่</button>
+
                         </div>
                     </form>
-
-                    <!-- Success Message -->
-                    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center fw-bold">
-                                    <div class="mdi mdi-checkbox-marked-circle mdi-48px mb-3 text-success"></div>
-                                    <p class="fs-5">แก้ไขไฮไลท์สำเร็จ</p>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-secondary" id="closeSuccessModal"
-                                        data-bs-dismiss="modal">
-                                        Close
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
 
             {{-- โมเดลเพิ่มแท็ก --}}
@@ -139,7 +119,7 @@
                             <form>
                                 <div class="mb-3">
                                     <label for="tag" class="col-form-label">Tag:</label>
-                                    <input class="form-control" id="tag"></input>
+                                    <input class="form-control" id="tag" required></input>
                                 </div>
                             </form>
                         </div>
@@ -157,13 +137,12 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5 fw-bold text-center" id="manageTagsModalLabel">จัดการ Tags</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label for="tagName" class="col-form-label">Tags:</label>
-                                <input class="form-control" id="tagName">
+                                <input class="form-control" id="tagName" required>
                                 <input type="hidden" id="tagId">
                             </div>
                             <div id="existingTags">
@@ -203,6 +182,51 @@
                 </div>
             </div>
 
+            {{-- โมเดลแสดงบันทึกการแก้ไขสำเร็จ --}}
+            <div class="modal fade" id="successEditModal" tabindex="-1" aria-labelledby="successModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center fw-bold">
+                            <div class="mdi mdi-checkbox-marked-circle mdi-48px mb-3 text-success"></div>
+                            <p class="fs-5">บันทึกการแก้ไขสำเร็จ</p>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary" id="closeSuccessModal"
+                                data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- โมเดลแสดงบันทึกและเผยแพร่สำเร็จ --}}
+            <div class="modal fade" id="successPublishModal" tabindex="-1" aria-labelledby="successModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center fw-bold">
+                            <div class="mdi mdi-checkbox-marked-circle mdi-48px mb-3 text-success"></div>
+                            <p class="fs-5">บันทึกและเผยแพร่สำเร็จ</p>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary" id="closeSuccessPublishModal"
+                                data-bs-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -211,19 +235,27 @@
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
         {{-- Auto save --}}
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                if (sessionStorage.getItem("formSaved")) {
-                    localStorage.removeItem("title");
-                    localStorage.removeItem("details");
-                    localStorage.removeItem("tags");
-                    sessionStorage.removeItem("formSaved"); 
-                }
-                document.getElementById("title").value = localStorage.getItem("title") || "";
+                let newsId = "{{ $news->news_id }}"; // ใช้ news_id เป็น key
 
-                let savedTags = JSON.parse(localStorage.getItem("tags")) || [];
-                $('#tags').val(savedTags).trigger('change');
+                // เช็คว่าเคยบันทึกข้อมูลไว้หรือไม่
+                if (sessionStorage.getItem("formSaved_" + newsId)) {
+                    localStorage.removeItem("title_" + newsId);
+                    localStorage.removeItem("details_" + newsId);
+                    localStorage.removeItem("tags_" + newsId);
+                    sessionStorage.removeItem("formSaved_" + newsId);
+                }
+
+                // โหลดข้อมูลจาก localStorage
+                document.getElementById("title").value = localStorage.getItem("title_" + newsId) ||
+                    "{{ old('title', $news->title) }}";
+
+                let savedTags = JSON.parse(localStorage.getItem("tags_" + newsId)) || [];
+                let oldTags = "{{ old('tags', implode(',', $news->tags->pluck('tag_id')->toArray())) }}";
+                $('#tags').val(savedTags.length > 0 ? savedTags : oldTags.split(',')).trigger('change');
 
                 $('#details').trumbowyg({
                     btns: [
@@ -240,28 +272,42 @@
                         ['fullscreen']
                     ]
                 }).on('tbwinit', function() {
-                    let savedDetails = localStorage.getItem("details");
+                    let savedDetails = localStorage.getItem("details_" + newsId);
                     if (savedDetails) {
                         $('#details').trumbowyg('html', savedDetails);
+                    } else {
+                        $('#details').trumbowyg('html', `{!! $news->content !!}`);
                     }
                 });
 
+
+                // ฟังก์ชัน auto save
                 function autoSave() {
-                    localStorage.setItem("title", document.getElementById("title").value);
-                    localStorage.setItem("details", $('#details').trumbowyg('html'));
-                    localStorage.setItem("tags", JSON.stringify($('#tags').val() || []));
+                    localStorage.setItem("title_" + newsId, document.getElementById("title").value);
+                    // localStorage.setItem("details_" + newsId, $('<div>').append($('#details').trumbowyg('html'))
+                    //     .html());
+                    localStorage.setItem("details_" + newsId, $('#details').trumbowyg('html'));
+                    localStorage.setItem("tags_" + newsId, JSON.stringify($('#tags').val() || []));
                 }
 
+                // ฟังก์ชันล้างข้อมูล auto save
                 function clearAutoSave() {
-                    localStorage.removeItem("title");
-                    localStorage.removeItem("details");
-                    localStorage.removeItem("tags");
-                    sessionStorage.setItem("formSaved", "true");
+                    localStorage.removeItem("title_" + newsId);
+                    localStorage.removeItem("details_" + newsId);
+                    localStorage.removeItem("tags_" + newsId);
+                    sessionStorage.setItem("formSaved_" + newsId, "true");
                 }
 
+                // Event listeners
                 document.getElementById("title").addEventListener("input", autoSave);
                 $('#details').on('tbwchange', autoSave);
                 $('#tags').on('change', autoSave);
+
+                // console.log("Saved HTML:", localStorage.getItem("details_" + newsId));
+
+                // console.log("Decoded for Trumbowyg:", $('<div>').html(localStorage.getItem("details_" + newsId))
+                //     .text());
+
 
                 document.querySelector("form").addEventListener("submit", function() {
                     clearAutoSave();
@@ -281,7 +327,7 @@
                     let tagName = $('#tag').val();
                     if (tagName) {
                         $.ajax({
-                            url: "{{ route('tag.store') }}", 
+                            url: "{{ route('tag.store') }}",
                             method: 'POST',
                             data: {
                                 _token: '{{ csrf_token() }}',
@@ -338,7 +384,7 @@
                         },
                         success: function(response) {
                             alert('อัปเดตสำเร็จ');
-                            location.reload(); 
+                            location.reload();
                         },
                         error: function(xhr) {
                             alert('เกิดข้อผิดพลาด: ' + xhr.responseJSON.message);
@@ -373,12 +419,15 @@
 
         <script>
             $(document).ready(function() {
+                // ฟังก์ชันล้างข้อมูล auto save
                 function clearAutoSave() {
                     localStorage.removeItem("title");
                     localStorage.removeItem("details");
                     localStorage.removeItem("tags");
                     sessionStorage.setItem("formSaved", "true");
                 }
+
+                // ฟังก์ชันตรวจสอบไฟล์อัปโหลด
                 function validateFileInput() {
                     var fileInput = $("#formFile")[0];
                     var file = fileInput.files[0];
@@ -386,18 +435,20 @@
                     var maxSize = 5 * 1024 * 1024; // 5MB
                     $(".file-error").remove(); // ลบแจ้งเตือนก่อนหน้า
 
+                    // ถ้าไม่ได้เลือกไฟล์ใหม่ ให้ข้ามการตรวจสอบไฟล์
                     if (!file) {
-                        return true; // ไม่มีไฟล์ให้ข้ามไป
+                        return true; // ไม่มีไฟล์ใหม่ก็ข้ามไป
                     }
 
-                    if (!allowedTypes.includes(file.type)) {
+                    // ตรวจสอบว่า file มีค่าหรือไม่ และตรวจสอบประเภทไฟล์
+                    if (file && !allowedTypes.includes(file.type)) {
                         $("#formFile").after(
                             '<div class="alert alert-danger mt-1 file-error">ประเภทไฟล์ไม่ถูกต้อง กรุณาอัปโหลดไฟล์ .jpg, .jpeg หรือ .png</div>'
                         );
                         return false;
                     }
 
-                    if (file.size > maxSize) {
+                    if (file && file.size > maxSize) {
                         $("#formFile").after(
                             '<div class="alert alert-danger mt-1 file-error">ขนาดไฟล์เกิน 5MB กรุณาอัปโหลดไฟล์ที่มีขนาดเล็กลง</div>'
                         );
@@ -407,31 +458,47 @@
                     return true;
                 }
 
-                $("form").submit(function(e) {
-                    e.preventDefault(); 
-                    $(".alert-danger").remove(); // ล้างข้อความแจ้งเตือนก่อน
 
-                    if (!validateFileInput()) {
-                        return; // หยุดการทำงานถ้าไฟล์ไม่ถูกต้อง
-                    }
+                let isPublish = false;
+
+                // เมื่อกดปุ่มบันทึกการแก้ไข
+                $("#btnSave").click(function() {
+                    isPublish = false; 
+                    // console.log("Save clicked, isPublish: " + isPublish); 
+                });
+
+                // เมื่อกดปุ่มบันทึกและเผยแพร่
+                $("#btnPublish").click(function() {
+                    isPublish = true; 
+                    // console.log("Publish clicked, isPublish: " + isPublish); 
+                });
+
+                $("form").submit(function(e) {
+                    e.preventDefault();
 
                     var formData = new FormData(this);
-                    var form = $(this);
+                    // formData.append("publish", isPublish); // เพิ่มค่า publish ใน formData
+                    formData.append("publish", isPublish ? "1" : "0");
+
+                    // console.log("Form Data Publish Value: " + isPublish); // ตรวจสอบค่า publish ที่ส่งไป
 
                     $.ajax({
-                        url: form.attr("action"),
-                        type: "POST",
+                        url: $(this).attr('action'),
+                        type: $(this).attr('method'),
                         data: formData,
                         processData: false,
                         contentType: false,
                         success: function(response) {
+                            console.log(response); // ตรวจสอบ response
                             if (response.success) {
-                                clearAutoSave(); // ล้างข้อมูล auto save
-                                $("#successModal").modal("show");
-                                setTimeout(function() {
-                                    window.location.href =
-                                        "{{ route('highlight.manage') }}";
-                                }, 5000);
+                                // ถ้าเผยแพร่สำเร็จ
+                                if (isPublish) {
+                                    $("#successPublishModal").modal("show");
+                                } else {
+                                    $("#successEditModal").modal("show");
+                                }
+                            } else {
+                                console.log("Error: " + response.error);
                             }
                         },
                         error: function(xhr) {
@@ -441,7 +508,8 @@
                                     var inputField = $('[name="' + key + '"]');
                                     inputField.after(
                                         '<div class="alert alert-danger mt-1">' + value[
-                                            0] + '</div>');
+                                            0] + '</div>'
+                                    );
                                 });
                             }
                         },
@@ -449,7 +517,18 @@
                 });
 
                 $("#closeSuccessModal").click(function() {
-                    window.location.href = "{{ route('highlight.manage') }}";
+                    console.log("Closing modal and redirecting...");
+                    $("#successEditModal").modal("hide"); 
+                    window.location.href =
+                        "{{ route('highlight.manage') }}"; 
+                });
+
+                
+                $("#closeSuccessPublishModal").click(function() {
+                    console.log("Closing modal and redirecting...");
+                    $("#successPublishModal").modal("hide");
+                    window.location.href =
+                        "{{ route('highlight.manage') }}";
                 });
             });
         </script>

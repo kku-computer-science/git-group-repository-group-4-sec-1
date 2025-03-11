@@ -9,22 +9,23 @@ use Illuminate\Support\Facades\Storage;
 
 class HighlightEditor
 {
-    private static function handleCategorized($news){
+    private static function handleCategorized($news)
+    {
         $tag = Tag::where('tag_name', 'uncategorized')->first();
-        if(!$tag) $tag = self::createTag('uncategorized');
+        if (!$tag) $tag = self::createTag('uncategorized');
         $tagId = $tag["tag_id"];
 
         $tags = $news->tags->pluck('tag_id')->toArray();
 
-        if(in_array($tagId,$tags) && count($tags) > 1){
+        if (in_array($tagId, $tags) && count($tags) > 1) {
             $news->tags()->detach($tagId);
-
-        } elseif(!in_array($tagId,$tags) && count($tags) < 1){
+        } elseif (!in_array($tagId, $tags) && count($tags) < 1) {
             $news->tags()->attach($tagId);
         }
     }
 
-    public static function createNews($news, $authorId){
+    public static function createNews($news, $authorId)
+    {
         $newsModel = new News();
         $newsModel->title = $news['title'];
         $newsModel->content = $news['content'];
@@ -35,9 +36,9 @@ class HighlightEditor
         $newsModel->update = now();
         $newsModel->save();
 
-        if (sizeof($news['tags'])>=1) {
+        if (sizeof($news['tags']) >= 1) {
             $newsModel->tags()->sync($news['tags']);
-        }else{
+        } else {
             self::handleCategorized($newsModel);
         }
 
@@ -45,11 +46,12 @@ class HighlightEditor
         return $newsData;
     }
 
-    public static function deleteNews($newsId){
+    public static function deleteNews($newsId)
+    {
         $news = News::find($newsId);
         if ($news) {
             if ($news->path_banner_img) {
-                Storage::delete($news->path_banner_img);
+                Storage::disk('public')->delete($news->path_banner_img);
             }
             $news->tags()->detach();
             $news->delete();
@@ -58,22 +60,24 @@ class HighlightEditor
         return false;
     }
 
-    public static function updateNewsContent($newsId, $updatedNews){
+    public static function updateNewsContent($newsId, $updatedNews)
+    {
         $news = News::find($newsId);
         if (!$news) return null;
 
-        if(!empty($updatedNews["content"]))
+        if (!empty($updatedNews["content"]))
             $news->content = $updatedNews["content"];
-        if(!empty($updatedNews["title"]))
+        if (!empty($updatedNews["title"]))
             $news->title = $updatedNews["title"];
-        if(!empty($updatedNews["banner"]) && $news->path_banner_img){
-            Storage::delete($news->path_banner_img);
+        if (!empty($news->path_banner_img) && Storage::exists('public/' . $news->path_banner_img)) {
+            Storage::delete('public/' . $news->path_banner_img);
+
             $news->path_banner_img = $updatedNews["banner"];
         }
 
 
 
-        if(isset($updatedNews["tags"])){
+        if (isset($updatedNews["tags"])) {
             $news->tags()->sync($updatedNews['tags']);
             self::handleCategorized($news);
         }
@@ -84,23 +88,25 @@ class HighlightEditor
         return $newsData;
     }
 
-    public static function updateNewsStatus($newsId, $status){
+    public static function updateNewsStatus($newsId, $status)
+    {
         $news = News::find($newsId);
         if (!$news) return false;
 
-        $allStatus = ["published","highlight","not_published"];
-        if(!in_array($status,$allStatus)) return false;
+        $allStatus = ["published", "highlight", "not_published"];
+        if (!in_array($status, $allStatus)) return false;
 
         $news->publish_status = $status;
         $news->publish = now();
-        $news->update= now();
+        $news->update = now();
         $news->save();
         return true;
     }
 
-    public static function createTag($tagname){
+    public static function createTag($tagname)
+    {
         $tag = Tag::where('tag_name', $tagname)->first();
-        if($tag || empty($tagname)) return null;
+        if ($tag || empty($tagname)) return null;
 
         $tag = new Tag();
         $tag->tag_name = $tagname;
@@ -108,16 +114,18 @@ class HighlightEditor
         return $tag;
     }
 
-    public static function updateTag($tagId, $tagname){
+    public static function updateTag($tagId, $tagname)
+    {
         $tag = Tag::find($tagId);
-        if(!$tag || empty($tagname)) return null;
+        if (!$tag || empty($tagname)) return null;
 
         $tag->tag_name = $tagname;
         $tag->save();
         return true;
     }
 
-    public static function deleteTag($tagId){
+    public static function deleteTag($tagId)
+    {
         $tag = Tag::find($tagId);
         if ($tag) {
             $tag->delete();
