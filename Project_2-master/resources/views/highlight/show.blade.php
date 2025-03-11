@@ -1,51 +1,75 @@
 @extends('dashboards.users.layouts.user-dash-layout')
 @section('content')
-     <style>
-     
-     </style>
+<div class="container">
+    <h3 class="text-center mb-5 fw-bold">เผยแพร่ไฮไลท์</h3>
+    <h4 class="text-center mb-5 fw-bold">เลือกไฮไลท์ที่ต้องการแสดงในหน้าหลัก สูงสุด 5 ไฮไลท์</h4>
 
-
-    <body>
-        <div class="container mb-3">
-            <h3 class="text-center mb-5 fw-bold">เผยแพร่ไฮไลท์</h3>
-            <h4 class="text-center mb-5 fw-bold">เลือกไฮไลท์ที่ต้องการแสดงในหน้าหลักสูงสุด 5 ไฮไลท์ </h4>
-        </div>
-
-        {{-- <form action="{{ route('highlight.show') }}" method="POST" enctype="multipart/form-data"> --}}
-                        {{-- @csrf --}}
-
-        {{-- ตั้งเป็นไฮไลท์ --}}
-        @if (!empty($news) && count($news) > 0)
-        
+    <form id="highlightForm">
+        <div class="row">
             @foreach ($news as $item)
-                <h3 class="text-center mb-5 fw-bold">พรีวิวไฮไลท์</h3>
-                <div class="col-sm-4 mb-3 text-center">
-                    @if (
-                    !empty($item['publish_status']) &&
-                    ($item['publish_status'] == 'highlight' || $item['publish_status'] == 'published'))
-                    <img src="{{ asset('storage/' . $item['banner']) }}" alt="banner" class="img-fluid"><br>
-                    {{ $item['title'] ?? '-' }}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <img src="{{ asset('storage/' . $item->path_banner_img) }}" class="card-img-top" alt="banner">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ $item->title }}</h5>
+                            <input type="checkbox" name="news[]" value="{{ $item->news_id }}" 
+                                   class="highlight-checkbox" 
+                                   data-status="{{ $item->publish_status }}" 
+                                   @if($item->publish_status === 'highlight') checked @endif>
+                            <label> ตั้งเป็นไฮไลท์</label>
+                        </div>
+                    </div>
                 </div>
-                <input type="checkbox">
-            <label> ตั้งเป็นไฮไลท์</label><br>
-                    @endif
             @endforeach
-        
-        @endif
-            
-        <div class="text-center mt-5 mx-10">
-         <button type="submit" class="btn btn-success mt-4 mx-5 fw-bold text-center; ">บันทึก</button>
         </div>
 
-    {{-- สคริปต์เมื่อกด checkbox ของการเลือกไฮไลท์ --}}
-    <script>
-    
-    </script>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success">บันทึก</button>
+        </div>
+    </form>
+</div>
 
-    {{-- เมื่อเลือกเกิน 5 ไฮไลท์จะไม่ให้เพิ่ม --}}
-    
-    </body>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll(".highlight-checkbox");
+    const form = document.getElementById("highlightForm");
 
+    function validateHighlightSelection() {
+        let checkedCount = document.querySelectorAll(".highlight-checkbox:checked").length;
+        if (checkedCount > 5) {
+            alert("ไม่สามารถเลือกไฮไลท์เกิน 5 รายการ");
+            return false;
+        }
+        return true;
+    }
 
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
 
+        if (!validateHighlightSelection()) return;
+
+        let selectedNews = [];
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                selectedNews.push(checkbox.value);
+            }
+        });
+
+        fetch("{{ route('highlight.select') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ news: selectedNews })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            location.reload();
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+</script>
 @endsection
