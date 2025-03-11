@@ -2,6 +2,9 @@
 
 ## Sprint 3
 ### New
+- เพิ่ม Model News, NewsTag, NewsImg, Tag, Img เก็บข้อมูลและเชื่อมต่อกับDataBase
+- เพิ่ม ตาราง news, news_tag,tag, img ,news_img สำหรับเก็บข้อมูลของข่าว
+- เพิ่ม Controller ShowAllNews สำหรับส่งข่าวออกไปแสดงในหน้าเว็บ และการทำฟังก์ชั่นSearch
 - เพิ่ม Service GetHighlight สำหรับการจัดการการดึงข้อมูลของข่าว
 - เพิ่ม Service HighlightEditor สำหรับ CRUD เพื่อใช้เพื่อจัดการข่าวของ admin staff 
 - เพิ่ม Controller ReadNewsController สำหรับใช้อ่านข่าว
@@ -9,9 +12,12 @@
 - เพิ่มหน้า add.blade สำหรับการเพิ่มข่าว
 - เพิ่มหน้า manage.blade สำหรับจัดการข่าว
 - เพิ่มหน้า highlight_detail.blade สำหรับการอ่านรายละเอียดข่าว
+- เพิ่ม user manual (ภูมิพิพัฒน์)
+- ร่างและจัดการหน้า preview highlight , edit highlight , published highlight(ภูมิพิพัฒน์)
 ### Update
 - อัปเดต route สำหรับการจัดการข่าว
 - อัปเดต route สำหรับการจัดการแท็กของข่าว
+- เพิ่มการแสดงผลในหน้า Home ได้แก่ Highlight ข่าวประชาสัมพันธ์ 
 ### Fix
 
 ## Sprint 2
