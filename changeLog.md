@@ -12,6 +12,8 @@
 - เพิ่มหน้า add.blade สำหรับการเพิ่มข่าว
 - เพิ่มหน้า manage.blade สำหรับจัดการข่าว
 - เพิ่มหน้า highlight_detail.blade สำหรับการอ่านรายละเอียดข่าว
+- เพิ่ม user manual (ภูมิพิพัฒน์)
+- ร่างและจัดการหน้า preview highlight , edit highlight , published highlight(ภูมิพิพัฒน์)
 ### Update
 - อัปเดต route สำหรับการจัดการข่าว
 - อัปเดต route สำหรับการจัดการแท็กของข่าว
