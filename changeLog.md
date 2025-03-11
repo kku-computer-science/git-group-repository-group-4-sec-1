@@ -5,7 +5,13 @@
 - เพิ่ม Service GetHighlight สำหรับการจัดการการดึงข้อมูลของข่าว
 - เพิ่ม Service HighlightEditor สำหรับ CRUD เพื่อใช้เพื่อจัดการข่าวของ admin staff 
 - เพิ่ม Controller ReadNewsController สำหรับใช้อ่านข่าว
+- เพิ่ม Controller ManageHighlight สำหรับการจัดการ เพิ่ม ลบ แก้ไข แสดงไฮไลท์ข่าวและการจัดการแท็กของข่าว
+- เพิ่มหน้า add.blade สำหรับการเพิ่มข่าว
+- เพิ่มหน้า manage.blade สำหรับจัดการข่าว
+- เพิ่มหน้า highlight_detail.blade สำหรับการอ่านรายละเอียดข่าว
 ### Update
+- อัปเดต route สำหรับการจัดการข่าว
+- อัปเดต route สำหรับการจัดการแท็กของข่าว
 ### Fix
 
 ## Sprint 2
